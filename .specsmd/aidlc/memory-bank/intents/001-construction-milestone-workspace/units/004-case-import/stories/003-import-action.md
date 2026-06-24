@@ -1,55 +1,58 @@
 ---
-id: 003-import-action
+id: 003-confirm-and-participants
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
 status: draft
 priority: must
 created: 2026-06-24T00:00:00Z
+updated: 2026-06-24T00:00:00Z
 assigned_bolt: null
 implemented: false
 ---
 
-# Story: 003-import-action
+# Story: 003-confirm-and-participants
 
 ## User Story
 **As an** HFA staff member
-**I want** to create a fully structured case in Emphasys Connect from an IMC project in one tap
-**So that** all milestones, prerequisites, and participant records are set up correctly without manual data entry
+**I want** to review the case structure and invite participants before creating the case
+**So that** the right people are notified and attached to the case from the moment it is created
 
 ## Acceptance Criteria
-- [ ] **Given** the user taps "Import" on the confirm screen, **When** the import runs, **Then** the following rows are created atomically: one `cases` row, all `milestones` rows (Milestone 1 status `active`, remainder `open`), all `prerequisites` rows (status `pending_open`), and `case_participants` rows for the HFA staff member and the Developer identified by `developerEmail`
-- [ ] **Given** the import completes successfully, **When** all writes are confirmed, **Then** a system `conversation_messages` row is written with text "Case imported from IMC: {title}" attributed to the importing HFA user
-- [ ] **Given** the import succeeds, **When** navigation runs, **Then** the app navigates to the new case detail page at `/cases/{newCaseId}` using `replaceUrl: true` (import screens removed from back-stack)
-- [ ] **Given** the import is in progress, **When** writes are in flight, **Then** the "Import" button is disabled and a loading spinner is shown; the user cannot double-tap
-- [ ] **Given** the import fails partway through, **When** any write returns an error, **Then** no partial data is left in the database, an error message is shown, and the user remains on the confirm screen to retry
+- [ ] **Given** the confirm screen opens with an IMC project, **When** it renders, **Then** the project name, address, and case type are displayed at the top; each milestone is listed with a count of prerequisites (e.g. "3 prerequisites"); tapping a milestone row expands to show prerequisite names
+- [ ] **Given** the confirm screen opens for a "Start blank" case, **When** it renders, **Then** a case title text field is shown (required); no milestone structure is displayed (it will be set up later)
+- [ ] **Given** an IMC-backed case, **When** the screen renders, **Then** the Developer contact from the IMC project is pre-populated in the Participants section with role "Developer" and cannot be removed
+- [ ] **Given** the Participants section, **When** rendered, **Then** the creating HFA user is shown as a pre-populated participant with role "HFA Staff" (read-only, cannot be removed)
+- [ ] **Given** the Participants section, **When** the HFA clicks "Add participant", **Then** an inline form appears with: email address field + role selector (Developer, HFA Staff); entering a valid email and role and clicking "Add" appends the participant to the list
+- [ ] **Given** the participant list, **When** a manually-added participant is shown, **Then** a remove icon allows the HFA to remove that participant before creation
+- [ ] **Given** the user is ready to proceed, **When** the "Create case" CTA is tapped, **Then** navigation to the create action (story 004) begins; no Supabase writes occur on this screen
+- [ ] **Given** the user wants to go back, **When** "Cancel" or back navigation is used, **Then** the app returns to the previous screen without any state changes
 
 ## Technical Notes
-- Preferred approach: Supabase Edge Function `import-imc-project` that accepts the `ImcProject` payload and performs all inserts in a single Postgres transaction; returns `{ caseId: string }`
-- Fallback (if Edge Function is not available for hackathon): `ImportService.importProject(project, hfaUserId)` performs sequential Supabase inserts; wrap in a try/catch that attempts a compensating delete of the `cases` row if a downstream insert fails
-- Developer lookup: `supabase.from('profiles').select('id').eq('email', project.developerEmail).single()`; if not found, create a placeholder profile with `is_hfa: false` and the developer's email
-- Developer email notification: write a log entry to `conversation_messages` (type `system`) — do not send an actual email for the hackathon build; add a TODO comment
-- `case_participants` rows: one for the HFA user (`role: 'hfa'`) and one for the Developer (`role: 'developer'`)
-- After successful import, `CaseService` cache should be invalidated so the new case appears on the HFA dashboard
+- Route: `/create-case/confirm`
+- Route state carries: `{ imcProject?: ImcProject; caseType: CaseType; caseTitle?: string }` — `caseTitle` required for blank type
+- `participants = signal<ParticipantDraft[]>([])` pre-populated from IMC data or empty (HFA user always included)
+- `ParticipantDraft`: `{ email: string; role: 'developer' | 'hfa_staff'; source: 'imc' | 'manual' }`
+- Milestone accordion: `IonAccordionGroup` + `IonAccordion`; read-only
+- "Add participant" inline form: `(click)` toggle; validate email format client-side before appending
+- "Create case" CTA: navigates to `/create-case/create` passing full `CreateCasePayload` as route state
+- Participants section labeled "Participants" (not "Stakeholders")
 
 ## Dependencies
 ### Requires
-- 002-confirm-screen
-- 001-case-list-screen (unit 003) — new case must appear on dashboard post-import
-
+- `002-imc-project-search` (for IMC-backed types)
+- `001-case-type-selection` (for blank type, navigates here directly after title entry)
 ### Enables
-- Case detail, milestone, and conversation units (005–007)
+- `004-create-case-action`
 
 ## Edge Cases
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| Developer email not found in `profiles` | Placeholder profile created; import proceeds; case shows developer email as pending user |
-| Duplicate import of same IMC project | Second import creates a new `cases` row with same title; no deduplication check in v1 |
-| Edge Function times out | Client receives error; confirm screen shown with "Import failed — please try again" |
-| HFA user loses network mid-import | Sequential insert path may leave partial data; compensating delete attempted; error shown |
-| IMC project has zero milestones | Import aborted client-side with message "This project has no milestones to import" |
+| Blank case: user leaves title empty and taps "Create case" | Blocked — CTA disabled until title is non-empty |
+| IMC project has zero milestones | Empty milestone section shown with note "No milestones defined in IMC — add them after creation"; creation still allowed |
+| HFA adds duplicate email | Second entry ignored; toast "Participant already added" shown |
+| Router state is missing (direct URL navigation) | Redirect to `/create-case/type` |
 
 ## Out of Scope
-- Sending actual email notifications to the Developer
-- Deduplication of imported projects
-- Bulk import of multiple IMC projects in one action
-- Editing the imported structure after creation (handled by case detail unit)
+- Sending participant invitations at this step (handled by story 004 via Edge Function)
+- Editing milestone/prerequisite names (IMC is source of truth)
+- Setting participant-level permissions beyond role

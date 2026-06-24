@@ -6,7 +6,7 @@ type: simple-construction-bolt
 status: planned
 stories:
   - 001-hfa-actions-panel
-  - 004-developer-status-panel
+  - 004-participant-status-panel
 created: 2026-06-24T00:00:00Z
 requires_bolts: ["006"]
 enables_bolts: ["008"]
@@ -21,14 +21,14 @@ complexity:
 
 ## Objective
 
-Render the read-only display panels: HFA Actions panel (milestone/prerequisite checklist with status badges) and Developer Status panel (read-only progress view with upload links placeholder). Both consume `CaseDetailStore` signals — no mutations yet.
+Render the display panels: HFA Actions panel (milestone/prerequisite checklist with status badges) and Participant Status panel (progress view with upload links and "Mark as ready" button for `acceptance_comment` prereqs). Both consume `CaseDetailStore` signals. The "Mark as ready" button is rendered here; its mutation handler is wired in bolt 008.
 
 ## Stories in Scope
 
 | Story | Title | Priority |
 |-------|-------|----------|
 | 001-hfa-actions-panel | Actions panel with prereq checklist + status badges | Must |
-| 004-developer-status-panel | Developer read-only status + upload links | Must |
+| 004-participant-status-panel | Developer read-only status + upload links | Must |
 
 ## Stage Sequence (simple-construction-bolt)
 
@@ -36,7 +36,7 @@ Render the read-only display panels: HFA Actions panel (milestone/prerequisite c
 - HFA Actions panel: grouped by milestone; each milestone shows status badge + list of prerequisites
 - Prerequisite row: name, type icon, status badge (`pending_open` / `received_processing` / `accepted`)
 - Status badge colors from ux-guide.md: pending = neutral, received = caution amber, accepted = success green
-- Developer Status panel: same milestone/prereq tree but read-only; upload link shown per `document_submission` prereq when triggered
+- Participant Status panel: same milestone/prereq tree but read-only; upload link shown per `document_submission` prereq when triggered
 - Both components are presentational: receive data via `input()` signals from parent store
 
 ### Stage 2: Implement
@@ -45,8 +45,9 @@ Render the read-only display panels: HFA Actions panel (milestone/prerequisite c
 - Status badge component: `PrereqStatusBadge` presentational with `status = input()`
 - Milestone status badge: `open` (grey ring), `active` (blue), `completed` (green checkmark)
 - Prereq action buttons (disabled/placeholder in this bolt — bolt 008 adds click handlers)
-- `DeveloperStatusPanelComponent`: standalone, same data structure, all actions stripped
-- Upload link row: shown when `prerequisite.upload_url` is present (null until triggered by HFA in bolt 008)
+- `ParticipantStatusPanelComponent`: standalone, same data structure; HFA action buttons stripped
+- Upload link row: shown when `prerequisite.edocs_upload_url` is present (null until triggered by HFA in bolt 008)
+- "Mark as ready" button: rendered for `acceptance_comment` prereqs in `pending_open` state; emits `markReady` output — handler wired in bolt 008
 - Wire both panels into `CaseDetailComponent` slots from bolt 006
 
 ### Stage 3: Test
@@ -54,5 +55,5 @@ Render the read-only display panels: HFA Actions panel (milestone/prerequisite c
 - Milestone 2 shows as `open` (greyed out)
 - Prereq with `received_processing` shows amber badge
 - Prereq with `pending_open` shows neutral badge
-- Developer panel shows same structure, no action buttons
+- Developer panel shows same structure; `acceptance_comment` prereq in `pending_open` shows "Mark as ready" button (unhandled until bolt 008)
 - Live update: change prereq status in Supabase Studio → badge updates within 2s (via Realtime signal)

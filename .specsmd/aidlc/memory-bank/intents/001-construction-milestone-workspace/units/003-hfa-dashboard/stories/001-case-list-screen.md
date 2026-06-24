@@ -22,6 +22,9 @@ implemented: false
 - [ ] **Given** cases have loaded, **When** the list renders, **Then** each row shows: project title, a type badge (Loan / Inspection / Application), the name of the currently active milestone, and prerequisite progress as "{accepted}/{total} accepted"
 - [ ] **Given** a case row is tapped, **When** the tap event fires, **Then** the app navigates to `/cases/:id` for that case
 - [ ] **Given** the HFA has no active cases, **When** the list renders with an empty result, **Then** an empty-state illustration and message "No active cases" are shown instead of a list
+- [ ] **Given** a viewport `<768px` (mobile), **When** the dashboard renders, **Then** the case list is full-width with compact card rows
+- [ ] **Given** a viewport `768px–1279px` (tablet), **When** the dashboard renders, **Then** the case list is centred in a `max-width: 960px` container
+- [ ] **Given** a viewport `≥1280px` (desktop), **When** the dashboard renders, **Then** each case row expands to a table-style layout showing title, type badge, active milestone, progress, and overdue count in distinct columns within a `max-width: 1200px` centred container
 
 ## Technical Notes
 - `CaseService.getHfaCases(hfaId: string)` issues a Supabase query joining `cases`, the active `milestones` row (where `status = 'active'`), and an aggregate count of `prerequisites` grouped by `accepted_at IS NOT NULL`
@@ -29,6 +32,8 @@ implemented: false
 - `cases = signal<CaseSummary[]>([])` and `isLoading = signal(true)` drive the template
 - Use `IonList` + `IonItem` for native scroll behaviour; type badge is a styled `<span>` with CSS class per type
 - Skeleton rows use `IonSkeletonText` inside the same `IonList` structure
+- Responsive container: `.dashboard-container { max-width: 960px; margin: 0 auto }` at ≥768px; `max-width: 1200px` at ≥1280px
+- Desktop table-style rows use CSS grid columns within `IonItem` — no `<table>` element
 
 ## Dependencies
 ### Requires

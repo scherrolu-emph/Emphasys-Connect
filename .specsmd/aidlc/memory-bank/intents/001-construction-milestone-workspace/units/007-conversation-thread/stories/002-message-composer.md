@@ -17,7 +17,7 @@ implemented: false
 **So that** I can communicate with the other party directly inside the case without switching to email
 
 ## Acceptance Criteria
-- [ ] **Given** the Conversation panel, **When** rendered, **Then** a text input and "Send" button are shown at the bottom of the panel
+- [ ] **Given** the Conversations tab is active, **When** rendered for any authenticated participant, **Then** a text input field and "Send" button are always visible at the bottom of the Conversation panel — the composer is never hidden or collapsed
 - [ ] **Given** the user types a message and presses "Send", **When** the send action fires, **Then** a `manual` message row is inserted in `conversation_messages` and the message appears in the thread for the sender immediately (optimistic update)
 - [ ] **Given** an optimistic message is in the thread, **When** the Supabase insert confirms, **Then** the message remains; if the insert fails, the optimistic message is removed and an error toast is shown
 - [ ] **Given** the counterpart is viewing the same case, **When** the sender sends a message, **Then** the message appears in the counterpart's thread via Realtime without any page refresh

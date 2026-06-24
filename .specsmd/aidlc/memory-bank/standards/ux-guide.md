@@ -29,11 +29,31 @@ Modern SaaS in the spirit of Linear / Notion: restrained neutral palette, single
 
 ## Mobile-First, Responsive
 
-- Design for mobile viewport (375px) first
-- Scale up to tablet (768px) and desktop (1024px+)
-- The two-panel HFA layout must reflow gracefully to a single column on mobile
-  - Mobile: stacked panels with a tab or toggle switch between Actions and Conversation
-  - Tablet/desktop: side-by-side panels
+Design for mobile first; scale up through three explicit breakpoints:
+
+| Breakpoint | Range | Target device |
+|------------|-------|---------------|
+| **Mobile** | `< 768px` | Smartphones |
+| **Tablet** | `768px – 1279px` | Tablets, small laptops |
+| **Desktop** | `≥ 1280px` | Browser on desktop / laptop |
+
+### Layout behaviour per screen
+
+| Screen | Mobile (`<768px`) | Tablet (`768–1279px`) | Desktop (`≥1280px`) |
+|--------|-------------------|-----------------------|----------------------|
+| **Auth** | Full-width form, vertically centered | Centered card, `max-width: 480px` | Centered card, `max-width: 480px` |
+| **HFA Dashboard** | Full-width card list | Card list, `max-width: 960px`, centered | Table-style rows, `max-width: 1200px`, centered |
+| **Case Detail** | Single panel + toggle tabs | Two panels side-by-side (`2fr 3fr`) | Two panels side-by-side (`1fr 2fr`), `max-width: 1400px`, centered |
+
+### Case detail panels — proportions
+
+- **Tablet**: Actions/Status panel narrower (`2fr`), Conversation wider (`3fr`) — both readable, no scroll needed to see full panel
+- **Desktop**: Actions/Status panel compact (`1fr`), Conversation generous (`2fr`) — command-centre density on the left, readable thread on the right
+
+### Navigation chrome
+
+- **Mobile + Tablet**: Bottom tab bar (`IonTabs`) — "Cases" and "Profile"
+- **Desktop**: Bottom tab bar retained for hackathon; future phase may introduce a left rail nav
 
 ## Dual Density
 

@@ -22,7 +22,7 @@ complexity:
 
 ## Objective
 
-Wire all HFA prerequisite mutations: Accept, Return, and Trigger Document Request (upload link generation). After each mutation, write a system message atomically and let Realtime broadcast the change live. Implement milestone auto-advance when all prerequisites are accepted.
+Wire all prerequisite mutations and milestone auto-advance. Developer side: "Mark as ready" for `acceptance_comment` prereqs (`pending_open → received_processing`). HFA side (**hackathon shortcut**): Accept and Return buttons (`received_processing → accepted / pending_open`). In v2 these HFA buttons are removed and replaced by IMC sync writing status directly to Supabase. After each mutation, write a system message atomically and let Realtime broadcast the change live.
 
 ## Stories in Scope
 
@@ -35,25 +35,28 @@ Wire all HFA prerequisite mutations: Accept, Return, and Trigger Document Reques
 ## Stage Sequence (simple-construction-bolt)
 
 ### Stage 1: Plan
-- Accept: `prerequisites.status = 'accepted'` + insert system message "HFA accepted: {prereq name}"
-- Return: `prerequisites.status = 'pending_open'` + insert system message "HFA returned: {prereq name}"
-- Trigger Document Request: generate eDocs stub upload URL (mock: `https://edocs.stub/{uuid}`), write to `prerequisites.upload_url`, insert system message "Document request sent: {prereq name}"
-- Auto-advance: after any `accepted` write, check if all prerequisites for current milestone are `accepted` → if yes, set milestone `status = 'completed'` + next milestone `status = 'active'` + insert system message "Milestone {name} completed"
-- All mutations: single Postgres transaction (DB function or Edge Function) to guarantee atomicity
+- **Mark as ready** (Developer, `acceptance_comment` only): `prerequisites.status = 'received_processing'` + system message "Developer marked [prereq title] as ready for review"
+- **Accept** (HFA, hackathon shortcut): `prerequisites.status = 'accepted'` + system message "HFA accepted: [prereq name]"
+- **Return** (HFA, hackathon shortcut): `prerequisites.status = 'pending_open'` + system message "HFA returned: [prereq name]: [note]"
+- **Trigger Document Request** (`document_submission` only): generate eDocs stub URL (mock: `https://edocs.stub/{uuid}`), write to `prerequisites.edocs_upload_url`, system message "Document request sent: [prereq name]"
+- **Auto-advance**: after any `accepted` write, check all prereqs for milestone — if all `accepted` → milestone `completed` + next milestone `active` + system message "Milestone [name] completed"
+- All mutations: single Postgres transaction (RPC or Edge Function) to guarantee atomicity
+- `PrerequisiteService` handles both HFA and Developer mutations; method names distinguish them
 
 ### Stage 2: Implement
-- `PrereqMutationService` with `accept(prereqId)`, `return(prereqId)`, `triggerDocumentRequest(prereqId)` — all async, all write system messages in same transaction
+- `PrerequisiteService` with: `markReady(prereqId)` (Developer), `accept(prereqId)` (HFA), `returnWithNote(prereqId, note)` (HFA), `triggerDocumentRequest(prereqId)` (HFA) — all async, all write system messages in same transaction
 - Use Supabase RPC or Edge Function for atomic writes; fallback: sequential inserts with error rollback
-- Auto-advance logic in `checkMilestoneAdvance(milestoneId)`: query all prereqs for milestone, if all `accepted` → update milestone + activate next
-- Add "Accept" button and "Return" button to `HfaActionsPanelComponent` prereq rows (from bolt 007)
-- "Trigger Request" button for `document_submission` prereqs in `pending_open` state
+- `checkMilestoneAdvance(milestoneId)`: query all prereqs, if all `accepted` → update milestone + activate next
+- HFA Actions panel: "Accept" + "Return with note" buttons on `received_processing` prereqs; "Trigger Request" on `document_submission` prereqs in `pending_open`
+- Participant Status panel: "Mark as ready" button on `acceptance_comment` prereqs in `pending_open` (from bolt 007 / story 004)
 - Optimistic update: set signal immediately, rollback on error
-- eDocs stub: `EdocsService.generateUploadUrl(prereqId)` → returns mock URL
+- eDocs stub: `EdocsService.generateUploadUrl(prereqId)` → mock URL
 
 ### Stage 3: Test
-- Click "Accept" on prereq → status changes to `accepted` (green badge), system message appears in thread
-- Click "Return" on `accepted` prereq → reverts to `pending_open`, system message logged
-- Click "Trigger Request" → upload URL written, shown in Developer panel, system message logged
-- Accept all prereqs in Milestone 1 → Milestone 1 status becomes `completed`, Milestone 2 becomes `active`
-- Second browser tab (Developer) shows same state changes live via Realtime — no page refresh
+- Developer taps "Mark as ready" on `acceptance_comment` prereq → status becomes `received_processing`, system message appears, "Under review" badge shown
+- HFA taps "Accept" on `received_processing` prereq → status becomes `accepted` (green badge), system message appears
+- HFA taps "Return" → reverts to `pending_open`, note visible in system message
+- HFA taps "Trigger Request" on `document_submission` prereq → upload URL written, shown in Developer panel, system message logged
+- Accept all prereqs in Milestone 1 → Milestone 1 `completed`, Milestone 2 `active`, system message logged
+- Second browser tab (Developer) shows all state changes live via Realtime — no page refresh
 - DB inspection: all writes in correct state, system messages present

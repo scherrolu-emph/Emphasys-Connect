@@ -26,7 +26,7 @@ implemented: false
 ## Technical Notes
 - `AuthService` initialises `supabase.auth.onAuthStateChange((event, session) => ...)` in its constructor; the subscription is stored and unsubscribed in `ngOnDestroy` (or as an app-level teardown if provided as a root service)
 - `session = signal<Session | null>(null)` and `currentUser = computed(() => session()?.user ?? null)` drive the rest of the app's auth state
-- For the hackathon build, Supabase uses its default `localStorage` persistence; add a TODO comment to migrate to `@capacitor/preferences` before production
+- Supabase uses its default `localStorage` persistence — this is correct and permanent for a web-only app; no migration needed
 - `signOut(): Promise<void>` calls `supabase.auth.signOut()` then runs `session.set(null)`
 - The app-initializer (or `APP_INITIALIZER` token) calls `supabase.auth.getSession()` on startup to seed the initial signal value before routing begins
 
@@ -41,8 +41,8 @@ implemented: false
 ## Edge Cases
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| `localStorage` is unavailable (private browsing / Capacitor WebView restrictions) | Supabase session is in-memory only; user must re-auth on next launch; no crash |
-| User logs out while a SignalR connection is open | SignalR connection must be stopped before `signOut()` resolves; handled by `CaseDetailPage.ionViewWillLeave` |
+| `localStorage` is unavailable (private browsing) | Supabase session is in-memory only; user must re-auth on next launch; no crash |
+| User logs out while a Realtime channel is open | RealtimeService must unsubscribe before `signOut()` resolves; handled by `CaseDetailPage.ionViewWillLeave` |
 | App backgrounded for an extended period and session expires | On foreground, `onAuthStateChange` fires `SIGNED_OUT`; `AuthGuard` redirects to `/login` on next navigation |
 | "Log out" tapped but `supabase.auth.signOut()` fails | Error logged; signals cleared anyway; user navigated to `/login` (fail-open for UX safety) |
 

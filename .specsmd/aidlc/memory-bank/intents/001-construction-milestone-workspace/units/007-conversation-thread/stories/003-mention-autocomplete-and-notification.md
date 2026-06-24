@@ -17,9 +17,10 @@ implemented: false
 **So that** I can directly flag a specific participant's attention without leaving the thread
 
 ## Acceptance Criteria
-- [ ] **Given** the user is typing in the composer, **When** they type `@`, **Then** a dropdown of case participants opens positioned above the input
-- [ ] **Given** the dropdown is open, **When** the user selects a participant, **Then** `@[DisplayName]` is inserted into the message body at the cursor position and the dropdown closes
-- [ ] **Given** the dropdown is open, **When** the user presses Escape or clicks outside the dropdown, **Then** the dropdown closes without inserting a token
+- [ ] **Given** the user is typing in the composer, **When** they type `@`, **Then** a participant picker popup opens immediately positioned above the input, listing all case participants by display name and role
+- [ ] **Given** the popup is open, **When** the user continues typing after `@`, **Then** the participant list filters in real time to names matching the typed characters
+- [ ] **Given** the popup is open, **When** the user selects a participant, **Then** `@[DisplayName]` is inserted into the message body at the cursor position and the popup closes
+- [ ] **Given** the popup is open, **When** the user presses Escape or clicks outside the popup, **Then** the popup closes without inserting a token
 - [ ] **Given** a message containing `@[DisplayName]` is sent, **When** the send action fires, **Then** the `dispatch-mention-notification` Edge Function is called with the mentioned participant's user ID and the message preview
 - [ ] **Given** the Edge Function is called, **When** it executes, **Then** a notification email is dispatched (or logged only for hackathon) containing the case title and message preview
 

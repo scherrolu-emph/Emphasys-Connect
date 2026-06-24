@@ -1,52 +1,54 @@
 ---
-id: 001-imc-project-picker
+id: 001-case-type-selection
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
 status: draft
 priority: must
 created: 2026-06-24T00:00:00Z
+updated: 2026-06-24T00:00:00Z
 assigned_bolt: null
 implemented: false
 ---
 
-# Story: 001-imc-project-picker
+# Story: 001-case-type-selection
 
 ## User Story
 **As an** HFA staff member
-**I want** to see a list of available IMC projects to import
-**So that** I can select the correct project and begin setting it up as a case in Emphasys Connect
+**I want** to choose a starting point when creating a new case
+**So that** I can create either a blank case or a pre-structured case linked to an IMC project
 
 ## Acceptance Criteria
-- [ ] **Given** the HFA dashboard is loaded, **When** it renders, **Then** an "Import from IMC" button is visible (e.g., in the toolbar or as a FAB)
-- [ ] **Given** the "Import from IMC" button is tapped, **When** the navigation occurs, **Then** the IMC project picker screen opens and `ImportService.getImcProjects()` is called
-- [ ] **Given** the stub data loads, **When** the picker renders, **Then** at least one project row is shown; each row displays: project name, address, and developer contact email
-- [ ] **Given** a project row is tapped, **When** the tap event fires, **Then** the app navigates to the confirm screen, passing the selected `ImcProject` as router state
-- [ ] **Given** the stub data is loading, **When** the request is in flight, **Then** a loading skeleton is shown for the project rows
+- [ ] **Given** the HFA dashboard is loaded, **When** it renders, **Then** a "Create a case" button is visible (toolbar or FAB)
+- [ ] **Given** the "Create a case" button is tapped, **When** the navigation occurs, **Then** a "Choose a starting point" screen opens listing four case type options:
+  - **Start blank** (first option)
+  - **Development Construction**
+  - **Loan Underwriting**
+  - **Bond Issuance**
+- [ ] **Given** the user selects "Start blank", **When** the tap event fires, **Then** the app navigates to a case title entry screen (`/create-case/blank`) carrying `caseType: 'blank'` as route state
+- [ ] **Given** the user selects an IMC-backed type (Development Construction, Loan Underwriting, or Bond Issuance), **When** the tap event fires, **Then** the app navigates to the IMC project search screen (`/create-case/search`) carrying the selected `caseType` as route state
+- [ ] **Given** the "Choose a starting point" screen, **When** rendered, **Then** each option shows a label and a short description (e.g. "No IMC project — set up milestones later" for blank; "Link to an existing IMC construction project" for Development Construction)
 
 ## Technical Notes
-- `ImportService.getImcProjects(): Promise<ImcProject[]>` returns stub fixture data; source is either a static JSON asset (`assets/imc-stub.json`) or a query against an `imc_projects_stub` table seeded in `supabase/seed.sql`
-- `ImcProject` interface: `{ id: string; name: string; address: string; developerEmail: string; milestones: ImcMilestone[] }`
-- `isLoading = signal(true)` controls skeleton visibility; `projects = signal<ImcProject[]>([])`
-- Use `IonList` + `IonItem` with `detail` chevron; `IonSkeletonText` for loading state
-- Navigation to confirm screen: `Router.navigate(['/import/confirm'], { state: { project } })`
+- Route: `/create-case/type`
+- `caseType` enum: `'blank' | 'development_construction' | 'loan_underwriting' | 'bond_issuance'` — must be stored as a `case_type` column on the `cases` table (note for Unit 001 schema update)
+- Navigation state carries `{ caseType }` forward through the create-case sub-flow
+- Use `IonList` + `IonItem` with `detail` chevron for the option list
+- No back-stack issue: "Choose a starting point" is entry point for the sub-flow
 
 ## Dependencies
 ### Requires
-- 003-post-login-routing (unit 002)
-- 001-case-list-screen (unit 003)
-
+- `003/003-post-login-routing` (unit 002)
+- `003/001-case-list-screen` (unit 003)
 ### Enables
-- 002-confirm-screen
+- `002-imc-project-search` (for IMC-backed types)
+- `003-confirm-and-participants` (for blank type, directly)
 
 ## Edge Cases
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| Stub data returns empty array | Empty state shown: "No projects available to import" |
-| Stub data fetch throws an error | Error message shown with retry button |
-| User navigates back from confirm screen | Picker re-displays with previously loaded list (no re-fetch) |
-| Same project is available to import twice (duplicate in stub) | Both rows shown; import action handles deduplication in story 003 |
+| User navigates to this screen directly via URL without auth | Auth guard redirects to login |
+| User presses back from the type selection screen | Returns to HFA dashboard |
 
 ## Out of Scope
-- Real IMC API integration (stub data only for hackathon)
-- Searching or filtering the IMC project list
-- Importing from non-IMC sources
+- Case type descriptions managed at runtime (static text for hackathon)
+- Hiding unavailable case types (all 4 always shown)

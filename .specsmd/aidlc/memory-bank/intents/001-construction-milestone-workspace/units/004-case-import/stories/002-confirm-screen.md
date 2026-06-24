@@ -1,51 +1,53 @@
 ---
-id: 002-confirm-screen
+id: 002-imc-project-search
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
 status: draft
 priority: must
 created: 2026-06-24T00:00:00Z
+updated: 2026-06-24T00:00:00Z
 assigned_bolt: null
 implemented: false
 ---
 
-# Story: 002-confirm-screen
+# Story: 002-imc-project-search
 
 ## User Story
 **As an** HFA staff member
-**I want** to preview the milestone and prerequisite structure before committing an import
-**So that** I can verify I have selected the right project and understand what will be created
+**I want** to search for an IMC project by project number or name
+**So that** I can quickly find and link the correct funded project without scrolling through a full list
 
 ## Acceptance Criteria
-- [ ] **Given** the confirm screen opens, **When** the component initialises, **Then** the project name, address, and developer contact email are displayed at the top of the screen
-- [ ] **Given** the milestone list renders, **When** the data is from the IMC stub, **Then** each milestone is shown with its name and a count of prerequisites (e.g. "3 prerequisites")
-- [ ] **Given** a milestone row is expanded (accordion), **When** the user taps it, **Then** the prerequisite names for that milestone are revealed inline
-- [ ] **Given** the user is ready to proceed, **When** the "Import" CTA is tapped, **Then** navigation to the import action (story 003) begins; no Supabase writes occur on this screen
-- [ ] **Given** the user wants to go back, **When** "Cancel" or the back navigation is used, **Then** the app returns to the IMC project picker without any state changes
+- [ ] **Given** the IMC project search screen opens (for an IMC-backed case type), **When** it renders, **Then** a single text input is shown with placeholder "Enter project # or name"
+- [ ] **Given** the user types at least 2 characters, **When** the input value changes, **Then** `ImportService.searchImcProjects(query)` is called and matching results are displayed below the input as a list (project name + project number + address)
+- [ ] **Given** matching results are shown, **When** the user taps a result, **Then** the app navigates to the confirm screen (`/create-case/confirm`) passing the selected `ImcProject` and `caseType` as route state
+- [ ] **Given** the query returns no results, **When** the list renders, **Then** an empty state message is shown: "No projects found — check the project number or name"
+- [ ] **Given** the search is in flight, **When** a request is pending, **Then** a loading indicator is shown below the input; results replace it on completion
+- [ ] **Given** the route state carries `caseType`, **When** the screen renders, **Then** the screen header displays the selected case type (e.g. "New Development Construction Case")
 
 ## Technical Notes
-- `ImcProject` read from `Router.getCurrentNavigation()?.extras?.state?.['project']` on component init; stored in a local signal
-- Milestone accordion uses `IonAccordionGroup` + `IonAccordion`; each slot toggle is handled by Ionic natively
-- "Import" CTA: `IonButton` with `(click)` navigating to import action route, passing the same `ImcProject` state forward
-- This screen is entirely read-only — no service calls, no signals that mutate external state
-- Prerequisite count: `milestone.prerequisites.length` from the stub data
+- Route: `/create-case/search`
+- `ImportService.searchImcProjects(query: string): Promise<ImcProject[]>` — filters stub data by `project.name.includes(query)` or `project.projectNumber.includes(query)` (case-insensitive)
+- `ImcProject` interface: `{ id: string; projectNumber: string; name: string; address: string; developerEmail: string; milestones: ImcMilestone[] }`
+- Debounce input by 300 ms before triggering search
+- Use a `searchQuery = signal('')` and `results = signal<ImcProject[]>([])`
+- Route state validated on init: if `caseType` is missing, navigate back to `/create-case/type`
 
 ## Dependencies
 ### Requires
-- 001-imc-project-picker
-
+- `001-case-type-selection`
 ### Enables
-- 003-import-action
+- `003-confirm-and-participants`
 
 ## Edge Cases
 | Scenario | Expected Behavior |
 |----------|-------------------|
-| Router state is missing (user navigates directly to URL) | Component redirects to `/import` picker; no crash |
-| Milestone has zero prerequisites | Row shows "0 prerequisites"; accordion still renders but body is empty |
-| Project has a very long name or address | Text truncates with CSS `text-overflow: ellipsis`; full text accessible via expand or tooltip |
-| User rotates device between picker and confirm | Layout reflows; no data loss |
+| User clears the search field | Results list clears; no empty state shown (field is just blank) |
+| Stub data fetch throws | Error message shown with retry option |
+| User navigates back from confirm screen | Search screen re-displays with previous query and results (no re-fetch) |
+| Multiple projects share the same name | All are listed; user selects the one matching their project number |
 
 ## Out of Scope
-- Editing milestone names or prerequisite names before importing
-- Adding custom prerequisites on the confirm screen
-- Displaying milestone target days on this screen
+- Real IMC API integration (stub search only for hackathon)
+- Advanced filtering (by status, HFA, date range)
+- This screen is skipped entirely for "Start blank" case type

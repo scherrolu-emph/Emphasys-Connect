@@ -20,13 +20,15 @@ implemented: false
 - [ ] **Given** an authenticated user with `is_hfa: true`, **When** the case detail screen loads, **Then** the left panel is labelled "Actions" with a placeholder until Unit 006 is built
 - [ ] **Given** an authenticated user with `is_hfa: true`, **When** the case detail screen loads, **Then** the right panel shows "Conversation" placeholder until Unit 007 is built
 - [ ] **Given** the case detail screen, **When** rendered for an HFA user, **Then** the case header shows project title, type badge, and active milestone name
-- [ ] **Given** the case detail screen, **When** rendered for an HFA user, **Then** a participant strip with horizontal scroll shows each participant's display name and contact role
+- [ ] **Given** the case detail screen, **When** rendered for an HFA user, **Then** the case header shows: case title (bold), reference number subtitle (e.g. "Lotus #MF-2024-0188"), case type badge, and active milestone name
+- [ ] **Given** the case detail screen, **When** rendered for an HFA user, **Then** participant information is accessible via the **Participants tab** (story 005) — there is no participant strip or drilldown in the case header
 
 ## Technical Notes
 - `@if (isHfa())` structural rendering to show HFA-specific panel labels
 - `CaseDetailStore` provides case metadata signals
+- Case header: `case.title`, `case.referenceNumber`, `case.caseType`, active milestone name from `milestones` signal
 - Placeholder `<div>` with "Actions panel loading…" text until Unit 006 component is injected
-- Participant strip is a horizontally scrolling flex row; no Ionic list component
+- Schema note: `cases.reference_number TEXT` — populated from IMC on import; optional for blank cases
 
 ## Dependencies
 ### Requires
@@ -38,7 +40,8 @@ implemented: false
 | Scenario | Expected Behavior |
 |----------|-------------------|
 | Case has no active milestone | Header shows "No active milestone" |
-| Case has no participants yet | Participant strip shows empty state text |
+| Case has no participants yet | Participants section shows "No participants added" |
+| Participant has no profile yet (pending invite) | Shows email address + "Pending" badge instead of display name |
 
 ## Out of Scope
 - Actual Actions panel content (Unit 006)

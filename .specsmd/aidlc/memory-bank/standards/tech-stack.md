@@ -20,9 +20,10 @@ Emphasys Connect is a mobile-first web application using TypeScript/Angular on t
 
 - **Shell**: Ionic 7
 - **App framework**: Angular 17+
-- **Mobile runtime**: Capacitor (iOS/Android native)
 
 Ionic provides the mobile chrome only (navigation bar, page transitions, tab bar). All content screens are plain Angular components + CSS. Ionic overlay components (`IonModal`, `IonActionSheet`, `IonAlert`) are prohibited — use Angular overlays or plain CSS toggles.
+
+This is a **web application** — mobile-first responsive design so users can access comfortably from a phone browser, but no native app build. Capacitor is not used.
 
 ## Backend: Supabase
 
@@ -55,7 +56,7 @@ In v1 (hackathon), both integrations may be **stubbed by engineering** with seed
 ## Hosting
 
 - **Development**: Supabase local (`supabase start`), Ionic dev server (`ionic serve`)
-- **Production**: Azure (Emphasys-managed clients; direct Supabase DB connection, no API proxy needed in v1)
+- **Production**: Azure Static Web Apps or Nginx static hosting; direct Supabase DB connection, no API proxy needed in v1
 
 ## Package Manager
 

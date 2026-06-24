@@ -82,7 +82,7 @@ Implements the Actions panel for HFA staff and the Status panel for Developers. 
 | 001 | HFA Actions panel — active milestone, prerequisite checklist with status badges | Must |
 | 002 | HFA accept / return-with-note actions + system message write | Must |
 | 003 | Trigger document request — generate upload link, update prereq, notify developer | Must |
-| 004 | Developer Status panel — milestone progress, upload links, read-only status | Must |
+| 004 | Participant Status panel — milestone progress, upload links, read-only status | Must |
 | 005 | Milestone auto-advance — all prereqs accepted → complete milestone → open next | Must |
 
 ---
@@ -138,7 +138,7 @@ None — terminal feature unit.
 - [ ] HFA Actions panel shows active milestone with prerequisites and correct status badges
 - [ ] "Accept" flips prerequisite to `accepted`; system message appears in thread
 - [ ] "Return with note" reverts to `pending_open` with HFA note visible; Developer notified
-- [ ] "Trigger document request" generates upload link; Developer Status panel shows link
+- [ ] "Trigger document request" generates upload link; Participant Status panel shows link
 - [ ] Developer "Confirm upload" stub flips prerequisite to `received_processing`; system message appears
 - [ ] When all prerequisites accepted → milestone completes → next milestone activates → system message
 - [ ] All transitions broadcast via Realtime to both HFA and Developer without refresh (hero demo requirement)

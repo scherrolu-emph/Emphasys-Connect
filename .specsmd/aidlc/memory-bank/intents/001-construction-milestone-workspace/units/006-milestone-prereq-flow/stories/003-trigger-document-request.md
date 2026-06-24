@@ -31,7 +31,7 @@ implemented: false
 ## Dependencies
 ### Requires
 - `001-hfa-actions-panel`
-- `004-developer-status-panel`
+- `004-participant-status-panel`
 ### Enables
 - `002-accept-and-return-actions` (prerequisite moves to `received_processing` after upload)
 

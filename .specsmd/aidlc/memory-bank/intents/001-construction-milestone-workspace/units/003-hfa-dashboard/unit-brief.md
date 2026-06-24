@@ -30,7 +30,7 @@ The command-center home screen for HFA staff. Shows all active cases for the HFA
 ### Out of Scope
 - Case creation (cases imported from IMC — Unit 004)
 - Case detail content (Unit 005)
-- Developer-facing screens (Developers see case detail directly, not this dashboard)
+- Developer-facing screens (Developers have their own case list at `/my-cases` — Unit 008)
 
 ---
 

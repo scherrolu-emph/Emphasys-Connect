@@ -1,4 +1,14 @@
 {
+  "permissions": {
+    "allow": [
+      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Design_Document.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
+      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Change_Request-June24.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
+      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Feature_Brief-Create_Case.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
+      "PowerShell(Rename-Item \"c:\\\\Workspace\\\\Emphasys-Connect\\\\.specsmd\\\\aidlc\\\\memory-bank\\\\intents\\\\001-construction-milestone-workspace\\\\units\\\\008-developer-case-list\" \"008-participant-case-list\")",
+      "PowerShell(Rename-Item \"c:\\\\Workspace\\\\Emphasys-Connect\\\\.specsmd\\\\aidlc\\\\memory-bank\\\\bolts\\\\011-developer-case-list\" \"011-participant-case-list\")",
+      "PowerShell(Rename-Item \"c:\\\\Workspace\\\\Emphasys-Connect\\\\.specsmd\\\\aidlc\\\\memory-bank\\\\intents\\\\001-construction-milestone-workspace\\\\units\\\\008-participant-case-list\\\\stories\\\\001-developer-case-list-screen.md\" \"001-participant-case-list-screen.md\")"
+    ]
+  },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
@@ -6,12 +16,5 @@
     "skill-creator@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
-  },
-  "permissions": {
-    "allow": [
-      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Design_Document.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
-      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Change_Request-June24.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
-      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Feature_Brief-Create_Case.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")"
-    ]
   }
 }

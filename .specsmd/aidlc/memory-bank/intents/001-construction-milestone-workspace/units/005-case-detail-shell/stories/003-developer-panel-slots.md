@@ -19,7 +19,8 @@ implemented: false
 ## Acceptance Criteria
 - [ ] **Given** an authenticated Developer user, **When** the case detail screen loads, **Then** the left panel is labelled "Status" and renders in read-only mode with no action buttons
 - [ ] **Given** an authenticated Developer user, **When** the case detail screen loads, **Then** the right panel shows "Conversation" identical to the HFA conversation view
-- [ ] **Given** an authenticated Developer user, **When** the case detail screen loads, **Then** the same case header and participant strip are shown as in the HFA view
+- [ ] **Given** an authenticated Developer user, **When** the case detail screen loads, **Then** the same case header (title, reference number, case type badge, active milestone) is shown as in the HFA view
+- [ ] **Given** an authenticated Developer user, **When** the case detail screen loads, **Then** participant information is accessible via the **Participants tab** (story 005) — read-only, no add/remove controls
 - [ ] **Given** a Developer who is not a case participant, **When** they navigate to the case detail route, **Then** they are redirected away from the case
 
 ## Technical Notes
@@ -32,7 +33,7 @@ implemented: false
 ### Requires
 - `001-two-panel-layout`
 ### Enables
-- `006/004-developer-status-panel`
+- `006/004-participant-status-panel`
 
 ## Edge Cases
 | Scenario | Expected Behavior |

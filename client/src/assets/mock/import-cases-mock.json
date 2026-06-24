@@ -1,0 +1,794 @@
+{
+  "_meta": {
+    "source": "IMC back-office system mock export",
+    "version": "1.0",
+    "note": "Static mock. Replace with live IMC API call when import case feature is wired to real data source."
+  },
+  "projects": [
+    {
+      "development_number": "HC-2024-001",
+      "development_name": "Riverside Commons",
+      "development_address1": "1234 River Road",
+      "development_address2": "",
+      "city": "Austin",
+      "state": "TX",
+      "zip": "78701",
+      "program_type": "LIHTC",
+      "total_units": 120,
+      "affordable_units": 96,
+      "developer_name": "Green Path Development LLC",
+      "developer_contact": "Maria Torres",
+      "developer_email": "m.torres@greenpathdevelopment.com",
+      "developer_phone": "(512) 555-0142",
+      "hfa_case_owner_name": "James Whitfield",
+      "hfa_case_owner_email": "j.whitfield@txhfa.gov",
+      "current_stage_name": "Foundation & Site Work",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Environmental Clearance Letter", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "Site Control Evidence", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Geo-Technical Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Energy Code Compliance Certificate", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2023-047",
+      "development_name": "Maple Heights Senior Living",
+      "development_address1": "890 Maple Avenue",
+      "development_address2": "Suite 100",
+      "city": "Columbus",
+      "state": "OH",
+      "zip": "43215",
+      "program_type": "HOME",
+      "total_units": 60,
+      "affordable_units": 60,
+      "developer_name": "Anchor Housing Partners",
+      "developer_contact": "David Chen",
+      "developer_email": "d.chen@anchorhousing.com",
+      "developer_phone": "(614) 555-0289",
+      "hfa_case_owner_name": "Susan Hale",
+      "hfa_case_owner_email": "s.hale@ohiohousing.org",
+      "current_stage_name": "Framing & Structure",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Site Survey", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Environmental Phase I Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "Accessibility Compliance Plan", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "pending_open" },
+            { "document_name": "Fire Blocking Inspection", "type": "document_submission", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Insulation & Drywall",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Insulation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Energy Compliance Verification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 6,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "ADA Compliance Final Inspection", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2024-015",
+      "development_name": "Liberty Park Townhomes",
+      "development_address1": "3300 Liberty Boulevard",
+      "development_address2": "",
+      "city": "Atlanta",
+      "state": "GA",
+      "zip": "30301",
+      "program_type": "LIHTC",
+      "total_units": 48,
+      "affordable_units": 48,
+      "developer_name": "Southern Communities LLC",
+      "developer_contact": "Angela Brooks",
+      "developer_email": "a.brooks@southerncomm.com",
+      "developer_phone": "(404) 555-0317",
+      "hfa_case_owner_name": "Marcus Johnson",
+      "hfa_case_owner_email": "m.johnson@dca.ga.gov",
+      "current_stage_name": "Pre-Construction",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Environmental Clearance Letter", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Site Control Evidence", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "pending_open" },
+            { "document_name": "Zoning Approval Letter", "type": "document_submission", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2022-088",
+      "development_name": "Harborview Apartments",
+      "development_address1": "77 Harborview Drive",
+      "development_address2": "Building C",
+      "city": "Baltimore",
+      "state": "MD",
+      "zip": "21201",
+      "program_type": "Section 8 New Construction",
+      "total_units": 200,
+      "affordable_units": 200,
+      "developer_name": "East Coast Affordable Housing Inc.",
+      "developer_contact": "Robert Kim",
+      "developer_email": "r.kim@ecahi.org",
+      "developer_phone": "(410) 555-0063",
+      "hfa_case_owner_name": "Patricia Owens",
+      "hfa_case_owner_email": "p.owens@dhcd.state.md.us",
+      "current_stage_name": "Mechanical, Electrical & Plumbing",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Environmental Phase II Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "HUD Design Review Approval", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Soil Remediation Confirmation", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Fire Suppression System Inspection", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Energy Code Compliance Certificate", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "pending_open" },
+            { "document_name": "Elevator Inspection Certificate", "type": "document_submission", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Insulation & Drywall",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Insulation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Sound Attenuation Verification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Energy Compliance Verification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 6,
+          "stage_name": "Final Finishes",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Unit Walk-Through Punch List", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Appliance Installation Confirmation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 7,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HUD Final Inspection Approval", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2024-033",
+      "development_name": "Pinecrest Village",
+      "development_address1": "5510 Pine Street",
+      "development_address2": "",
+      "city": "Phoenix",
+      "state": "AZ",
+      "zip": "85001",
+      "program_type": "CDBG",
+      "total_units": 36,
+      "affordable_units": 36,
+      "developer_name": "Desert Rose Housing Group",
+      "developer_contact": "Lisa Morales",
+      "developer_email": "l.morales@desertrose.com",
+      "developer_phone": "(602) 555-0198",
+      "hfa_case_owner_name": "Thomas Reed",
+      "hfa_case_owner_email": "t.reed@azhousing.gov",
+      "current_stage_name": "Pre-Construction",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "CDBG Environmental Review Record", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Site Control Evidence", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "pending_open" },
+            { "document_name": "Relocation Plan (if applicable)", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "CDBG Completion Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2023-112",
+      "development_name": "Lakewood Crossing",
+      "development_address1": "2200 Lakewood Boulevard",
+      "development_address2": "",
+      "city": "Denver",
+      "state": "CO",
+      "zip": "80202",
+      "program_type": "Tax-Exempt Bond",
+      "total_units": 156,
+      "affordable_units": 125,
+      "developer_name": "Mountain West Development Corp.",
+      "developer_contact": "Brian Nakamura",
+      "developer_email": "b.nakamura@mountainwestdev.com",
+      "developer_phone": "(720) 555-0444",
+      "hfa_case_owner_name": "Emily Foster",
+      "hfa_case_owner_email": "e.foster@chfa.org",
+      "current_stage_name": "Insulation & Drywall",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Environmental Clearance Letter", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "Bond Closing Documentation", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Zoning Approval Letter", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Energy Code Compliance Certificate", "type": "document_submission", "status": "accepted" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Insulation & Drywall",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Insulation Inspection Report", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Energy Compliance Verification", "type": "acceptance_comment", "status": "pending_open" },
+            { "document_name": "Drywall Inspection Report", "type": "document_submission", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 6,
+          "stage_name": "Final Finishes",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Unit Walk-Through Punch List", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Landscaping Completion Certificate", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Appliance Installation Confirmation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 7,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2024-007",
+      "development_name": "Elmwood Family Residences",
+      "development_address1": "408 Elmwood Court",
+      "development_address2": "Phase 2",
+      "city": "Philadelphia",
+      "state": "PA",
+      "zip": "19103",
+      "program_type": "HOME",
+      "total_units": 84,
+      "affordable_units": 84,
+      "developer_name": "Urban Rebuild Partners",
+      "developer_contact": "Sandra Washington",
+      "developer_email": "s.washington@urbanrebuild.org",
+      "developer_phone": "(215) 555-0731",
+      "hfa_case_owner_name": "Kevin Stanton",
+      "hfa_case_owner_email": "k.stanton@phfa.org",
+      "current_stage_name": "Pre-Construction",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Lead Paint Assessment Report", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Asbestos Survey Report", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "pending_open" },
+            { "document_name": "Demolition Permit (if applicable)", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Site Control Evidence", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HOME Completion Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2022-055",
+      "development_name": "Sunrise Gardens",
+      "development_address1": "1900 Sunrise Way",
+      "development_address2": "",
+      "city": "Orlando",
+      "state": "FL",
+      "zip": "32801",
+      "program_type": "LIHTC",
+      "total_units": 100,
+      "affordable_units": 80,
+      "developer_name": "Sunshine State Housing LLC",
+      "developer_contact": "Carlos Rivera",
+      "developer_email": "c.rivera@sunshinehousing.com",
+      "developer_phone": "(407) 555-0822",
+      "hfa_case_owner_name": "Diana Patel",
+      "hfa_case_owner_email": "d.patel@floridahousing.org",
+      "current_stage_name": "Certificate of Occupancy",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Environmental Clearance Letter", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "Hurricane Impact Window Specifications", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Wind Load Compliance Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Energy Code Compliance Certificate", "type": "document_submission", "status": "accepted" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Insulation & Drywall",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Insulation Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Energy Compliance Verification", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 6,
+          "stage_name": "Final Finishes",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Unit Walk-Through Punch List", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Landscaping Completion Certificate", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Appliance Installation Confirmation", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 7,
+          "stage_name": "Certificate of Occupancy",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "LIHTC Carryover Allocation Agreement", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2024-042",
+      "development_name": "Cedar Ridge Workforce Housing",
+      "development_address1": "610 Cedar Ridge Road",
+      "development_address2": "",
+      "city": "Nashville",
+      "state": "TN",
+      "zip": "37201",
+      "program_type": "Tax-Exempt Bond",
+      "total_units": 240,
+      "affordable_units": 192,
+      "developer_name": "Volunteer State Development LLC",
+      "developer_contact": "Jennifer Hayes",
+      "developer_email": "j.hayes@volunteerdev.com",
+      "developer_phone": "(615) 555-0560",
+      "hfa_case_owner_name": "Andrew Collins",
+      "hfa_case_owner_email": "a.collins@thda.org",
+      "current_stage_name": "Foundation & Site Work",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Environmental Clearance Letter", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "Bond Closing Documentation", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Traffic Impact Study", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Retaining Wall Engineering Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Storm Water Management Plan Compliance", "type": "document_submission", "status": "received_processing" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Energy Code Compliance Certificate", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Insulation & Drywall",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Insulation Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Energy Compliance Verification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 6,
+          "stage_name": "Final Finishes",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Unit Walk-Through Punch List", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Appliance Installation Confirmation", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 7,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    },
+    {
+      "development_number": "HC-2023-078",
+      "development_name": "Northgate Supportive Housing",
+      "development_address1": "15 Northgate Plaza",
+      "development_address2": "Floor 1",
+      "city": "Portland",
+      "state": "OR",
+      "zip": "97201",
+      "program_type": "CDBG",
+      "total_units": 24,
+      "affordable_units": 24,
+      "developer_name": "Pacific Northwest Community Housing",
+      "developer_contact": "Michelle Tanaka",
+      "developer_email": "m.tanaka@pnwcommhousing.org",
+      "developer_phone": "(503) 555-0975",
+      "hfa_case_owner_name": "Robert Larson",
+      "hfa_case_owner_email": "r.larson@ohcs.oregon.gov",
+      "current_stage_name": "Mechanical, Electrical & Plumbing",
+      "stages": [
+        {
+          "stage_number": 1,
+          "stage_name": "Pre-Construction",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Building Permit", "type": "document_submission", "status": "accepted" },
+            { "document_name": "CDBG Environmental Review Record", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Architect Certification of Plans", "type": "acceptance_comment", "status": "accepted" },
+            { "document_name": "Supportive Services Plan", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Site Control Evidence", "type": "document_submission", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 2,
+          "stage_name": "Foundation & Site Work",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Foundation Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Engineer Certification of Foundation", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 3,
+          "stage_name": "Framing & Structure",
+          "status": "completed",
+          "required_documents": [
+            { "document_name": "Framing Inspection Report", "type": "document_submission", "status": "accepted" },
+            { "document_name": "Structural Engineer Sign-Off", "type": "acceptance_comment", "status": "accepted" }
+          ]
+        },
+        {
+          "stage_number": 4,
+          "stage_name": "Mechanical, Electrical & Plumbing",
+          "status": "active",
+          "required_documents": [
+            { "document_name": "MEP Rough-In Inspection Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Accessibility Grab Bar & Fixture Compliance", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "MEP Engineer Certification", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        },
+        {
+          "stage_number": 5,
+          "stage_name": "Certificate of Occupancy",
+          "status": "open",
+          "required_documents": [
+            { "document_name": "Certificate of Occupancy", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "Final Cost Certification", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "CDBG Completion Report", "type": "document_submission", "status": "pending_open" },
+            { "document_name": "HFA Final Inspection Sign-Off", "type": "acceptance_comment", "status": "pending_open" }
+          ]
+        }
+      ]
+    }
+  ]
+}

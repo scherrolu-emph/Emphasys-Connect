@@ -9,27 +9,32 @@ unit_type: frontend
 default_bolt_type: simple-construction-bolt
 ---
 
-# Unit Brief: Case Import
+# Unit Brief: Create Case
 
 ## Purpose
 
-Allow HFA staff to import a funded project from IMC into Emphasys Connect. The HFA sees a picker of available IMC projects, previews the milestone/prerequisite structure, and confirms the import. The case, milestones, and prerequisites are created in Supabase, and the Developer contact is invited (notified by email). For the hackathon, the IMC connection is stubbed with seed data.
+Allow HFA staff to create a new case in Emphasys Connect — either by linking an IMC project or starting blank. The HFA chooses a case type ("Development Construction", "Loan Underwriting", "Bond Issuance", or "Start blank"), searches for the IMC project by number or name (for non-blank types), previews the milestone/prerequisite structure, invites participants inline, then creates the case atomically. For the hackathon the IMC connection is stubbed with seed data.
 
 ## Scope
 
 ### In Scope
-- "Import from IMC" button on the HFA dashboard
-- IMC project picker screen: list of importable projects (name, address, developer contact)
-- Confirm screen: milestone/prerequisite structure preview before committing
-- Import action: creates `cases`, `milestones`, `prerequisites`, `case_participants` rows in Supabase in one transaction (or Edge Function)
-- System message written to `conversation_messages`: "Case imported from IMC: [project name]"
-- Developer contact notified by email (Edge Function; stubbed for hackathon)
-- Navigation to the new case detail after import
+- "Create a case" button on the HFA dashboard (replaces "Import from IMC")
+- "Choose a starting point" screen: four case types — Start blank, Development Construction, Loan Underwriting, Bond Issuance
+- IMC project search: text input for project # or name (replaces list picker)
+- Confirm screen: milestone/prerequisite structure preview + inline participant invitation
+- Participant invitation as part of the creation flow:
+  - Pre-populated with IMC Developer contact (for IMC-backed types)
+  - HFA creator pre-populated (always)
+  - HFA can add further participants (email + role) before creating
+- Create action: creates `cases`, `milestones`, `prerequisites`, `case_participants` rows in Supabase atomically (or Edge Function)
+- System message written on creation: "Case imported from IMC: {title}" or "Case created: {title}"
+- Navigation to the new case detail after creation
 
 ### Out of Scope
-- Actual IMC API/DB connection (stubbed for hackathon with seeded IMC project data)
-- Template-based case creation (removed — structure comes from IMC)
-- Manual milestone/prerequisite creation in-app (edits happen in IMC)
+- Actual IMC API/DB connection (stubbed with seeded `imc_projects_stub` data)
+- Sending actual participant invitation emails (logged only for hackathon)
+- Manual milestone/prerequisite editing in-app (edits happen in IMC)
+- Blank case milestone setup in-app (added post-hackathon or via IMC later)
 
 ---
 
@@ -37,7 +42,7 @@ Allow HFA staff to import a funded project from IMC into Emphasys Connect. The H
 
 | FR | Requirement | Priority |
 |----|-------------|----------|
-| FR-3 | Import Case from IMC — picker, confirm, create case + milestones + prerequisites, notify developer | Must |
+| FR-3 | Create Case — type selection, IMC project search, confirm + participants, atomic create | Must |
 
 ---
 
@@ -46,18 +51,19 @@ Allow HFA staff to import a funded project from IMC into Emphasys Connect. The H
 ### Key Entities
 | Entity | Description |
 |--------|-------------|
-| IMC Project | Source data: project name, address, developer contact email, milestones (ordered), prerequisites per milestone |
-| Case | Created in Supabase on import; references `imc_project_id` |
-| Milestone | Created per IMC milestone; first milestone is `open`, rest `open` |
+| Case Type | `blank \| development_construction \| loan_underwriting \| bond_issuance`; stored on `cases.case_type` |
+| IMC Project | Source data: project number, name, address, developer contact email, milestones, prerequisites |
+| Case | Created in Supabase on action; `case_type` column required |
+| Milestone | Created per IMC milestone; Milestone 1 `active`, rest `open` |
 | Prerequisite | Created per IMC prerequisite; `status: pending_open` |
-| Case Participant | HFA staff (creator) + Developer (from IMC contact) added as participants |
+| Case Participant | Any person attached to the case; `case_participants` row with `user_id`, `contact_role` |
 
 ### Key Operations
 | Operation | Description |
 |-----------|-------------|
-| `ImportService.getImcProjects()` | Returns list of importable projects from IMC stub/API |
-| `ImportService.importProject(imcProjectId)` | Creates case + milestones + prerequisites + participants + system message in Supabase |
-| `NotificationService.notifyDeveloper(caseId, email)` | Edge Function to send case-created email (stubbed for hackathon) |
+| `ImportService.searchImcProjects(query)` | Returns filtered IMC projects from stub matching project # or name |
+| `CaseService.createCase(payload)` | Edge Function call: creates case + milestones + prerequisites + participants + system message |
+| `NotificationService.notifyParticipants(caseId)` | Logs participant invites (stubbed for hackathon) |
 
 ---
 
@@ -65,15 +71,16 @@ Allow HFA staff to import a funded project from IMC into Emphasys Connect. The H
 
 | Metric | Count |
 |--------|-------|
-| Total Stories | 3 |
-| Must Have | 3 |
+| Total Stories | 4 |
+| Must Have | 4 |
 
 ### Stories
 | Story ID | Title | Priority |
 |----------|-------|----------|
-| 001 | IMC project picker screen (stubbed data) | Must |
-| 002 | Confirm screen with milestone/prerequisite preview | Must |
-| 003 | Import action — create case + participants + system message; navigate to case | Must |
+| 001 | Case type selection — "Choose a starting point" screen | Must |
+| 002 | IMC project search by project # or name | Must |
+| 003 | Confirm screen + inline participant invitation | Must |
+| 004 | Create case action — atomic write + navigate | Must |
 
 ---
 
@@ -82,58 +89,58 @@ Allow HFA staff to import a funded project from IMC into Emphasys Connect. The H
 ### Depends On
 | Unit | Reason |
 |------|--------|
-| 001-workspace-foundation | All table schemas, typed client, Supabase write access |
+| 001-workspace-foundation | All table schemas (including `case_type` column), typed client, Supabase write access |
 | 002-auth-screens | HFA-authenticated session required |
-| 003-hfa-dashboard | "Import from IMC" button lives on the dashboard |
+| 003-hfa-dashboard | "Create a case" button lives on the dashboard |
 
 ### Depended By
-None — import creates the case that Units 005–007 operate on.
+None — create case produces the case that Units 005–007 operate on.
 
 ### External Dependencies
 | System | Purpose | Risk |
 |--------|---------|------|
-| IMC | Source of project/milestone/prerequisite structure | Medium — stubbed for hackathon; real integration is post-hackathon |
-| Email Provider | Developer invite notification | Medium — use stub/log for hackathon |
+| IMC | Source of project/milestone/prerequisite structure | Medium — stubbed for hackathon |
+| Email Provider | Participant invite notification | Medium — logged only for hackathon |
 
 ---
 
 ## Technical Context
 
 ### Suggested Technology
-- `ImportService` — wraps IMC stub + Supabase write
-- IMC stub: a static JSON fixture in `/assets/imc-stub.json` or seeded Supabase table `imc_projects_stub`
-- Import transaction: Supabase Edge Function (`import-imc-project`) to atomically create all rows
-- `IonList` + `IonItem` for picker, confirm screen with milestone accordion
+- `ImportService` — wraps IMC stub search
+- `CaseService.createCase` — wraps Supabase Edge Function or sequential inserts
+- IMC stub: seeded `imc_projects_stub` table or static JSON in `/assets/imc-stub.json`
+- Debounced search input (300 ms)
+- Route state passed forward through 4-screen sub-flow via Angular Router `extras.state`
 
-### Integration Points
-| Integration | Type | Notes |
-|-------------|------|-------|
-| IMC (stub) | Static fixture or seeded table | Real DB access in post-hackathon |
-| Supabase Edge Function | `invoke('import-imc-project', {imcProjectId})` | Atomic case creation |
+### Schema Note
+- `cases` table needs a `case_type` column: `text NOT NULL DEFAULT 'blank'` with a check constraint on the four enum values
+- `case_participants.contact_role` already planned in Unit 001; ensure it accepts 'developer' and 'hfa_staff' values
 
 ---
 
 ## Constraints
 
-- Hackathon: IMC connection stubbed — must work with fixture data without real IMC
-- Import is the ONLY way cases are created — no manual form
-- The import screen is HFA-only
+- IMC connection stubbed for hackathon — must work with fixture data
+- Participant invitation is part of the creation flow, not a separate post-creation step
+- "Stakeholders" label replaced by "Participants" everywhere in the UI
 
 ---
 
 ## Success Criteria
 
 ### Functional
-- [ ] IMC picker shows at least 1 importable project from stub data
-- [ ] Confirm screen shows milestone list with prerequisite counts
-- [ ] Confirming import creates case, milestones, prerequisites in Supabase
-- [ ] HFA staff and Developer are added as case participants
-- [ ] System message "Case imported from IMC" appears in conversation thread
-- [ ] After import, user navigates to the new case detail
-- [ ] Imported case appears on HFA dashboard
+- [ ] "Create a case" button on dashboard opens the "Choose a starting point" screen
+- [ ] All four case types are selectable
+- [ ] IMC-backed types route to project search; Start blank skips search
+- [ ] Stub search returns results when project # or name is entered
+- [ ] Confirm screen shows correct milestone/prereq structure
+- [ ] Participant invitation: pre-populated HFA + Developer (IMC types); HFA can add more
+- [ ] Case creation succeeds atomically; case appears on dashboard and navigates to case detail
+- [ ] System message appears in conversation thread on creation
 
 ### Non-Functional
-- [ ] Import completes in < 2 seconds on local dev
+- [ ] Case creation (Edge Function path) completes in < 2 seconds on local dev
 
 ---
 
@@ -141,4 +148,4 @@ None — import creates the case that Units 005–007 operate on.
 
 | Bolt | Stories | Objective |
 |------|---------|-----------|
-| bolt-004-1 | S1, S2, S3 | Full IMC import flow — picker, confirm, create, navigate |
+| bolt-005 | S1, S2, S3, S4 | Full create-case flow: type selection → IMC search → confirm + participants → atomic create |

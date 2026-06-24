@@ -5,55 +5,61 @@ intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
 status: planned
 stories:
-  - 001-imc-project-picker
-  - 002-confirm-screen
-  - 003-import-action
+  - 001-case-type-selection
+  - 002-imc-project-search
+  - 003-confirm-and-participants
+  - 004-create-case-action
 created: 2026-06-24T00:00:00Z
+updated: 2026-06-24T00:00:00Z
 requires_bolts: ["004"]
 enables_bolts: ["006"]
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
-  reason: IMC stub service, multi-step picker → confirm flow, atomic Supabase insert with system message creation
+  reason: 4-screen sub-flow with route state threading, IMC stub search, participant invitation inline form, atomic Supabase Edge Function create
 ---
 
-# Bolt 005 — Case Import: IMC Project Picker + Atomic Import
+# Bolt 005 — Create Case: Type Selection → IMC Search → Confirm + Participants → Create
 
 ## Objective
 
-Build the two-step IMC import flow: pick a project from the stubbed IMC list, preview the milestone/prerequisite structure, then import atomically into Supabase with an initial system message.
+Build the four-step "Create a case" flow: choose a case type ("Start blank" or an IMC-backed type), search for an IMC project by number or name, preview the milestone/prerequisite structure and invite participants, then atomically create the case in Supabase.
 
 ## Stories in Scope
 
 | Story | Title | Priority |
 |-------|-------|----------|
-| 001-imc-project-picker | IMC project list from stub | Must |
-| 002-confirm-screen | Milestone/prereq preview before import | Must |
-| 003-import-action | Atomic case creation + system message | Must |
+| 001-case-type-selection | "Choose a starting point" — four case type options | Must |
+| 002-imc-project-search | IMC project search by project # or name | Must |
+| 003-confirm-and-participants | Confirm screen + inline participant invitation | Must |
+| 004-create-case-action | Atomic case creation + navigation | Must |
 
 ## Stage Sequence (simple-construction-bolt)
 
 ### Stage 1: Plan
-- IMC stub: `ImcService` returns hardcoded project list (2–3 projects with milestone/prereq structures)
-- Flow: Dashboard FAB → `/import/pick` → select project → `/import/confirm` → confirm → `/cases/:id`
-- Atomic import: single Supabase transaction (or sequential inserts within a DB function) creates case + milestones + prerequisites + initial system message
-- Confirm screen: accordion showing milestone titles with prerequisite names underneath
-- Error handling: if import fails, nothing is partially created (use Postgres function or Edge Function)
+- Route sub-flow: `/create-case/type` → `/create-case/search` (IMC types only) → `/create-case/confirm` → `/create-case/create`
+- `cases` table needs `case_type` column — coordinate with Unit 001 schema if not already added
+- Route state threads `{ caseType, imcProject?, caseTitle? }` through all screens
+- IMC stub: `ImportService.searchImcProjects(query)` filters seeded projects by # or name (debounced 300 ms)
+- Confirm screen: accordion milestone preview (read-only) + participant `signal<ParticipantDraft[]>` with add/remove
+- Create action: Edge Function `create-case` or sequential inserts; atomic; returns `{ caseId }`
+- "Start blank" skips search screen; routes directly to confirm with no milestone data
 
 ### Stage 2: Implement
-- Create `ImcService` with `getProjects(): Observable<ImcProject[]>` returning stub data
-- `ImcProject` type: `{ id, name, milestones: [{ title, prerequisites: [{ name, type }] }] }`
-- `ImportPickerComponent` at `/import/pick`: `IonList` of projects → tap to select → navigate to confirm
-- `ImportConfirmComponent` at `/import/confirm`: accordion preview, "Import" CTA button
-- `CaseImportService.importCase(imcProject)`: inserts case, then milestones (Milestone 1 `active`, rest `open`), then prerequisites (`pending_open`), then system message "Case imported from IMC: {name}"
-- On success: navigate to `/cases/:id` with new case id
-- Add FAB or toolbar button on dashboard to trigger import flow
+- `CaseTypeSelectionComponent` at `/create-case/type`: `IonList` of 4 options; tap → navigate with `caseType` state
+- `ImcProjectSearchComponent` at `/create-case/search`: debounced text input → `ImportService.searchImcProjects()` → tap result → navigate to confirm
+- `CreateCaseConfirmComponent` at `/create-case/confirm`:
+  - For IMC types: read-only milestone accordion; `IonAccordionGroup`
+  - For blank: case title text input (required)
+  - Participants section (labeled "Participants"): pre-populated from IMC or empty; "Add participant" inline form; email + role selector; remove icon per manual entry
+  - "Create case" CTA navigates to `/create-case/create` with full `CreateCasePayload`
+- `CreateCaseActionComponent` (loading route) at `/create-case/create`: full-screen loading overlay; calls `CaseService.createCase(payload)`; on success navigates to `/cases/:id` with `replaceUrl: true`; on failure returns to confirm with error toast
+- Add "Create a case" FAB/toolbar button on HFA dashboard
 
 ### Stage 3: Test
-- Dashboard → FAB → picker shows 2–3 stub IMC projects
-- Select project → confirm screen shows correct milestone/prereq tree
-- Tap "Import" → case created, appears immediately on dashboard (re-query), navigate to case detail
-- System message "Case imported from IMC..." appears in conversation thread
-- DB: milestones and prerequisites inserted with correct statuses
-- Cancel from confirm screen → no partial data in DB
+- Dashboard → "Create a case" → choose "Development Construction" → search "River" → select project → confirm screen shows correct milestone tree → add one participant → tap "Create case" → navigate to new case detail → case appears on dashboard
+- Same flow for "Start blank": skip search → enter title → no milestone preview → add participant → create
+- Tap "Cancel" from confirm → no data in DB
+- Loading state: "Create case" button disabled during create call
+- Participant edge case: add duplicate email → toast "Participant already added"

@@ -36,24 +36,24 @@ Build the HFA dashboard case list screen showing all cases with progress indicat
 
 ### Stage 1: Plan
 - Query: `cases` joined with `milestones` aggregates → accepted prereq count / total prereq count
-- Overdue rule: any `active` milestone has at least one `pending_open` prereq past due date (or: case has no activity in N days — confirm from design spec)
+- Overdue rule: `(NOW() - milestone.activated_at) > milestone.target_days` AND `milestone.status != 'completed'` — milestone-level flag, not per-prerequisite
 - Filter state: signal holding selected `case_type` value; `null` = all
 - Pull-to-refresh: `IonRefresher` component → re-fetch query
-- Case card component: title, type badge, progress bar, overdue indicator
+- Case card/row component: title, type badge, progress bar, overdue indicator; expands to table-style columns on desktop (≥1280px) within `max-width: 1200px` centered container
 
 ### Stage 2: Implement
 - Create `DashboardComponent` at `/dashboard` with `IonList` of case cards
 - `DashboardStore` (Signal-based): `cases` signal, `selectedType` filter signal, `loading` signal
 - Supabase query with `hfa_id` filter (from `AuthService.currentUser`)
 - `CaseCardComponent` (presentational): `input()` for case data; progress bar = accepted/total prereqs
-- Overdue: compute from `milestones` — `active` milestone with a `pending_open` prereq older than threshold
+- Overdue: `computed` property on case VM — true when any `active` milestone has `activated_at` set and `(NOW() - activated_at) > target_days`; null `target_days` → never overdue
 - Red left border + red badge on overdue case cards
 - Filter chips above list: "All", "Construction", "Compliance", "Application" (or types from schema)
 - `IonRefresher` triggers store reload
 
 ### Stage 3: Test
 - Seed case appears in list with correct title and type
-- Progress bar shows 1/4 (one prereq in `received_processing` counts toward accepted — confirm logic)
+- Progress bar shows accepted/total prereqs for the active milestone (e.g. 1/4 when 1 is `accepted`); `received_processing` does not count toward progress
 - Overdue badge shown when criteria met
 - Select "Construction" filter → only construction cases shown
 - Pull-to-refresh → list reloads

@@ -11,7 +11,7 @@ June 24 change request: [docs/design-v2/Emphasys_Connect_Change_Request-June24.m
 
 ## Stack
 
-- **Frontend**: Ionic 7 + Angular 17+ (Capacitor for native mobile; web output for future Emphasys product integration)
+- **Frontend**: Ionic 7 + Angular 17+ (web application, mobile-first responsive; no native app / no Capacitor)
 - **Backend**: Supabase — PostgreSQL database, Auth (passwordless OTP), Realtime, Edge Functions
 - **Auth**: Supabase passwordless — user enters email → receives 6-digit OTP → enters code. HFA accounts carry an `is_hfa` flag set by Emphasys IT in Supabase.
 - **Real-time**: Supabase Realtime (channel subscriptions per case)
@@ -24,8 +24,7 @@ June 24 change request: [docs/design-v2/Emphasys_Connect_Change_Request-June24.m
 ```bash
 npm install               # Install dependencies
 ionic serve               # Dev server (browser)
-ionic capacitor run ios   # Run on iOS simulator
-ionic capacitor run android  # Run on Android emulator
+ng build                  # Production web build
 ng test                   # Unit tests
 ng lint                   # Lint
 ```
@@ -60,7 +59,7 @@ Passwordless via Supabase. Pre-create two accounts: `staff@hfa.demo` (HFA staff,
 - `hfa_id` on every new entity from day one
 - All prerequisite/milestone status mutations must write a message to the case conversation thread in the same operation and broadcast via Supabase Realtime
 - Standalone components only — no `NgModules`; every component declares its own `imports`
-- Guard all `window`/`document` globals with `isPlatformBrowser()` to preserve Capacitor native compatibility
+- `localStorage` and browser globals (`window`, `document`) are safe to use directly — web-only app
 - Angular Signals for state and UI binding; RxJS only for Supabase stream adapters or multi-source composition
 - Presentational components use `input()`/`output()` signals; smart components inject services via functional `inject()`
 - Use `@if`/`@for (item of items; track item.id)` control flow — never `*ngIf`/`*ngFor`
@@ -86,7 +85,7 @@ Passwordless via Supabase. Pre-create two accounts: `staff@hfa.demo` (HFA staff,
 3. **Staged Execution**: For tasks over 10 minutes, halt and request human feedback.
 4. **Code Only Focus**: Do not explain basic Angular or Supabase concepts. Provide functional, production-ready snippets directly.
 5. **No Boilerplate**: Omit repetitive import blocks unless explicitly requested. Use `// ... existing imports ...` to save context space.
-6. **Cross-Platform Aware**: The Angular frontend runs inside a Capacitor webview on iOS/Android. Always avoid browser-exclusive APIs — guard with `isPlatformBrowser()` or Capacitor's platform utilities.
+6. **Web-only**: This is a browser web application. Browser APIs (`localStorage`, `window`, `document`) are safe to use directly without guards.
 
 ## Development Workflow
 

@@ -30,10 +30,9 @@ metadata:
 - **Never use** `IonModal`, `IonActionSheet`, `IonAlert` — use Angular overlays or CSS
 - Wrap every page in `<ion-content>`; use `<ion-list>` / `<ion-item>` for lists to preserve native scrolling
 
-## Capacitor / Platform Safety
+## Browser Storage
 
-- Guard all `window` / `document` globals with `isPlatformBrowser()` — these throw in Capacitor native context if called during SSR or before hydration
-- Use `@capacitor/preferences` for persistent key-value storage (not `localStorage`) in production builds
+- `localStorage` is safe to use directly — this is a web-only application, no Capacitor native context
 - For the hackathon, Supabase's default session persistence is acceptable
 
 ## Supabase
@@ -43,6 +42,13 @@ metadata:
 - Centralise all Realtime channel subscriptions in `RealtimeService`; always unsubscribe in `ngOnDestroy`
 - Use `.throwOnError()` on queries so errors propagate rather than returning silent nulls
 - Map raw Supabase rows to typed domain interfaces at the service boundary before returning to components
+
+## Auth & Persona Model
+
+- `is_hfa: boolean` on the `profiles` table is a **hackathon simplification** — it distinguishes HFA staff from all other participants with a single flag
+- All non-HFA participants (Developer, GC, Inspector, Lender, etc.) are treated identically by `is_hfa: false`; persona differentiation within that group uses `case_participants.contact_role`
+- When a second non-HFA persona type is added in production, `is_hfa` should be replaced with a proper role/persona field or roles table — do not extend the boolean to cover more cases
+- For now: every guard and routing decision uses `AuthService.isHfa()` — do not check `contact_role` for access control in v1
 
 ## Status Mutations
 
@@ -70,7 +76,7 @@ Every prerequisite or milestone status change must:
 
 ## Comments
 
-Default: no comments. Add a comment only when the **why** is non-obvious — a hidden constraint, a Supabase quirk, a Capacitor workaround. Never describe what the code does; well-named identifiers do that.
+Default: no comments. Add a comment only when the **why** is non-obvious — a hidden constraint, a Supabase quirk, a non-obvious workaround. Never describe what the code does; well-named identifiers do that.
 
 ## Tests
 
