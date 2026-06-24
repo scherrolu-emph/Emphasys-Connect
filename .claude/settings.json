@@ -6,5 +6,12 @@
     "skill-creator@claude-plugins-official": true,
     "ralph-loop@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Design_Document.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
+      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Change_Request-June24.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")",
+      "Bash(cp \"C:/Documents/Projects/Hackathon 2026/HFA Admin mobile prototypeV2/uploads/Emphasys_Connect_Feature_Brief-Create_Case.md\" \"c:/Workspace/Emphasys-Connect/docs/design-v2/\")"
+    ]
   }
 }
