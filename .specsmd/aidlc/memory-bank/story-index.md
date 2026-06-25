@@ -1,9 +1,9 @@
 # Global Story Index
 
 ## Overview
-- **Total stories**: 34
-- **Generated**: 34
-- **Last updated**: 2026-06-24
+- **Total stories**: 35
+- **Generated**: 35
+- **Last updated**: 2026-06-25
 
 ---
 
@@ -69,6 +69,9 @@
 ## Stories by Status
 
 - **Planned**: 0
-- **Generated**: 34
+- **Generated**: 35
 - **In Progress**: 0
-- **Completed**: 0
+- **Completed**: 1
+
+#### 011-ai-briefing-banner
+- [x] **001-ai-briefing-banner-stream** — Role-aware streaming catch-up banner on home screen — Must — ✅ COMPLETE (Bolt 014)
