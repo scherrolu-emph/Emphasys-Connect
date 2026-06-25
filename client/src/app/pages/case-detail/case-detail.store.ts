@@ -44,7 +44,10 @@ export class CaseDetailStore {
       content: raw['content'] as string,
       createdAt: raw['created_at'] as string,
     };
-    this.messages.update(prev => [...prev, msg]);
+    // Guard: skip if already present (e.g. optimistic send already inserted this id)
+    this.messages.update(prev =>
+      prev.some(m => m.id === msg.id) ? prev : [...prev, msg],
+    );
   }
 
   refreshParticipants(caseId: string): void {

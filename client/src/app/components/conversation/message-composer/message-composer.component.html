@@ -1,0 +1,15 @@
+<div class="composer">
+  <textarea
+    #ta
+    rows="1"
+    placeholder="Type a message…"
+    [value]="text()"
+    (input)="onInput($event)"
+    (keydown.enter)="onEnter($event)"
+  ></textarea>
+  <button
+    class="send-btn"
+    [disabled]="!text().trim()"
+    (click)="onSend()"
+  >Send</button>
+</div>

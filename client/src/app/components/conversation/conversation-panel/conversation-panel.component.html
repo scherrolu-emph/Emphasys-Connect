@@ -1,0 +1,23 @@
+<div class="thread-wrapper">
+  <div class="thread">
+    @for (msg of messages(); track msg.id) {
+      @if (msg.type === 'system') {
+        <app-system-message [message]="msg" />
+      } @else {
+        <app-message-bubble
+          [message]="msg"
+          [isOwn]="isOwnMessage(msg)"
+          [authorLabel]="authorLabel(msg)"
+        />
+      }
+    }
+    <div #scrollAnchor></div>
+  </div>
+</div>
+
+<div class="composer-wrapper">
+  @if (sendError()) {
+    <p class="send-error">{{ sendError() }}</p>
+  }
+  <app-message-composer (send)="onSend($event)" />
+</div>

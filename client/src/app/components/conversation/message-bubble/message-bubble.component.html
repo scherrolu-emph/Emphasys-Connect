@@ -1,0 +1,9 @@
+<div class="bubble-row" [class.own]="isOwn()">
+  <div class="bubble">
+    @if (authorLabel()) {
+      <span class="author">{{ authorLabel() }}</span>
+    }
+    <p class="body">{{ message().content }}</p>
+    <span class="ts">{{ formatTime(message().createdAt) }}</span>
+  </div>
+</div>

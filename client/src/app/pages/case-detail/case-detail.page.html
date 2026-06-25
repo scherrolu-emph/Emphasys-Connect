@@ -73,8 +73,7 @@
 
     @if (activeTab() === 'conversation') {
       <div class="panel-slot panel-conversation">
-        <!-- Bolt 009: conversation thread will fill this slot -->
-        <div class="empty-slot">Conversation panel — coming in Bolt 009</div>
+        <app-conversation-panel [caseId]="store.caseDetail()?.id ?? ''" />
       </div>
     }
 
@@ -135,8 +134,7 @@
 
       @if (activeRightTab() === 'conversation') {
         <div class="panel-slot panel-conversation">
-          <!-- Bolt 009 fills this -->
-          <div class="empty-slot">Conversation panel — coming in Bolt 009</div>
+          <app-conversation-panel [caseId]="store.caseDetail()?.id ?? ''" />
         </div>
       }
 

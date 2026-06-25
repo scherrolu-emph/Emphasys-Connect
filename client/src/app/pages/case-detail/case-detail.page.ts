@@ -26,6 +26,7 @@ import { ParticipantsTabComponent } from '../../components/participants-tab/part
 import { HfaActionsPanelComponent } from '../../components/hfa-actions-panel/hfa-actions-panel.component';
 import type { AcceptEvent, ReturnEvent, TriggerEvent } from '../../components/hfa-actions-panel/hfa-actions-panel.component';
 import { ParticipantStatusPanelComponent } from '../../components/participant-status-panel/participant-status-panel.component';
+import { ConversationPanelComponent } from '../../components/conversation/conversation-panel/conversation-panel.component';
 import { CASE_TYPE_LABELS } from '../../core/cases/case.models';
 import type { CaseParticipant, MilestoneDetail, PrerequisiteSummary } from '../../core/cases/case.models';
 import type { AddParticipantRequest } from '../../components/participants-tab/participants-tab.component';
@@ -44,6 +45,7 @@ type ActiveRightTab = 'conversation' | 'participants';
     ParticipantsTabComponent,
     HfaActionsPanelComponent,
     ParticipantStatusPanelComponent,
+    ConversationPanelComponent,
   ],
   templateUrl: './case-detail.page.html',
   styleUrls: ['./case-detail.page.scss'],
