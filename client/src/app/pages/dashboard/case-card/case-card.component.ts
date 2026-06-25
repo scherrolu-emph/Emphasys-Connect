@@ -27,6 +27,10 @@ export class CaseCardComponent {
   readonly milestoneName = computed(
     () => this.caseItem().activeMilestone?.title ?? 'Completed'
   );
+  readonly progressPercent = computed(() => {
+    const { prereqAccepted, prereqTotal } = this.caseItem();
+    return prereqTotal > 0 ? Math.round((prereqAccepted / prereqTotal) * 100) : 0;
+  });
 
   constructor() {
     addIcons({ chevronForwardOutline });

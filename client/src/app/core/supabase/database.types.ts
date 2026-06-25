@@ -1,5 +1,7 @@
-// Hand-authored to match 001_initial_schema.sql.
+// Hand-authored to match migrations 001–005.
 // Regenerate with: npx supabase gen types typescript --project-id abytadbwhnrqxhbythir > src/app/core/supabase/database.types.ts
+
+export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
 export type CaseType = 'blank' | 'development_construction' | 'loan_underwriting' | 'bond_issuance';
 export type MilestoneStatus = 'open' | 'active' | 'completed';
@@ -37,6 +39,7 @@ export type Database = {
           display_name?: string;
           is_hfa?: boolean;
         };
+        Relationships: [];
       };
       cases: {
         Row: {
@@ -68,6 +71,7 @@ export type Database = {
           imc_project_id?: string | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       milestones: {
         Row: {
@@ -80,6 +84,7 @@ export type Database = {
           is_internal: boolean;
           target_days: number | null;
           activated_at: string | null;
+          completed_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -92,6 +97,7 @@ export type Database = {
           is_internal?: boolean;
           target_days?: number | null;
           activated_at?: string | null;
+          completed_at?: string | null;
           created_at?: string;
         };
         Update: {
@@ -101,7 +107,9 @@ export type Database = {
           is_internal?: boolean;
           target_days?: number | null;
           activated_at?: string | null;
+          completed_at?: string | null;
         };
+        Relationships: [];
       };
       prerequisites: {
         Row: {
@@ -117,6 +125,9 @@ export type Database = {
           owner_id: string | null;
           upload_link: string | null;
           doc_name: string | null;
+          notes: string | null;
+          submitted_at: string | null;
+          accepted_at: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -133,6 +144,9 @@ export type Database = {
           owner_id?: string | null;
           upload_link?: string | null;
           doc_name?: string | null;
+          notes?: string | null;
+          submitted_at?: string | null;
+          accepted_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -143,8 +157,12 @@ export type Database = {
           owner_id?: string | null;
           upload_link?: string | null;
           doc_name?: string | null;
+          notes?: string | null;
+          submitted_at?: string | null;
+          accepted_at?: string | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       case_participants: {
         Row: {
@@ -173,6 +191,7 @@ export type Database = {
           user_id?: string | null;
           invite_status?: InviteStatus;
         };
+        Relationships: [];
       };
       conversation_messages: {
         Row: {
@@ -183,6 +202,7 @@ export type Database = {
           type: MessageType;
           content: string;
           mentions: string[];
+          metadata: Json | null;
           created_at: string;
         };
         Insert: {
@@ -193,12 +213,15 @@ export type Database = {
           type?: MessageType;
           content: string;
           mentions?: string[];
+          metadata?: Json | null;
           created_at?: string;
         };
         Update: {
           content?: string;
           mentions?: string[];
+          metadata?: Json | null;
         };
+        Relationships: [];
       };
       notifications: {
         Row: {
@@ -207,8 +230,12 @@ export type Database = {
           user_id: string;
           case_id: string | null;
           type: NotificationType;
+          title: string;
+          body: string;
           message_id: string | null;
+          prereq_id: string | null;
           read: boolean;
+          read_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -217,15 +244,23 @@ export type Database = {
           user_id: string;
           case_id?: string | null;
           type: NotificationType;
+          title: string;
+          body: string;
           message_id?: string | null;
+          prereq_id?: string | null;
           read?: boolean;
+          read_at?: string | null;
           created_at?: string;
         };
         Update: {
           read?: boolean;
+          read_at?: string | null;
         };
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
     Enums: {
       case_type: CaseType;
       milestone_status: MilestoneStatus;

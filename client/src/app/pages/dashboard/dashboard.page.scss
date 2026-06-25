@@ -1,10 +1,10 @@
 .dashboard-container {
-  padding: 0 0 16px;
+  padding: 0 var(--ec-screen-pad) var(--ec-space-5);
 
   @media (min-width: 768px) {
     max-width: 960px;
     margin: 0 auto;
-    padding: 16px 0;
+    padding: var(--ec-space-5) 0;
   }
 
   @media (min-width: 1280px) {
@@ -15,30 +15,35 @@
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 12px 16px;
+  gap: var(--ec-space-2);
+  padding: var(--ec-space-3) 0 var(--ec-space-4);
 
   ion-chip {
-    --background: var(--ion-color-light);
-    --color: var(--ion-color-medium);
+    --background: var(--ec-surface-track);
+    --color: var(--ec-text-soft);
     margin: 0;
 
     &.chip--active {
-      --background: var(--ion-color-primary);
-      --color: var(--ion-color-primary-contrast);
+      --background: var(--ec-accent-tint);
+      --color: var(--ec-accent);
     }
   }
+}
+
+.cases-list {
+  margin: 0;
+  padding: 0;
 }
 
 .empty-state {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 48px 16px;
+  padding: 48px var(--ec-screen-pad);
 
   p {
-    color: var(--ion-color-medium);
-    font-size: 0.95rem;
+    font-size: var(--ec-fs-body);
+    color: var(--ec-text-soft);
     text-align: center;
   }
 }

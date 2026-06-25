@@ -3,20 +3,21 @@
 }
 
 ion-item.case-row--overdue {
-  --border-color: var(--ion-color-danger);
-  border-left: 3px solid var(--ion-color-danger);
+  --border-color: var(--ec-danger);
+  border-left: 3px solid var(--ec-danger);
 }
 
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: var(--ec-space-2);
+  margin-bottom: var(--ec-space-1);
 }
 
 .case-title {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-size: var(--ec-fs-body);
+  font-weight: var(--ec-fw-semibold);
+  color: var(--ec-ink);
   flex: 1;
   white-space: normal;
 }
@@ -25,22 +26,23 @@ ion-item.case-row--overdue {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
-  color: var(--ion-color-medium);
+  gap: var(--ec-space-2);
+  font-size: var(--ec-fs-meta);
+  color: var(--ec-text-soft);
+  margin-bottom: var(--ec-space-2);
 }
 
 .type-badge {
   padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
+  border-radius: var(--ec-radius-pill);
+  font-size: var(--ec-fs-micro);
+  font-weight: var(--ec-fw-bold);
   white-space: nowrap;
 
-  &--development_construction { background: #e8f4fd; color: #1565c0; }
-  &--loan_underwriting        { background: #e8f5e9; color: #2e7d32; }
-  &--bond_issuance            { background: #fce4ec; color: #c62828; }
-  &--blank                    { background: #f3f4f6; color: #4b5563; }
+  &--development_construction { background: var(--ec-accent-tint);     color: var(--ec-accent); }
+  &--loan_underwriting        { background: var(--ec-accepted-tint);   color: var(--ec-accepted); }
+  &--bond_issuance            { background: var(--ec-dev-tint);        color: var(--ec-dev); }
+  &--blank                    { background: var(--ec-open-tint);       color: var(--ec-open); }
 }
 
 .milestone-name {
@@ -54,8 +56,12 @@ ion-item.case-row--overdue {
   white-space: nowrap;
 }
 
+.card-progress {
+  margin-top: var(--ec-space-1);
+}
+
 .chevron {
-  color: var(--ion-color-medium);
+  color: var(--ec-text-faint);
   font-size: 1rem;
 }
 
@@ -69,11 +75,20 @@ ion-item.case-row--overdue {
   }
 
   .card-header {
+    grid-column: 1;
     margin-bottom: 0;
   }
 
   .card-meta {
-    display: contents;
-    font-size: 0.85rem;
+    grid-column: 2 / 4;
+    margin-bottom: 0;
+  }
+
+
+  .card-progress {
+    grid-column: 4;
+    grid-row: 1;
+    margin-top: 0;
+    align-self: center;
   }
 }

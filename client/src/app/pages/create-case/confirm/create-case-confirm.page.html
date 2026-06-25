@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">Back</ion-button>
+    </ion-buttons>
+    <ion-title>Confirm Case</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        fill="solid"
+        color="primary"
+        [disabled]="!canCreate()"
+        (click)="proceed()">
+        Create case
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <!-- IMC-backed: project summary + milestone accordion -->
+  @if (isImcBacked()) {
+    <div class="section-header">
+      <h3>{{ state()?.imcProject?.name }}</h3>
+      <p class="meta">{{ caseTypeLabel() }} · {{ state()?.imcProject?.projectNumber }}</p>
+      <p class="meta">{{ state()?.imcProject?.address }}</p>
+    </div>
+
+    @if ((state()?.imcProject?.milestones?.length ?? 0) > 0) {
+      <div class="subsection-label">Milestones</div>
+      <ion-accordion-group>
+        @for (m of state()!.imcProject!.milestones; track m.id) {
+          <ion-accordion [value]="m.id">
+            <ion-item slot="header">
+              <ion-label>
+                <h3>{{ m.title }}</h3>
+                <p>{{ m.prerequisites.length }} prerequisite{{ m.prerequisites.length === 1 ? '' : 's' }}</p>
+              </ion-label>
+            </ion-item>
+            <ion-list slot="content" lines="none">
+              @for (p of m.prerequisites; track p.id) {
+                <ion-item class="prereq-item">
+                  <ion-label>{{ p.title }}</ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          </ion-accordion>
+        }
+      </ion-accordion-group>
+    } @else {
+      <div class="empty-note">No milestones defined in IMC — add them after creation</div>
+    }
+  }
+
+  <!-- Blank / Loan / Bond: title field -->
+  @if (isBlankLike()) {
+    <div class="section-header">
+      <p class="case-type-badge">{{ caseTypeLabel() }}</p>
+    </div>
+    <div class="field-group">
+      <label class="field-label" for="caseTitleInput">Case title <span class="required">*</span></label>
+      <input
+        id="caseTitleInput"
+        class="text-input"
+        type="text"
+        placeholder="e.g. River View Apartments"
+        [value]="caseTitle()"
+        (input)="caseTitle.set($any($event.target).value)"
+      />
+    </div>
+
+    @if (state()?.caseType !== 'blank') {
+      <div class="placeholder-note">
+        Milestone data will be imported from {{ caseTypeLabel() }} system in a future release.
+      </div>
+    }
+  }
+
+  <!-- Participants -->
+  <div class="subsection-label">Participants</div>
+
+  <ion-list lines="full" class="participants-list">
+    @for (p of participants(); track p.email) {
+      <ion-item>
+        <ion-label>
+          <h3>{{ p.email }}</h3>
+          <p>{{ p.role === 'hfa_staff' ? 'HFA Staff' : 'Developer' }}
+            @if (p.source === 'creator') { <span class="tag">You</span> }
+            @if (p.source === 'imc') { <span class="tag">From IMC</span> }
+          </p>
+        </ion-label>
+        @if (isRemovable(p)) {
+          <ion-button fill="clear" color="danger" slot="end" (click)="removeParticipant(p.email)">
+            Remove
+          </ion-button>
+        }
+      </ion-item>
+    }
+  </ion-list>
+
+  <!-- Add participant inline form -->
+  @if (showAddForm()) {
+    <div class="add-form">
+      <input
+        class="text-input"
+        type="email"
+        placeholder="Email address"
+        [value]="newEmail()"
+        (input)="newEmail.set($any($event.target).value)"
+      />
+      <ion-select
+        [value]="newRole()"
+        (ionChange)="newRole.set($any($event.detail.value))"
+        interface="popover"
+        placeholder="Role">
+        <ion-select-option value="developer">Developer</ion-select-option>
+        <ion-select-option value="hfa_staff">HFA Staff</ion-select-option>
+      </ion-select>
+      <div class="add-form-actions">
+        <ion-button fill="outline" size="small" (click)="toggleAddForm()">Cancel</ion-button>
+        <ion-button fill="solid" size="small" color="primary" (click)="addParticipant()">Add</ion-button>
+      </div>
+    </div>
+  }
+
+  <div class="add-participant-row">
+    <ion-button fill="clear" color="primary" (click)="toggleAddForm()">
+      + Add participant
+    </ion-button>
+  </div>
+
+</ion-content>

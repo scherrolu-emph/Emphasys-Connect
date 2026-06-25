@@ -30,6 +30,20 @@ export class DashboardStore {
     }
   }
 
+  async loadForDeveloper(): Promise<void> {
+    this.isLoading.set(true);
+    this.error.set(null);
+    try {
+      const result = await this.caseService.getParticipantCases();
+      this.cases.set(result);
+    } catch (err) {
+      const msg = (err as { message?: string })?.message ?? 'Unknown error';
+      this.error.set(msg);
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
   selectType(type: FilterType): void {
     this.selectedType.set(type);
   }

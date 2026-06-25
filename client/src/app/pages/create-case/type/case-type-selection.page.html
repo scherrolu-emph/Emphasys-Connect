@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+    <ion-title>New Case</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="type-header">
+    <h2>Choose a starting point</h2>
+  </div>
+
+  <ion-list lines="full">
+    @for (option of options; track option.value) {
+      <ion-item button detail (click)="selectType(option)">
+        <ion-label>
+          <h3>{{ option.label }}</h3>
+          <p>{{ option.description }}</p>
+        </ion-label>
+      </ion-item>
+    }
+  </ion-list>
+</ion-content>

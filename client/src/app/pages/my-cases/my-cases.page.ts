@@ -51,7 +51,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
               }
             </ion-list>
           } @else {
-            <p>You’ll be added to cases by your HFA.</p>
+            <p>You'll be added to cases by your HFA.</p>
           }
         }
       </div>
