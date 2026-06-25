@@ -2,11 +2,11 @@
 id: 001-participant-case-list-screen
 unit: 008-participant-case-list
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: must
 created: 2026-06-24T00:00:00Z
-assigned_bolt: null
-implemented: false
+assigned_bolt: "011"
+implemented: true
 ---
 
 # Story: 001-participant-case-list-screen

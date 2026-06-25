@@ -1,19 +1,18 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  IonBadge,
   IonContent,
   IonHeader,
-  IonTitle,
-  IonToolbar,
-  IonList,
   IonItem,
   IonLabel,
+  IonList,
   IonSkeletonText,
-  IonRefresher,
-  IonRefresherContent,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/angular/standalone';
-import { DashboardStore } from '../dashboard/dashboard.store';
-import { CaseCardComponent } from '../dashboard/case-card/case-card.component';
+import { AuthService } from '../../core/auth/auth.service';
+import { CaseService, ParticipantCaseSummary } from '../../core/case/case.service';
 
 @Component({
   selector: 'app-my-cases',
@@ -23,72 +22,82 @@ import { CaseCardComponent } from '../dashboard/case-card/case-card.component';
         <ion-title>My Cases</ion-title>
       </ion-toolbar>
     </ion-header>
-
-    <ion-content>
-      <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
-        <ion-refresher-content></ion-refresher-content>
-      </ion-refresher>
-
-      <div class="dashboard-container">
-        @if (store.isLoading()) {
-          <ion-list>
-            @for (n of skeletonRows; track n) {
-              <ion-item>
-                <ion-label>
-                  <ion-skeleton-text [animated]="true" style="width: 60%; height: 16px;"></ion-skeleton-text>
-                  <ion-skeleton-text [animated]="true" style="width: 40%; height: 12px; margin-top: 6px;"></ion-skeleton-text>
-                </ion-label>
-              </ion-item>
-            }
-          </ion-list>
-        }
-
-        @if (store.error()) {
-          <div class="empty-state">
-            <p>Could not load cases — pull down to retry</p>
-          </div>
-        }
-
-        @if (!store.isLoading() && !store.error() && store.filteredCases().length === 0) {
-          <div class="empty-state">
-            <p>No active cases — you'll be added to cases by your HFA.</p>
-          </div>
-        }
-
-        @if (!store.isLoading() && store.filteredCases().length > 0) {
-          <ion-list class="ec-list cases-list" lines="none">
-            @for (c of store.filteredCases(); track c.id) {
-              <app-case-card [caseItem]="c" (selected)="navigateToCase($event)" />
-            }
-          </ion-list>
+    <ion-content class="ion-padding">
+      <div class="participant-cases-container">
+        @if (auth.currentUser()) {
+          @if (isLoading) {
+            <ion-list>
+              @for (row of skeletonRows; track row) {
+                <ion-item lines="none">
+                  <ion-label>
+                    <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+                    <ion-skeleton-text animated style="width: 40%; margin-top: 0.5rem"></ion-skeleton-text>
+                  </ion-label>
+                </ion-item>
+              }
+            </ion-list>
+          } @else if (cases.length > 0) {
+            <ion-list>
+              @for (c of cases; track c.id) {
+                <ion-item button detail (click)="onSelectCase(c.id)">
+                  <ion-label>
+                    <h3>{{ c.title }}</h3>
+                    @if (c.activeMilestoneName) {
+                      <p>{{ c.activeMilestoneName }}</p>
+                    }
+                  </ion-label>
+                  <ion-badge slot="end" color="primary">{{ c.prereqAccepted }}/{{ c.prereqTotal }}</ion-badge>
+                </ion-item>
+              }
+            </ion-list>
+          } @else {
+            <p>You'll be added to cases by your HFA.</p>
+          }
         }
       </div>
     </ion-content>
   `,
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonTitle, IonToolbar,
-    IonList, IonItem, IonLabel, IonSkeletonText,
-    IonRefresher, IonRefresherContent,
-    CaseCardComponent,
+    IonContent,
+    IonHeader,
+    IonTitle,
+    IonToolbar,
+    IonList,
+    IonItem,
+    IonLabel,
+    IonBadge,
+    IonSkeletonText,
+  ],
+  styles: [
+    ".participant-cases-container { width: 100%; margin: 0 auto; }",
+    "@media (min-width: 768px) { .participant-cases-container { max-width: 960px; } }",
+    "@media (min-width: 1280px) { .participant-cases-container { max-width: 1200px; } }",
+    "ion-item { cursor: pointer; }",
   ],
 })
 export class MyCasesPage implements OnInit {
+  readonly auth = inject(AuthService);
+  private readonly caseService = inject(CaseService);
   private readonly router = inject(Router);
-  readonly store = inject(DashboardStore);
-
+  cases: ParticipantCaseSummary[] = [];
+  isLoading = true;
   readonly skeletonRows = [1, 2, 3, 4];
 
-  ngOnInit(): void {
-    void this.store.loadForDeveloper();
+  async ngOnInit() {
+    const user = this.auth.currentUser();
+    if (!user) return;
+    try {
+      this.cases = await this.caseService.getParticipantCases(user.id);
+    } catch (err) {
+      console.error('Failed to load participant cases', err);
+      this.cases = [];
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  async onRefresh(event: CustomEvent): Promise<void> {
-    await this.store.loadForDeveloper();
-    (event.target as HTMLIonRefresherElement).complete();
-  }
-
-  navigateToCase(caseId: string): void {
+  onSelectCase(caseId: string): void {
     this.router.navigate(['/cases', caseId]);
   }
 }
