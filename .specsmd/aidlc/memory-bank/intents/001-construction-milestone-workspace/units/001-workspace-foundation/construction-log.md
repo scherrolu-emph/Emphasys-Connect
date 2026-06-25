@@ -52,6 +52,9 @@ last_updated: 2026-06-24T00:00:00Z
 | Bolts remaining | 0 |
 | Replanning events | 0 |
 
+| 2026-06-25T12:00:00Z | 015 | started | Stage 1: Plan |
+| 2026-06-25T13:00:00Z | 015 | stage-complete | Plan → Implement: seed.sql updated (Oakview case + 12 messages + prereq type fixes) |
+
 ## Notes
 
 Bolt 001 was completed by previous engineer (schema, types, seed). Hosted Supabase project is live with Riverside Commons seed data. Bolt 002 angular shell (story 004) was also completed — only RealtimeService (story 005) remained when this construction session began.

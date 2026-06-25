@@ -1,23 +1,26 @@
 ---
-id: "015"
+id: '015'
 unit: 001-workspace-foundation
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 006-demo-data-cleanup
   - 007-demo-conversation-seed
-created: 2026-06-25T12:00:00Z
-started: null
-completed: null
+created: '2026-06-25T12:00:00Z'
+started: '2026-06-25T12:00:00Z'
+completed: '2026-06-25T21:30:54Z'
 current_stage: null
-stages_completed: []
-
+stages_completed:
+  - plan
 requires_bolts: []
-enables_bolts: ["016", "017", "018", "019"]
+enables_bolts:
+  - '016'
+  - '017'
+  - '018'
+  - '019'
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 1
   avg_uncertainty: 1
