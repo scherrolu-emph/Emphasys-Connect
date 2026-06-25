@@ -11,8 +11,8 @@ updated: 2026-06-24T00:00:00Z
 
 | Metric | Count |
 |--------|-------|
-| Total Units | 10 |
-| Frontend Feature Units | 10 |
+| Total Units | 11 |
+| Frontend Feature Units | 11 |
 | Backend Service Units | 0 (Supabase BaaS — schema + RLS in Unit 001) |
 
 ## Requirement-to-Unit Mapping
@@ -32,6 +32,7 @@ updated: 2026-06-24T00:00:00Z
 | FR-11 | @-Mentions and Notification Bell | `007-conversation-thread` |
 | FR-12 | My Tasks — cross-case prerequisite inbox for logged-in user | `009-my-tasks` |
 | FR-13 | Activity Feed — cross-case event log for logged-in user | `010-activity-feed` |
+| FR-14 | AI Briefing Banner — role-aware streaming catch-up on home screen | `011-ai-briefing-banner` |
 
 ## Units
 
@@ -47,6 +48,7 @@ updated: 2026-06-24T00:00:00Z
 | 008 | `participant-case-list` | Participant home screen at `/my-cases` — case list, empty state, post-login entry point for all non-HFA participants | 001, 002 | FR-1, FR-5 |
 | 009 | `my-tasks` | "My Tasks" bottom-nav tab (tab 2) — cross-case prerequisite inbox for logged-in user with case + milestone context, live badge count | 001, 002, 006 | FR-12 |
 | 010 | `activity-feed` | "Activity" bottom-nav tab (tab 3) — cross-case event log, newest first, Realtime prepend, deep link to case | 001, 002, 007 | FR-13 |
+| 011 | `ai-briefing-banner` | Role-aware AI catch-up banner on home screens — streams summary on load, action chips, dismiss + replay | 002, 003, 008 | FR-14 |
 
 ## Dependency Graph
 

@@ -5,6 +5,9 @@
       <ion-button fill="solid" color="primary" (click)="createCase()">
         Create a case
       </ion-button>
+      <ion-button fill="clear" size="small" (click)="briefingService.resetAndShow()" aria-label="Catch me up">
+        ✨
+      </ion-button>
       <app-notification-bell />
     </ion-buttons>
   </ion-toolbar>
@@ -16,6 +19,10 @@
   </ion-refresher>
 
   <div class="dashboard-container">
+
+    @if (briefingService.visible()) {
+      <app-ai-briefing-banner />
+    }
 
     <div class="filter-chips">
       @for (chip of filterChips; track chip.value) {

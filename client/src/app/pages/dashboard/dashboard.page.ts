@@ -19,6 +19,8 @@ import { AuthService } from '../../core/auth/auth.service';
 import { DashboardStore } from './dashboard.store';
 import { CaseCardComponent } from './case-card/case-card.component';
 import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
+import { AiBriefingBannerComponent } from '../../components/ai-briefing-banner/ai-briefing-banner.component';
+import { AiBriefingService } from '../../core/ai-briefing/ai-briefing.service';
 import { FILTER_CHIPS, CASE_TYPE_LABELS } from '../../core/cases/case.models';
 import type { FilterType } from '../../core/cases/case.models';
 
@@ -33,6 +35,7 @@ import type { FilterType } from '../../core/cases/case.models';
     IonList, IonItem, IonLabel, IonSkeletonText,
     IonChip, IonRefresher, IonRefresherContent,
     CaseCardComponent, NotificationBellComponent,
+    AiBriefingBannerComponent,
   ],
 })
 export class DashboardPage {
@@ -40,6 +43,7 @@ export class DashboardPage {
   readonly isHfa = this.auth.isHfa;
   private readonly router = inject(Router);
   readonly store = inject(DashboardStore);
+  readonly briefingService = inject(AiBriefingService);
 
   readonly filterChips = FILTER_CHIPS;
   readonly skeletonRows = [1, 2, 3, 4];

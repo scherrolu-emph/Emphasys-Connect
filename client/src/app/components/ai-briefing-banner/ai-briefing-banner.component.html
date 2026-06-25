@@ -1,0 +1,27 @@
+<div class="ai-banner">
+  <div class="ai-banner__header">
+    <span class="ai-banner__icon">🤖</span>
+    <span class="ai-banner__label">AI Briefing</span>
+    <button class="ai-banner__dismiss" (click)="dismiss()" aria-label="Dismiss briefing">✕</button>
+  </div>
+
+  <div class="ai-banner__body">
+    @if (isStreaming()) {
+      <p class="ai-banner__text">{{ streamedText() }}<span class="cursor" aria-hidden="true">|</span></p>
+    } @else {
+      <div class="ai-banner__skeleton">
+        <div class="skeleton-line skeleton-line--80"></div>
+        <div class="skeleton-line skeleton-line--60"></div>
+        <div class="skeleton-line skeleton-line--40"></div>
+      </div>
+    }
+  </div>
+
+  @if (chipsVisible()) {
+    <div class="ai-banner__chips">
+      @for (chip of chips(); track chip.label) {
+        <button class="ai-banner__chip" (click)="onChip(chip)">{{ chip.label }}</button>
+      }
+    </div>
+  }
+</div>
