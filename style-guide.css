@@ -1,0 +1,436 @@
+/* ============================================================
+   EMPHASYS CONNECT — STYLE GUIDE
+   HFA Admin mobile prototype
+   ------------------------------------------------------------
+   A single source of truth for the colors, type, spacing,
+   radii, shadows and component patterns used across the app.
+   Tokens are exposed as CSS custom properties on :root so they
+   can be referenced as var(--token) in any stylesheet, or read
+   from JS. Component classes below show the canonical recipes.
+   ============================================================ */
+
+:root {
+  /* ----------------------------------------------------------
+     1. BRAND & ACCENT
+     The primary interactive color. Used for primary buttons,
+     active tabs, links, progress fills and selection states.
+     ---------------------------------------------------------- */
+  --ec-accent:            #1593D8;   /* primary action / active */
+  --ec-accent-strong:     #0E7FBE;   /* pressed / hover */
+  --ec-accent-tint:       #E4F1FB;   /* accent on light bg */
+  --ec-accent-tint-ink:   #0E2D4A;   /* text on accent tint */
+
+  /* ----------------------------------------------------------
+     2. INK / NEUTRALS
+     Navy is the brand's "near-black". Grays step down from
+     headings to muted captions to hairline borders.
+     ---------------------------------------------------------- */
+  --ec-navy:              #0E2D4A;   /* headings, app chrome */
+  --ec-ink:               #15324B;   /* primary body text */
+  --ec-ink-2:             #26384A;   /* secondary body text */
+  --ec-text-muted:        #64788C;   /* supporting text */
+  --ec-text-soft:         #7C8C9A;   /* captions / labels */
+  --ec-text-faint:        #9BABB8;   /* placeholder / disabled */
+  --ec-text-ghost:        #A6B3C0;   /* timestamps / hints */
+
+  --ec-line:              #EEF2F6;   /* card & header borders */
+  --ec-line-2:            #F1F4F7;   /* inner row dividers */
+  --ec-border:            #E6ECF2;   /* default card border */
+  --ec-border-strong:     #DCE4EC;   /* inputs / dashed zones */
+
+  /* ----------------------------------------------------------
+     3. SURFACES
+     ---------------------------------------------------------- */
+  --ec-bg:                #F4F7FA;   /* app canvas */
+  --ec-surface:           #FFFFFF;   /* cards, sheets, nav */
+  --ec-surface-sunken:    #F7F9FB;   /* insets / textareas */
+  --ec-surface-track:     #EDF1F5;   /* progress track, chips */
+  --ec-segment-bg:        #E8EEF4;   /* segmented control track */
+  --ec-info-bg:           #EAF1F7;   /* informational banners */
+  --ec-info-border:       #D5E2EE;
+  --ec-info-ink:          #41607C;
+
+  /* ----------------------------------------------------------
+     4. PERSONA COLORS
+     Two roles drive the app. HFA staff = navy; Developer = violet.
+     ---------------------------------------------------------- */
+  --ec-hfa:               #0E2D4A;
+  --ec-hfa-tint:          #E4F1FB;
+  --ec-hfa-tint-ink:      #1593D8;
+  --ec-dev:               #7A52CC;
+  --ec-dev-tint:          #EFE9FA;
+  --ec-dev-tint-ink:      #5A3FA0;
+  --ec-dev-border:        #D9CDF0;
+
+  /* ----------------------------------------------------------
+     5. STATUS / WORKFLOW COLORS
+     Prerequisite & milestone lifecycle. Each status has an ink
+     color (for text/labels) and a tint (for pill backgrounds).
+     ---------------------------------------------------------- */
+  --ec-accepted:          #0C8C75;   /* approved / completed */
+  --ec-accepted-tint:     #E0F3EE;
+  --ec-processing:        #4B49A6;   /* received / in review */
+  --ec-processing-tint:   #ECEBF7;
+  --ec-requested:         #C26A14;   /* requested / waiting */
+  --ec-requested-tint:    #FBEEDC;
+  --ec-requested-border:  #F0DEB8;
+  --ec-open:              #5B6B7B;   /* open / not started */
+  --ec-open-tint:         #EDF1F5;
+  --ec-danger:            #C0413A;   /* reject / remove */
+  --ec-danger-ink:        #D8392B;   /* notification badge */
+  --ec-danger-tint:       #FCE9E7;
+
+  /* Stakeholder avatar palette (roles in a case) */
+  --ec-role-contractor:   #C26A14;
+  --ec-role-architect:    #0C8C75;
+  --ec-role-inspector:    #4B49A6;
+  --ec-role-insurer:      #B0496A;
+  --ec-role-assetmgr:     #1E6FB0;
+  --ec-role-title:        #5B7C99;
+
+  /* ----------------------------------------------------------
+     6. TYPOGRAPHY
+     Public Sans for UI text; Baloo 2 for friendly display
+     numerals/badges where used. System fallbacks first.
+     ---------------------------------------------------------- */
+  --ec-font-sans: 'Public Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --ec-font-display: 'Baloo 2', 'Public Sans', system-ui, sans-serif;
+
+  --ec-fs-display:  22px;   /* screen titles (Cases, Profile) */
+  --ec-fs-h1:       19px;   /* flow step headings */
+  --ec-fs-h2:       17px;   /* card titles */
+  --ec-fs-h3:       16px;   /* milestone titles */
+  --ec-fs-body:     14px;   /* default body / inputs */
+  --ec-fs-body-sm:  13.5px; /* message bubbles, list rows */
+  --ec-fs-meta:     12.5px; /* secondary rows */
+  --ec-fs-caption:  12px;   /* captions */
+  --ec-fs-label:    11px;   /* uppercase section labels */
+  --ec-fs-micro:    10.5px; /* status pills */
+
+  --ec-fw-regular:  400;
+  --ec-fw-medium:   500;
+  --ec-fw-semibold: 600;
+  --ec-fw-bold:     700;
+  --ec-fw-heavy:    800;
+
+  --ec-tracking-label: 0.5px;  /* letter-spacing for uppercase labels */
+  --ec-leading-tight:  1.25;
+  --ec-leading-snug:   1.4;
+  --ec-leading-normal: 1.5;
+
+  /* ----------------------------------------------------------
+     7. SPACING  (4px base scale)
+     ---------------------------------------------------------- */
+  --ec-space-1:  4px;
+  --ec-space-2:  8px;
+  --ec-space-3:  12px;
+  --ec-space-4:  14px;
+  --ec-space-5:  16px;
+  --ec-space-6:  18px;
+  --ec-space-7:  22px;
+  --ec-screen-pad: 16px;   /* default screen gutter */
+
+  /* ----------------------------------------------------------
+     8. RADII
+     ---------------------------------------------------------- */
+  --ec-radius-sm:   8px;    /* type icons, small chips */
+  --ec-radius-md:   12px;   /* buttons, inputs, banners */
+  --ec-radius-lg:   16px;   /* cards, list containers */
+  --ec-radius-xl:   18px;   /* hero cards, popovers */
+  --ec-radius-sheet: 24px;  /* bottom sheets (top corners) */
+  --ec-radius-pill: 99px;   /* pills, avatars, progress */
+
+  /* ----------------------------------------------------------
+     9. ELEVATION
+     ---------------------------------------------------------- */
+  --ec-shadow-segment: 0 1px 3px rgba(14,45,74,.18);          /* active segment */
+  --ec-shadow-button:  0 8px 18px -7px rgba(21,147,216,.5);   /* primary CTA glow */
+  --ec-shadow-pop:     0 24px 50px -16px rgba(10,40,70,.5);   /* notification popover */
+  --ec-shadow-toast:   0 12px 28px -8px rgba(10,24,40,.6);    /* toast */
+
+  /* ----------------------------------------------------------
+     10. MOTION
+     ---------------------------------------------------------- */
+  --ec-ease-out: cubic-bezier(.2,.85,.25,1);
+  --ec-dur-fast: .15s;
+  --ec-dur-base: .18s;
+  --ec-dur-sheet: .26s;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+body {
+  margin: 0;
+  font-family: var(--ec-font-sans);
+  color: var(--ec-ink);
+  background: var(--ec-bg);
+  -webkit-font-smoothing: antialiased;
+}
+*, *::before, *::after { box-sizing: border-box; }
+button, input, textarea, select { font-family: inherit; }
+
+/* ============================================================
+   TYPOGRAPHY HELPERS
+   ============================================================ */
+.ec-display    { font-size: var(--ec-fs-display); font-weight: var(--ec-fw-heavy); color: var(--ec-navy); letter-spacing: -.3px; }
+.ec-h1         { font-size: var(--ec-fs-h1); font-weight: var(--ec-fw-heavy); color: var(--ec-navy); }
+.ec-h2         { font-size: var(--ec-fs-h2); font-weight: var(--ec-fw-heavy); color: var(--ec-ink); }
+.ec-h3         { font-size: var(--ec-fs-h3); font-weight: var(--ec-fw-bold); color: var(--ec-ink); line-height: var(--ec-leading-tight); }
+.ec-body       { font-size: var(--ec-fs-body); color: var(--ec-ink); line-height: var(--ec-leading-snug); }
+.ec-meta       { font-size: var(--ec-fs-meta); color: var(--ec-text-soft); }
+.ec-caption    { font-size: var(--ec-fs-caption); color: var(--ec-text-muted); line-height: var(--ec-leading-snug); }
+.ec-timestamp  { font-size: 10px; color: var(--ec-text-ghost); }
+.ec-label {
+  font-size: var(--ec-fs-label);
+  font-weight: var(--ec-fw-heavy);
+  color: var(--ec-text-faint);
+  text-transform: uppercase;
+  letter-spacing: var(--ec-tracking-label);
+}
+
+/* ============================================================
+   SURFACES & LAYOUT
+   ============================================================ */
+.ec-screen { padding: var(--ec-screen-pad); background: var(--ec-bg); }
+
+.ec-card {
+  background: var(--ec-surface);
+  border: 1px solid var(--ec-border);
+  border-radius: var(--ec-radius-xl);
+  padding: var(--ec-space-5);
+}
+/* A card highlighting the active milestone */
+.ec-card--active { border-color: #BFE0F4; }
+
+/* Grouped list (rows separated by hairlines, clipped corners) */
+.ec-list {
+  background: var(--ec-surface);
+  border: 1px solid var(--ec-border);
+  border-radius: var(--ec-radius-lg);
+  overflow: hidden;
+}
+.ec-list-row {
+  display: flex;
+  align-items: center;
+  gap: var(--ec-space-3);
+  padding: 13px var(--ec-space-4);
+  border-bottom: 1px solid var(--ec-line-2);
+}
+.ec-list-row:last-child { border-bottom: none; }
+
+/* Key/value detail row inside a card */
+.ec-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 9px 0;
+  border-top: 1px solid var(--ec-line-2);
+}
+.ec-detail-row__key { font-size: var(--ec-fs-meta); color: var(--ec-text-soft); }
+.ec-detail-row__val { font-size: var(--ec-fs-meta); font-weight: var(--ec-fw-semibold); color: var(--ec-ink); text-align: right; }
+
+/* Informational banner */
+.ec-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ec-space-2);
+  background: var(--ec-info-bg);
+  border: 1px solid var(--ec-info-border);
+  border-radius: var(--ec-radius-md);
+  padding: 10px 13px;
+  font-size: var(--ec-fs-caption);
+  color: var(--ec-info-ink);
+  line-height: var(--ec-leading-snug);
+}
+.ec-banner--dev { background: var(--ec-dev-tint); border-color: var(--ec-dev-border); color: var(--ec-dev-tint-ink); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.ec-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ec-space-2);
+  border: none;
+  cursor: pointer;
+  font-size: var(--ec-fs-body);
+  font-weight: var(--ec-fw-bold);
+  padding: 14px;
+  border-radius: var(--ec-radius-md);
+  width: 100%;
+}
+.ec-btn--primary   { background: var(--ec-accent); color: #fff; box-shadow: var(--ec-shadow-button); }
+.ec-btn--success   { background: var(--ec-accepted); color: #fff; }
+.ec-btn--dev       { background: var(--ec-dev); color: #fff; }
+.ec-btn--danger    { background: var(--ec-danger); color: #fff; }
+.ec-btn--secondary { background: var(--ec-surface); color: var(--ec-info-ink); border: 1px solid var(--ec-border-strong); }
+.ec-btn--warn      { background: var(--ec-requested-tint); color: var(--ec-requested); border: 1px solid var(--ec-requested-border); }
+.ec-btn--ghost     { background: none; color: var(--ec-text-faint); font-weight: var(--ec-fw-semibold); }
+.ec-btn:disabled, .ec-btn--disabled { background: #B7C6D2; color: #fff; cursor: not-allowed; box-shadow: none; }
+/* Quiet, low-stakes link button (e.g. "Reject & return") */
+.ec-btn--quiet { background: none; border: none; color: #9A6A66; font-size: var(--ec-fs-meta); font-weight: var(--ec-fw-semibold); }
+
+/* ============================================================
+   PILLS & BADGES
+   ============================================================ */
+.ec-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  border-radius: var(--ec-radius-pill);
+  font-size: var(--ec-fs-micro);
+  font-weight: var(--ec-fw-bold);
+  white-space: nowrap;
+}
+.ec-pill--accepted   { color: var(--ec-accepted);   background: var(--ec-accepted-tint); }
+.ec-pill--processing { color: var(--ec-processing); background: var(--ec-processing-tint); }
+.ec-pill--requested  { color: var(--ec-requested);  background: var(--ec-requested-tint); }
+.ec-pill--open       { color: var(--ec-open);       background: var(--ec-open-tint); }
+.ec-pill--danger     { color: var(--ec-danger);     background: var(--ec-danger-tint); }
+.ec-pill--accent     { color: var(--ec-accent);     background: var(--ec-accent-tint); }
+
+/* Small uppercase identity badge (YOU / INVITED) */
+.ec-tag {
+  padding: 1px 7px;
+  border-radius: var(--ec-radius-pill);
+  font-size: 9.5px;
+  font-weight: var(--ec-fw-heavy);
+  letter-spacing: .3px;
+}
+.ec-tag--you     { color: var(--ec-navy); background: var(--ec-hfa-tint); }
+.ec-tag--invited { color: var(--ec-requested); background: var(--ec-requested-tint); }
+
+/* Notification count badge */
+.ec-badge {
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--ec-radius-pill);
+  background: var(--ec-danger-ink);
+  color: #fff;
+  font-size: 10px;
+  font-weight: var(--ec-fw-heavy);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ============================================================
+   AVATARS
+   ============================================================ */
+.ec-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--ec-radius-pill);
+  color: #fff;
+  font-weight: var(--ec-fw-bold);
+  flex: none;
+}
+.ec-avatar--sm { width: 24px; height: 24px; font-size: 9px; }
+.ec-avatar--md { width: 34px; height: 34px; font-size: 12px; }
+.ec-avatar--lg { width: 40px; height: 40px; font-size: 13px; }
+.ec-avatar--xl { width: 66px; height: 66px; font-size: 23px; font-weight: var(--ec-fw-heavy); }
+/* Overlapping cluster */
+.ec-avatar-stack { display: flex; padding-left: 7px; }
+.ec-avatar-stack > .ec-avatar { margin-left: -7px; border: 2px solid var(--ec-surface); }
+
+/* ============================================================
+   FORM CONTROLS
+   ============================================================ */
+.ec-input, .ec-textarea, .ec-select {
+  width: 100%;
+  border: 1px solid var(--ec-border-strong);
+  border-radius: var(--ec-radius-md);
+  padding: 13px;
+  font-size: var(--ec-fs-body);
+  color: var(--ec-ink);
+  outline: none;
+  background: var(--ec-surface);
+}
+.ec-textarea { resize: none; min-height: 92px; }
+.ec-input:focus, .ec-textarea:focus, .ec-select:focus { border-color: var(--ec-accent); }
+
+/* Segmented control (persona switch) */
+.ec-segment { display: flex; background: var(--ec-segment-bg); border-radius: 13px; padding: 3px; }
+.ec-segment__option {
+  flex: 1;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  padding: 9px;
+  font-size: var(--ec-fs-meta);
+  font-weight: var(--ec-fw-bold);
+  background: transparent;
+  color: var(--ec-text-soft);
+}
+.ec-segment__option--active { background: var(--ec-surface); color: var(--ec-navy); box-shadow: var(--ec-shadow-segment); }
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+.ec-progress { height: 8px; background: var(--ec-surface-track); border-radius: var(--ec-radius-pill); overflow: hidden; }
+.ec-progress__fill { height: 100%; border-radius: var(--ec-radius-pill); background: var(--ec-accepted); }
+
+/* ============================================================
+   TABS (underline)
+   ============================================================ */
+.ec-tabs { display: flex; gap: 17px; padding: 0 var(--ec-space-4); }
+.ec-tab {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 2px 11px;
+  font-size: var(--ec-fs-body-sm);
+  font-weight: var(--ec-fw-bold);
+  color: var(--ec-text-faint);
+  border-bottom: 2.5px solid transparent;
+}
+.ec-tab--active { color: var(--ec-navy); border-bottom-color: var(--ec-accent); }
+
+/* ============================================================
+   OVERLAYS  (bottom sheet, popover, toast)
+   ============================================================ */
+.ec-scrim { position: absolute; inset: 0; background: rgba(10,24,40,.45); animation: ec-fade var(--ec-dur-fast) ease; }
+
+.ec-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: var(--ec-surface);
+  border-radius: var(--ec-radius-sheet) var(--ec-radius-sheet) 0 0;
+  padding: var(--ec-space-6) 20px 30px;
+  animation: ec-sheet-up var(--ec-dur-sheet) var(--ec-ease-out);
+}
+.ec-sheet__grabber { width: 38px; height: 4px; background: #D5DEE6; border-radius: var(--ec-radius-pill); margin: 0 auto var(--ec-space-5); }
+
+.ec-popover {
+  background: var(--ec-surface);
+  border-radius: var(--ec-radius-xl);
+  box-shadow: var(--ec-shadow-pop);
+  overflow: hidden;
+  animation: ec-pop var(--ec-dur-base) ease;
+}
+
+.ec-toast {
+  position: absolute; bottom: 38px; left: 50%; transform: translateX(-50%);
+  background: var(--ec-navy);
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: var(--ec-radius-pill);
+  font-size: var(--ec-fs-meta);
+  font-weight: var(--ec-fw-semibold);
+  box-shadow: var(--ec-shadow-toast);
+  display: flex; align-items: center; gap: var(--ec-space-2);
+  animation: ec-toast-in .25s ease;
+}
+.ec-toast__dot { width: 7px; height: 7px; border-radius: var(--ec-radius-pill); background: #39D9A8; flex: none; }
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes ec-fade     { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ec-pop      { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: scale(1); } }
+@keyframes ec-sheet-up { from { transform: translateY(102%); } to { transform: translateY(0); } }
+@keyframes ec-toast-in { from { opacity: 0; transform: translate(-50%,10px); } to { opacity: 1; transform: translate(-50%,0); } }
+@keyframes ec-spin     { to { transform: rotate(360deg); } }

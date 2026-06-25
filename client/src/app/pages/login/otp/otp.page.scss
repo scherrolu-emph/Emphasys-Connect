@@ -1,0 +1,54 @@
+.otp-wrap {
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--ec-screen-pad);
+  background: var(--ec-bg);
+}
+
+.otp-card {
+  width: 100%;
+  max-width: 480px;
+}
+
+.otp-banner {
+  margin-bottom: var(--ec-space-5);
+}
+
+.otp-instructions {
+  margin: 0 0 var(--ec-space-5);
+}
+
+.otp-field-label {
+  display: block;
+  margin-bottom: var(--ec-space-2);
+}
+
+.otp-code-input {
+  font-size: var(--ec-fs-h2);
+  font-weight: var(--ec-fw-bold);
+  letter-spacing: 6px;
+  text-align: center;
+}
+
+.ec-input--error {
+  border-color: var(--ec-danger);
+}
+
+.otp-error {
+  margin: var(--ec-space-2) 0 0;
+  font-size: var(--ec-fs-caption);
+  color: var(--ec-danger);
+  line-height: var(--ec-leading-snug);
+}
+
+.otp-cta {
+  margin-top: var(--ec-space-5);
+}
+
+.otp-resend {
+  margin-top: var(--ec-space-3);
+  color: var(--ec-text-muted);
+  font-size: var(--ec-fs-meta);
+}

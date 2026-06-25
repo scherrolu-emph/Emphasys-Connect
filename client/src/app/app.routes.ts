@@ -1,5 +1,36 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './core/auth/auth.guard';
 
-// Feature routes added bolt-by-bolt during Construction.
-// Bolt 003 → auth routes; Bolt 004 → dashboard; Bolt 005 → create-case; Bolt 006 → cases/:id
-export const routes: Routes = [];
+export const routes: Routes = [
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.page').then(m => m.LoginPage),
+  },
+  {
+    path: 'login/verify',
+    loadComponent: () =>
+      import('./pages/login/otp/otp.page').then(m => m.OtpPage),
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./pages/dashboard/dashboard.page').then(m => m.DashboardPage),
+    canActivate: [authGuard],
+  },
+  {
+    path: 'my-cases',
+    loadComponent: () =>
+      import('./pages/my-cases/my-cases.page').then(m => m.MyCasesPage),
+    canActivate: [authGuard],
+  },
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'login',
+  },
+];

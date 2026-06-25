@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Enter Code</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="otp-wrap">
+    <div class="ec-card otp-card">
+      @if (email) {
+        <div class="ec-banner otp-banner">
+          Code sent to <strong>{{ email }}</strong>
+        </div>
+      }
+
+      <p class="ec-body otp-instructions">Enter the 6-digit code from your email.</p>
+
+      <label class="ec-label otp-field-label">6-digit code</label>
+      <input
+        #otpInput
+        class="ec-input otp-code-input"
+        [class.ec-input--error]="!!error()"
+        type="number"
+        inputmode="numeric"
+        maxlength="6"
+        placeholder="000000"
+        [value]="otp()"
+        (input)="otp.set($any($event.target).value)"
+        [disabled]="isVerifying()"
+      />
+
+      @if (error()) {
+        <p class="otp-error">{{ error() }}</p>
+      }
+
+      <button
+        class="ec-btn ec-btn--primary otp-cta"
+        [class.ec-btn--disabled]="isVerifying() || otp().length < 6"
+        [disabled]="isVerifying() || otp().length < 6"
+        (click)="verify()"
+      >
+        @if (isVerifying()) { Verifying… } @else { Verify }
+      </button>
+
+      <button
+        class="ec-btn ec-btn--ghost otp-resend"
+        [class.ec-btn--disabled]="resendCooldown() > 0 || isResending()"
+        [disabled]="resendCooldown() > 0 || isResending()"
+        (click)="resend()"
+      >
+        @if (resendCooldown() > 0) {
+          Resend code ({{ resendCooldown() }}s)
+        } @else if (isResending()) {
+          Sending…
+        } @else {
+          Resend code
+        }
+      </button>
+    </div>
+  </div>
+</ion-content>

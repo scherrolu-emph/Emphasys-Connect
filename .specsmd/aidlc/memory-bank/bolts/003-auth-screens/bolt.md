@@ -1,22 +1,36 @@
 ---
-id: "003"
+id: '003'
 unit: 002-auth-screens
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-24T20:30:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-24T20:35:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-24T20:55:00Z'
+    artifact: implementation-walkthrough.md
 stories:
   - 001-email-entry-screen
   - 002-otp-entry-screen
   - 003-post-login-routing
   - 004-session-persistence-and-logout
-created: 2026-06-24T00:00:00Z
-requires_bolts: ["002"]
-enables_bolts: ["004", "005", "006"]
+created: '2026-06-24T00:00:00Z'
+requires_bolts:
+  - '002'
+enables_bolts:
+  - '004'
+  - '005'
+  - '006'
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
   reason: Full passwordless OTP flow with Supabase Auth, session persistence, and role-based post-login routing
+completed: '2026-06-25T01:11:10Z'
 ---
 
 # Bolt 003 — Auth Screens: Full Passwordless OTP Flow

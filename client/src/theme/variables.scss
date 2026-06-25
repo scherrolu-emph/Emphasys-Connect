@@ -1,2 +1,47 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// Maps Emphasys Connect design tokens → Ionic CSS variables.
+// Source of truth: src/theme/ec-style-guide.css
+
+:root {
+  // Primary (accent blue)
+  --ion-color-primary:          var(--ec-accent);
+  --ion-color-primary-shade:    var(--ec-accent-strong);
+  --ion-color-primary-tint:     var(--ec-accent-tint);
+  --ion-color-primary-contrast: #ffffff;
+
+  // Danger (error / overdue)
+  --ion-color-danger:           var(--ec-danger);
+  --ion-color-danger-tint:      var(--ec-danger-tint);
+  --ion-color-danger-contrast:  #ffffff;
+
+  // Success
+  --ion-color-success:          var(--ec-accepted);
+  --ion-color-success-tint:     var(--ec-accepted-tint);
+  --ion-color-success-contrast: #ffffff;
+
+  // Warning
+  --ion-color-warning:          var(--ec-requested);
+  --ion-color-warning-tint:     var(--ec-requested-tint);
+
+  // App chrome
+  --ion-background-color:       var(--ec-bg);
+  --ion-background-color-rgb:   244, 247, 250;
+  --ion-text-color:             var(--ec-ink);
+  --ion-font-family:            var(--ec-font-sans);
+  --ion-border-color:           var(--ec-border);
+
+  // Toolbar
+  --ion-toolbar-background:     var(--ec-surface);
+  --ion-toolbar-color:          var(--ec-navy);
+  --ion-toolbar-border-color:   var(--ec-line);
+
+  // Tabs
+  --ion-tab-bar-background:     var(--ec-surface);
+  --ion-tab-bar-border-color:   var(--ec-line);
+  --ion-tab-bar-color:          var(--ec-text-soft);
+  --ion-tab-bar-color-selected: var(--ec-accent);
+
+  // Inputs
+  --ion-item-background:        var(--ec-surface);
+  --ion-item-border-color:      var(--ec-border-strong);
+  --ion-placeholder-color:      var(--ec-text-faint);
+}

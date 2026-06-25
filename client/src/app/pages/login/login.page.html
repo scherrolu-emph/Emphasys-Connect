@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Sign In</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="login-wrap">
+    <div class="ec-card login-card">
+      <h1 class="ec-h1 login-heading">Welcome to<br/>Emphasys Connect</h1>
+      <p class="ec-caption login-sub">Enter your email to receive a sign-in code.</p>
+
+      <label class="ec-label login-field-label">Email address</label>
+      <input
+        class="ec-input"
+        [class.ec-input--error]="!!error()"
+        type="email"
+        placeholder="you@example.com"
+        autocomplete="email"
+        inputmode="email"
+        [value]="email()"
+        (input)="email.set($any($event.target).value)"
+        [disabled]="isSending()"
+      />
+
+      @if (error()) {
+        <p class="login-error">{{ error() }}</p>
+      }
+
+      <button
+        class="ec-btn ec-btn--primary login-cta"
+        [class.ec-btn--disabled]="isSending()"
+        [disabled]="isSending()"
+        (click)="sendCode()"
+      >
+        @if (isSending()) {
+          Sending…
+        } @else {
+          Send code
+        }
+      </button>
+    </div>
+
+    <div class="login-demo">
+      <span class="ec-label">Demo quick-login</span>
+      <button
+        class="ec-btn ec-btn--secondary"
+        [class.ec-btn--disabled]="isSending()"
+        [disabled]="isSending()"
+        (click)="quickLogin('staff@hfa.demo')"
+      >
+        Log in as HFA Staff
+      </button>
+      <button
+        class="ec-btn ec-btn--secondary"
+        [class.ec-btn--disabled]="isSending()"
+        [disabled]="isSending()"
+        (click)="quickLogin('developer@demo.com')"
+      >
+        Log in as Developer
+      </button>
+    </div>
+  </div>
+</ion-content>
