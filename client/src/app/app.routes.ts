@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
 import { participantCasesGuard } from './core/auth/participant-cases.guard';
+import { hfaGuard } from './core/auth/hfa.guard';
 
 export const routes: Routes = [
   {
@@ -17,7 +18,7 @@ export const routes: Routes = [
     path: 'dashboard',
     loadComponent: () =>
       import('./pages/dashboard/dashboard.page').then(m => m.DashboardPage),
-    canActivate: [authGuard],
+    canActivate: [hfaGuard],
   },
   {
     path: 'my-cases',

@@ -1,24 +1,63 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   IonContent,
   IonHeader,
   IonTitle,
   IonToolbar,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonSkeletonText,
+  IonChip,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/angular/standalone';
+import { AuthService } from '../../core/auth/auth.service';
+import { DashboardStore } from './dashboard.store';
+import { CaseCardComponent } from './case-card/case-card.component';
+import { FILTER_CHIPS, CASE_TYPE_LABELS } from '../../core/cases/case.models';
+import type { FilterType } from '../../core/cases/case.models';
 
 @Component({
   selector: 'app-dashboard',
-  template: `
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>Dashboard</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <p>HFA Dashboard — coming in Bolt 004.</p>
-    </ion-content>
-  `,
+  templateUrl: './dashboard.page.html',
+  styleUrls: ['./dashboard.page.scss'],
   standalone: true,
-  imports: [IonContent, IonHeader, IonTitle, IonToolbar],
+  imports: [
+    IonContent, IonHeader, IonTitle, IonToolbar,
+    IonList, IonItem, IonLabel, IonSkeletonText,
+    IonChip, IonRefresher, IonRefresherContent,
+    CaseCardComponent,
+  ],
 })
-export class DashboardPage {}
+export class DashboardPage {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+  readonly store = inject(DashboardStore);
+
+  readonly filterChips = FILTER_CHIPS;
+  readonly skeletonRows = [1, 2, 3, 4];
+
+  constructor() {
+    effect(() => {
+      const hfaId = this.auth.hfaId();
+      if (hfaId) this.store.load(hfaId);
+    });
+  }
+
+  async onRefresh(event: CustomEvent): Promise<void> {
+    const hfaId = this.auth.hfaId();
+    if (hfaId) await this.store.load(hfaId);
+    (event.target as HTMLIonRefresherElement).complete();
+  }
+
+  navigateToCase(caseId: string): void {
+    this.router.navigate(['/cases', caseId]);
+  }
+
+  filterLabel(type: FilterType): string {
+    if (type === 'all') return 'All';
+    return CASE_TYPE_LABELS[type];
+  }
+}

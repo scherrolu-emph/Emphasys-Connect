@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Cases</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="onRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="dashboard-container">
+
+    <div class="filter-chips">
+      @for (chip of filterChips; track chip.value) {
+        <ion-chip
+          [class.chip--active]="store.selectedType() === chip.value"
+          (click)="store.selectType(chip.value)">
+          {{ chip.label }}
+        </ion-chip>
+      }
+    </div>
+
+    @if (store.isLoading()) {
+      <ion-list>
+        @for (n of skeletonRows; track n) {
+          <ion-item>
+            <ion-label>
+              <ion-skeleton-text [animated]="true" style="width: 60%; height: 16px;"></ion-skeleton-text>
+              <ion-skeleton-text [animated]="true" style="width: 40%; height: 12px; margin-top: 6px;"></ion-skeleton-text>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    }
+
+    @if (store.error()) {
+      <div class="empty-state">
+        <p>Could not load cases — pull down to retry</p>
+      </div>
+    }
+
+    @if (!store.isLoading() && !store.error() && store.filteredCases().length === 0) {
+      <div class="empty-state">
+        @if (store.selectedType() === 'all') {
+          <p>No active cases</p>
+        } @else {
+          <p>No {{ filterLabel(store.selectedType()) }} cases</p>
+        }
+      </div>
+    }
+
+    @if (!store.isLoading() && store.filteredCases().length > 0) {
+      <ion-list>
+        @for (c of store.filteredCases(); track c.id) {
+          <app-case-card [caseItem]="c" (selected)="navigateToCase($event)" />
+        }
+      </ion-list>
+    }
+
+  </div>
+</ion-content>

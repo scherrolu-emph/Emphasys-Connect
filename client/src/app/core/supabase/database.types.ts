@@ -78,6 +78,8 @@ export type Database = {
           order_index: number;
           status: MilestoneStatus;
           is_internal: boolean;
+          target_days: number | null;
+          activated_at: string | null;
           created_at: string;
         };
         Insert: {
@@ -88,6 +90,8 @@ export type Database = {
           order_index: number;
           status?: MilestoneStatus;
           is_internal?: boolean;
+          target_days?: number | null;
+          activated_at?: string | null;
           created_at?: string;
         };
         Update: {
@@ -95,6 +99,8 @@ export type Database = {
           order_index?: number;
           status?: MilestoneStatus;
           is_internal?: boolean;
+          target_days?: number | null;
+          activated_at?: string | null;
         };
       };
       prerequisites: {

@@ -1,0 +1,44 @@
+.dashboard-container {
+  padding: 0 0 16px;
+
+  @media (min-width: 768px) {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px 0;
+  }
+
+  @media (min-width: 1280px) {
+    max-width: 1200px;
+  }
+}
+
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+
+  ion-chip {
+    --background: var(--ion-color-light);
+    --color: var(--ion-color-medium);
+    margin: 0;
+
+    &.chip--active {
+      --background: var(--ion-color-primary);
+      --color: var(--ion-color-primary-contrast);
+    }
+  }
+}
+
+.empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 16px;
+
+  p {
+    color: var(--ion-color-medium);
+    font-size: 0.95rem;
+    text-align: center;
+  }
+}
