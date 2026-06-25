@@ -2,11 +2,11 @@
 id: 007-milestone-number-badge
 unit: 005-case-detail-shell
 intent: 001-construction-milestone-workspace
-status: draft
+status: implemented
 priority: should
 created: 2026-06-25T12:00:00Z
-assigned_bolt: null
-implemented: false
+assigned_bolt: "017"
+implemented: true
 ---
 
 # Story: 007-milestone-number-badge

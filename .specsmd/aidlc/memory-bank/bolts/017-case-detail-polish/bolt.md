@@ -3,16 +3,16 @@ id: "017"
 unit: 005-case-detail-shell
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: completed
 stories:
   - 006-participant-list-improvements
   - 007-milestone-number-badge
   - 008-case-detail-header-cleanup
 created: 2026-06-25T12:00:00Z
-started: null
-completed: null
+started: 2026-06-25T22:00:00Z
+completed: 2026-06-25T22:33:00Z
 current_stage: null
-stages_completed: []
+stages_completed: ["plan", "implement", "test"]
 
 requires_bolts: ["015"]
 enables_bolts: []

@@ -17,15 +17,6 @@
     }
   </ion-toolbar>
 
-  <!-- Case sub-header: type badge + active milestone -->
-  @if (store.caseDetail(); as c) {
-    <div class="case-subheader">
-      <ion-chip class="type-chip" [color]="'primary'" outline="true">{{ caseTypeLabel() }}</ion-chip>
-      @if (store.activeMilestone(); as m) {
-        <span class="active-milestone">{{ m.title }}</span>
-      }
-    </div>
-  }
 </ion-header>
 
 <ion-content>

@@ -15,7 +15,7 @@
             <div class="participant-name">
               {{ displayLabel(p) }}
               @if (isSelf(p)) { <span class="badge-you">YOU</span> }
-              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
+              @if (isPending(p)) { <ion-badge color="medium">Invited</ion-badge> }
             </div>
             <div class="participant-meta">{{ p.role === 'hfa_staff' ? 'HFA Staff' : 'Developer' }} · {{ p.email }}</div>
           </ion-label>
@@ -54,9 +54,126 @@
             <div class="participant-name">
               {{ displayLabel(p) }}
               @if (isSelf(p)) { <span class="badge-you">YOU</span> }
-              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
+              @if (isPending(p)) { <ion-badge color="medium">Invited</ion-badge> }
             </div>
             <div class="participant-meta">Developer · {{ p.email }}</div>
+          </ion-label>
+          @if (isSelf(p)) {
+            <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
+          } @else if (isHfa()) {
+            @if (removingId() === p.id) {
+              <div slot="end" class="confirm-remove">
+                <span class="confirm-text">Remove {{ displayLabel(p) }}?</span>
+                <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
+                  <ion-icon name="checkmark-outline" />
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="cancelRemove()">
+                  <ion-icon name="close-outline" />
+                </ion-button>
+              </div>
+            } @else {
+              <ion-button fill="clear" slot="end" class="btn-remove" (click)="confirmRemove(p)">
+                <ion-icon name="trash-outline" />
+              </ion-button>
+            }
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- INSPECTOR -->
+  @if (inspectorParticipants().length > 0) {
+    <div class="section-header">INSPECTOR <span class="count">{{ inspectorParticipants().length }}</span></div>
+    <ion-list lines="none" class="participant-list">
+      @for (p of inspectorParticipants(); track p.id) {
+        <ion-item class="participant-row">
+          <app-avatar [name]="displayLabel(p)" [size]="36" slot="start" />
+          <ion-label>
+            <div class="participant-name">
+              {{ displayLabel(p) }}
+              @if (isSelf(p)) { <span class="badge-you">YOU</span> }
+              @if (isPending(p)) { <ion-badge color="medium">Invited</ion-badge> }
+            </div>
+            <div class="participant-meta">Inspector · {{ p.email }}</div>
+          </ion-label>
+          @if (isSelf(p)) {
+            <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
+          } @else if (isHfa()) {
+            @if (removingId() === p.id) {
+              <div slot="end" class="confirm-remove">
+                <span class="confirm-text">Remove {{ displayLabel(p) }}?</span>
+                <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
+                  <ion-icon name="checkmark-outline" />
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="cancelRemove()">
+                  <ion-icon name="close-outline" />
+                </ion-button>
+              </div>
+            } @else {
+              <ion-button fill="clear" slot="end" class="btn-remove" (click)="confirmRemove(p)">
+                <ion-icon name="trash-outline" />
+              </ion-button>
+            }
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- LENDER -->
+  @if (lenderParticipants().length > 0) {
+    <div class="section-header">LENDER <span class="count">{{ lenderParticipants().length }}</span></div>
+    <ion-list lines="none" class="participant-list">
+      @for (p of lenderParticipants(); track p.id) {
+        <ion-item class="participant-row">
+          <app-avatar [name]="displayLabel(p)" [size]="36" slot="start" />
+          <ion-label>
+            <div class="participant-name">
+              {{ displayLabel(p) }}
+              @if (isSelf(p)) { <span class="badge-you">YOU</span> }
+              @if (isPending(p)) { <ion-badge color="medium">Invited</ion-badge> }
+            </div>
+            <div class="participant-meta">Lender · {{ p.email }}</div>
+          </ion-label>
+          @if (isSelf(p)) {
+            <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
+          } @else if (isHfa()) {
+            @if (removingId() === p.id) {
+              <div slot="end" class="confirm-remove">
+                <span class="confirm-text">Remove {{ displayLabel(p) }}?</span>
+                <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
+                  <ion-icon name="checkmark-outline" />
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="cancelRemove()">
+                  <ion-icon name="close-outline" />
+                </ion-button>
+              </div>
+            } @else {
+              <ion-button fill="clear" slot="end" class="btn-remove" (click)="confirmRemove(p)">
+                <ion-icon name="trash-outline" />
+              </ion-button>
+            }
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- ARCHITECT -->
+  @if (architectParticipants().length > 0) {
+    <div class="section-header">ARCHITECT <span class="count">{{ architectParticipants().length }}</span></div>
+    <ion-list lines="none" class="participant-list">
+      @for (p of architectParticipants(); track p.id) {
+        <ion-item class="participant-row">
+          <app-avatar [name]="displayLabel(p)" [size]="36" slot="start" />
+          <ion-label>
+            <div class="participant-name">
+              {{ displayLabel(p) }}
+              @if (isSelf(p)) { <span class="badge-you">YOU</span> }
+              @if (isPending(p)) { <ion-badge color="medium">Invited</ion-badge> }
+            </div>
+            <div class="participant-meta">Architect · {{ p.email }}</div>
           </ion-label>
           @if (isSelf(p)) {
             <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
@@ -93,7 +210,7 @@
             <div class="participant-name">
               {{ displayLabel(p) }}
               @if (isSelf(p)) { <span class="badge-you">YOU</span> }
-              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
+              @if (isPending(p)) { <ion-badge color="medium">Invited</ion-badge> }
             </div>
             <div class="participant-meta">{{ p.email }}</div>
           </ion-label>
@@ -144,6 +261,9 @@
           >
             <ion-select-option value="developer">Developer</ion-select-option>
             <ion-select-option value="hfa_staff">HFA Staff</ion-select-option>
+            <ion-select-option value="inspector">Inspector</ion-select-option>
+            <ion-select-option value="lender">Lender</ion-select-option>
+            <ion-select-option value="architect">Architect</ion-select-option>
           </ion-select>
         </ion-item>
         <div class="add-form-actions">

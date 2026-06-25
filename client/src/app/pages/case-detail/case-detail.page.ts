@@ -12,7 +12,6 @@ import {
   IonLabel,
   IonBadge,
   IonSkeletonText,
-  IonChip,
   ViewWillEnter,
   ViewWillLeave,
 } from '@ionic/angular/standalone';
@@ -27,7 +26,6 @@ import { HfaActionsPanelComponent } from '../../components/hfa-actions-panel/hfa
 import type { AcceptEvent, ReturnEvent, TriggerEvent } from '../../components/hfa-actions-panel/hfa-actions-panel.component';
 import { ParticipantStatusPanelComponent } from '../../components/participant-status-panel/participant-status-panel.component';
 import { ConversationPanelComponent } from '../../components/conversation/conversation-panel/conversation-panel.component';
-import { CASE_TYPE_LABELS } from '../../core/cases/case.models';
 import type { CaseParticipant, MilestoneDetail, PrerequisiteSummary } from '../../core/cases/case.models';
 import type { AddParticipantRequest } from '../../components/participants-tab/participants-tab.component';
 
@@ -41,7 +39,7 @@ type ActiveRightTab = 'conversation' | 'participants';
   imports: [
     CommonModule,
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
-    IonSegment, IonSegmentButton, IonLabel, IonBadge, IonSkeletonText, IonChip,
+    IonSegment, IonSegmentButton, IonLabel, IonBadge, IonSkeletonText,
     ParticipantsTabComponent,
     HfaActionsPanelComponent,
     ParticipantStatusPanelComponent,
@@ -68,11 +66,6 @@ export class CaseDetailPage implements ViewWillEnter, ViewWillLeave, OnDestroy {
   readonly isHfa = computed(() => this.auth.isHfa());
   readonly currentUserId = computed(() => this.auth.currentUser()?.id ?? null);
   readonly currentUserHfaId = computed(() => this.auth.hfaId());
-
-  readonly caseTypeLabel = computed(() => {
-    const c = this.store.caseDetail();
-    return c ? CASE_TYPE_LABELS[c.caseType] : '';
-  });
 
   readonly unreadCount = computed(() => {
     const cutoff = this.lastReadAt();

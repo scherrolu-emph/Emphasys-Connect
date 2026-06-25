@@ -60,8 +60,23 @@ export class ParticipantsTabComponent {
     this.participants().filter(p => p.role === 'developer'),
   );
 
+  readonly inspectorParticipants = computed(() =>
+    this.participants().filter(p => p.role === 'inspector'),
+  );
+
+  readonly lenderParticipants = computed(() =>
+    this.participants().filter(p => p.role === 'lender'),
+  );
+
+  readonly architectParticipants = computed(() =>
+    this.participants().filter(p => p.role === 'architect'),
+  );
+
   readonly otherParticipants = computed(() =>
-    this.participants().filter(p => p.role !== 'hfa_staff' && p.role !== 'developer'),
+    this.participants().filter(
+      p => p.role !== 'hfa_staff' && p.role !== 'developer' &&
+           p.role !== 'inspector' && p.role !== 'lender' && p.role !== 'architect',
+    ),
   );
 
   isSelf(p: CaseParticipant): boolean {

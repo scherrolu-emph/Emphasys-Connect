@@ -2,9 +2,10 @@
   @if (milestones().length === 0) {
     <div class="empty-state">No milestones have been defined yet.</div>
   } @else {
-    @for (m of milestones(); track m.id) {
+    @for (m of milestones(); track m.id; let i = $index) {
       <div class="milestone-section" [class.is-active]="m.status === 'active'" [class.is-completed]="m.status === 'completed'">
         <button class="milestone-header" (click)="toggleMilestone(m.id)">
+          <span class="milestone-num">{{ i + 1 }}</span>
           <span class="milestone-title">{{ m.title }}</span>
           <app-milestone-status-badge [status]="m.status" />
           <ion-icon
