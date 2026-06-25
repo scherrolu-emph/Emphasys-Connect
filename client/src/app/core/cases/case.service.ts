@@ -300,12 +300,13 @@ export class CaseService {
       content: `${email} was added as ${role === 'developer' ? 'Developer' : 'HFA Staff'}.`,
     });
 
+    const { data: caseRow } = await supabase.from('cases').select('title').eq('id', caseId).single();
+
+    supabase.functions.invoke('notify-participant-added', {
+      body: { email, caseName: caseRow?.title ?? 'your case', appUrl: window.location.origin },
+    }).catch(err => console.error('notify-participant-added failed', err));
+
     if (mapped.userId) {
-      const { data: caseRow } = await supabase
-        .from('cases')
-        .select('title')
-        .eq('id', caseId)
-        .single();
       void this.notifSvc.writeNotification(
         hfaId,
         mapped.userId,

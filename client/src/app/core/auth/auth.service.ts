@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabase/supabase.client';
 import type { Database } from '../supabase/database.types';
+import { environment } from '../../../environments/environment';
 
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
@@ -50,17 +51,37 @@ export class AuthService {
   }
 
   async signInWithOtp(email: string): Promise<void> {
+    if (environment.mockOtp) return;
     const { error } = await supabase.auth.signInWithOtp({ email });
     if (error) throw error;
   }
 
   async verifyOtp(email: string, token: string): Promise<void> {
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'email',
-    });
-    if (error) throw error;
+    let userId: string | undefined;
+
+    if (environment.mockOtp) {
+      if (token !== environment.mockOtpCode) throw new Error('Invalid code');
+      const { data: fnData, error: fnError } = await supabase.functions.invoke('dev-mock-sign-in', { body: { email } });
+      if (fnError) throw fnError;
+      const { data: otpData, error } = await supabase.auth.verifyOtp({ token_hash: fnData.hashed_token, type: 'email' });
+      if (error) throw error;
+      userId = otpData.user?.id;
+    } else {
+      const { data: otpData, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
+      if (error) throw error;
+      userId = otpData.user?.id;
+    }
+
+    if (userId) {
+      const { error: updateError } = await supabase
+        .from('case_participants')
+        .update({ invite_status: 'accepted', user_id: userId })
+        .eq('email', email)
+        .eq('invite_status', 'pending');
+      if (updateError) console.error('[invite-accept] update failed:', updateError);
+    } else {
+      console.warn('[invite-accept] no user id after verifyOtp — skipping update');
+    }
   }
 
   async signOut(): Promise<void> {

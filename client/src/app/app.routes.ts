@@ -2,12 +2,14 @@ import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
 import { participantCasesGuard } from './core/auth/participant-cases.guard';
 import { hfaGuard } from './core/auth/hfa.guard';
+import { alreadyAuthGuard } from './core/auth/already-auth.guard';
 
 export const routes: Routes = [
   {
     path: 'login',
     loadComponent: () =>
       import('./pages/login/login.page').then(m => m.LoginPage),
+    canActivate: [alreadyAuthGuard],
   },
   {
     path: 'login/verify',
@@ -18,7 +20,6 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./pages/tabs/tabs.page').then(m => m.TabsPage),
-    canActivate: [authGuard],
     children: [
       {
         path: 'dashboard',
@@ -84,7 +85,7 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'my-tasks',
+        redirectTo: '/login',
         pathMatch: 'full',
       },
     ],

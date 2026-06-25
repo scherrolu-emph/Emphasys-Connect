@@ -73,7 +73,7 @@ export class ParticipantsTabComponent {
   }
 
   isPending(p: CaseParticipant): boolean {
-    return p.inviteStatus === 'pending' || !p.displayName;
+    return p.inviteStatus === 'pending';
   }
 
   confirmRemove(p: CaseParticipant): void {

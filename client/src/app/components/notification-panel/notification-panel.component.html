@@ -1,0 +1,52 @@
+@if (open()) {
+  <div
+    class="notif-panel"
+    role="dialog"
+    aria-label="Notifications panel"
+    [style.top.px]="anchorBottom()"
+    [style.right.px]="anchorRight()"
+  >
+    <div class="panel-header">Notifications</div>
+
+    @if (overdueItems().length === 0 && notifications().length === 0) {
+      <div class="empty-state">You're all caught up</div>
+    }
+
+    @for (item of overdueItems(); track item.milestoneId) {
+      <div class="notif-row overdue" (click)="navigateTo(item.caseId)" (keydown.enter)="navigateTo(item.caseId)" tabindex="0" role="button">
+        <ion-icon name="warning-outline" class="type-icon" />
+        <div class="notif-content">
+          <span class="title">{{ item.milestoneName }}</span>
+          <span class="body">{{ item.caseTitle }} · {{ item.daysOverdue }} day{{ item.daysOverdue === 1 ? '' : 's' }} overdue</span>
+        </div>
+      </div>
+    }
+
+    @for (n of notifications(); track n.id) {
+      <div
+        class="notif-row"
+        [class.unread]="!n.read"
+        (click)="navigateTo(n.caseId)"
+        (keydown.enter)="navigateTo(n.caseId)"
+        tabindex="0"
+        role="button"
+      >
+        <ion-icon [name]="typeIcon(n.type)" class="type-icon" />
+        <div class="notif-content">
+          <span class="title">{{ n.title }}</span>
+          @if (n.body) {
+            <span class="body">{{ n.body }}</span>
+          }
+          <span class="time">{{ relativeTime(n.createdAt) }}</span>
+        </div>
+      </div>
+    }
+
+    <div class="panel-footer">
+      <button class="signout-btn" (click)="signOut()">
+        <ion-icon name="log-out-outline" aria-hidden="true"></ion-icon>
+        Sign out
+      </button>
+    </div>
+  </div>
+}

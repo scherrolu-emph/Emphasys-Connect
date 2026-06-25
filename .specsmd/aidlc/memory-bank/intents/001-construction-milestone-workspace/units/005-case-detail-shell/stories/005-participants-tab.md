@@ -37,7 +37,7 @@ implemented: true
 ### Add participant (HFA only)
 - [ ] **Given** an HFA user views the Participants tab, **When** it renders, **Then** a full-width "Add participant" button (person-add icon + label) is shown sticky at the bottom of the screen
 - [ ] **Given** the HFA taps "Add participant", **When** the tap fires, **Then** an inline form appears above the CTA (not a modal) with: email address field, role/type selector, and "Send invite" + "Cancel" buttons
-- [ ] **Given** the HFA enters a valid email and role and taps "Send invite", **When** the action succeeds, **Then** the new participant row is added to the correct section with "Pending" status; a system message "HFA added [name/email] as [role]" is written to `conversation_messages`; the participant receives an email invitation (logged only for hackathon)
+- [ ] **Given** the HFA enters a valid email and role and taps "Send invite", **When** the action succeeds, **Then** the new participant row is added to the correct section with "Pending" status; a system message "HFA added [name/email] as [role]" is written to `conversation_messages`; the participant receives an email invitation via the `notify-participant-added` Edge Function
 - [ ] **Given** the disclaimer text below the CTA, **When** rendered, **Then** it reads: "Added participants get an email invitation and can view the case & respond to items assigned to them."
 
 ### Remove participant (HFA only)
@@ -55,7 +55,7 @@ implemented: true
 - Grouping: `computed()` signals deriving three filtered arrays from `participants()`
 - Avatar color: deterministic from display name — hash first char of first + last name to pick from a fixed palette of 8 colors (no randomness at render time)
 - "YOU" detection: `participant.userId === currentUser.id`
-- `addParticipant(caseId, email, role)`: query `profiles` by email; if not found create placeholder; INSERT `case_participants`; write system message; Edge Function `notify-participant-added` (stubbed)
+- `addParticipant(caseId, email, role)`: query `profiles` by email; if not found create placeholder; INSERT `case_participants`; write system message; Edge Function `notify-participant-added`
 - `removeParticipant(caseId, participantId)`: DELETE `case_participants`; write system message
 - Inline add form: `addFormOpen = signal(false)`; absolutely positioned above sticky CTA; close on Cancel or success
 - Inline remove confirmation: `removingParticipantId = signal<string | null>(null)`; shown inline in the row
@@ -80,5 +80,4 @@ implemented: true
 ## Out of Scope
 - Editing a participant's role after they have been added (post-hackathon)
 - Bulk participant import
-- Sending actual invitation emails (Edge Function logged only for hackathon)
 - Participant permissions beyond role
