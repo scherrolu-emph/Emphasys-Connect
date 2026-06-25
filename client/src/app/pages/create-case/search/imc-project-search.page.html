@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="back()">Back</ion-button>
+    </ion-buttons>
+    <ion-title>New Construction Case</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="search-container">
+    <input
+      #searchInput
+      class="search-input"
+      type="text"
+      placeholder="Enter project # or name"
+      autocomplete="off"
+    />
+  </div>
+
+  @if (isLoading()) {
+    <div class="loading-row">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
+
+  @if (!isLoading() && results().length > 0) {
+    <ion-list lines="full">
+      @for (project of results(); track project.id) {
+        <ion-item button (click)="selectProject(project)">
+          <ion-label>
+            <h3>{{ project.name }}</h3>
+            <p>{{ project.projectNumber }} · {{ project.address }}</p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  @if (!isLoading() && hasSearched() && results().length === 0) {
+    <div class="empty-state">
+      <p>No projects found — check the project number or name</p>
+    </div>
+  }
+</ion-content>

@@ -5,6 +5,8 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
+  IonButtons,
+  IonButton,
   IonList,
   IonItem,
   IonLabel,
@@ -26,6 +28,7 @@ import type { FilterType } from '../../core/cases/case.models';
   standalone: true,
   imports: [
     IonContent, IonHeader, IonTitle, IonToolbar,
+    IonButtons, IonButton,
     IonList, IonItem, IonLabel, IonSkeletonText,
     IonChip, IonRefresher, IonRefresherContent,
     CaseCardComponent,
@@ -54,6 +57,10 @@ export class DashboardPage {
 
   navigateToCase(caseId: string): void {
     this.router.navigate(['/cases', caseId]);
+  }
+
+  createCase(): void {
+    this.router.navigate(['/create-case/type']);
   }
 
   filterLabel(type: FilterType): string {

@@ -3,14 +3,27 @@ id: "005"
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: 2026-06-25T00:00:00Z
+completed: 2026-06-25T09:10:00Z
+current_stage: done
+stages_completed:
+  - name: plan
+    completed: 2026-06-25T00:00:00Z
+    artifact: implementation-plan.md
+  - name: implement
+    completed: 2026-06-25T01:00:00Z
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: 2026-06-25T09:10:00Z
+    artifact: test-walkthrough.md
 stories:
   - 001-case-type-selection
   - 002-imc-project-search
   - 003-confirm-and-participants
   - 004-create-case-action
 created: 2026-06-24T00:00:00Z
-updated: 2026-06-24T00:00:00Z
+updated: 2026-06-25T00:00:00Z
 requires_bolts: ["004"]
 enables_bolts: ["006"]
 requires_units: []

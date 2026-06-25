@@ -39,6 +39,7 @@ export type Database = {
           display_name?: string;
           is_hfa?: boolean;
         };
+        Relationships: [];
       };
       cases: {
         Row: {
@@ -70,6 +71,7 @@ export type Database = {
           imc_project_id?: string | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       milestones: {
         Row: {
@@ -107,6 +109,7 @@ export type Database = {
           activated_at?: string | null;
           completed_at?: string | null;
         };
+        Relationships: [];
       };
       prerequisites: {
         Row: {
@@ -159,6 +162,7 @@ export type Database = {
           accepted_at?: string | null;
           updated_at?: string;
         };
+        Relationships: [];
       };
       case_participants: {
         Row: {
@@ -187,6 +191,7 @@ export type Database = {
           user_id?: string | null;
           invite_status?: InviteStatus;
         };
+        Relationships: [];
       };
       conversation_messages: {
         Row: {
@@ -216,6 +221,7 @@ export type Database = {
           mentions?: string[];
           metadata?: Json | null;
         };
+        Relationships: [];
       };
       notifications: {
         Row: {
@@ -250,8 +256,11 @@ export type Database = {
           read?: boolean;
           read_at?: string | null;
         };
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
     Enums: {
       case_type: CaseType;
       milestone_status: MilestoneStatus;

@@ -1,0 +1,111 @@
+[
+  {
+    "id": "imc-001",
+    "projectNumber": "2024-001",
+    "name": "River View Apartments",
+    "address": "1200 River Rd, Austin, TX 78701",
+    "developerEmail": "developer@demo.com",
+    "milestones": [
+      {
+        "id": "m-001-1",
+        "title": "Foundation & Site Preparation",
+        "order": 1,
+        "prerequisites": [
+          { "id": "p-001-1-1", "title": "Environmental clearance letter", "type": "document_submission" },
+          { "id": "p-001-1-2", "title": "Building permit", "type": "document_submission" },
+          { "id": "p-001-1-3", "title": "Site preparation approved", "type": "acceptance_comment" }
+        ]
+      },
+      {
+        "id": "m-001-2",
+        "title": "Framing & Structural",
+        "order": 2,
+        "prerequisites": [
+          { "id": "p-001-2-1", "title": "Framing inspection report", "type": "document_submission" },
+          { "id": "p-001-2-2", "title": "Structural engineer sign-off", "type": "document_submission" }
+        ]
+      },
+      {
+        "id": "m-001-3",
+        "title": "Mechanical, Electrical & Plumbing",
+        "order": 3,
+        "prerequisites": [
+          { "id": "p-001-3-1", "title": "MEP rough-in inspection", "type": "document_submission" },
+          { "id": "p-001-3-2", "title": "Energy compliance certificate", "type": "document_submission" }
+        ]
+      },
+      {
+        "id": "m-001-4",
+        "title": "Final Inspection & Certificate of Occupancy",
+        "order": 4,
+        "prerequisites": [
+          { "id": "p-001-4-1", "title": "Final inspection report", "type": "document_submission" },
+          { "id": "p-001-4-2", "title": "Certificate of Occupancy", "type": "document_submission" },
+          { "id": "p-001-4-3", "title": "Project completion confirmation", "type": "acceptance_comment" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "imc-002",
+    "projectNumber": "2024-017",
+    "name": "Oakwood Family Homes",
+    "address": "450 Oak St, Dallas, TX 75201",
+    "developerEmail": "developer@demo.com",
+    "milestones": [
+      {
+        "id": "m-002-1",
+        "title": "Site Work & Utilities",
+        "order": 1,
+        "prerequisites": [
+          { "id": "p-002-1-1", "title": "Utility connection confirmation", "type": "document_submission" },
+          { "id": "p-002-1-2", "title": "Grading and drainage plan approved", "type": "acceptance_comment" }
+        ]
+      },
+      {
+        "id": "m-002-2",
+        "title": "Construction Completion",
+        "order": 2,
+        "prerequisites": [
+          { "id": "p-002-2-1", "title": "Construction completion certificate", "type": "document_submission" },
+          { "id": "p-002-2-2", "title": "Cost certification", "type": "document_submission" }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "imc-003",
+    "projectNumber": "2023-089",
+    "name": "Cedar Creek Senior Living",
+    "address": "780 Cedar Creek Blvd, San Antonio, TX 78205",
+    "developerEmail": "developer@demo.com",
+    "milestones": [
+      {
+        "id": "m-003-1",
+        "title": "Pre-Construction",
+        "order": 1,
+        "prerequisites": [
+          { "id": "p-003-1-1", "title": "Zoning approval letter", "type": "document_submission" },
+          { "id": "p-003-1-2", "title": "Accessibility design review", "type": "acceptance_comment" }
+        ]
+      },
+      {
+        "id": "m-003-2",
+        "title": "Construction Phase 1",
+        "order": 2,
+        "prerequisites": [
+          { "id": "p-003-2-1", "title": "Phase 1 inspection report", "type": "document_submission" }
+        ]
+      },
+      {
+        "id": "m-003-3",
+        "title": "Construction Phase 2",
+        "order": 3,
+        "prerequisites": [
+          { "id": "p-003-3-1", "title": "Phase 2 inspection report", "type": "document_submission" },
+          { "id": "p-003-3-2", "title": "ADA compliance verification", "type": "document_submission" }
+        ]
+      }
+    ]
+  }
+]
