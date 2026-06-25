@@ -2,11 +2,11 @@
 id: 004-create-case-action
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: must
 created: 2026-06-24T00:00:00Z
-assigned_bolt: null
-implemented: false
+assigned_bolt: "005"
+implemented: true
 ---
 
 # Story: 004-create-case-action

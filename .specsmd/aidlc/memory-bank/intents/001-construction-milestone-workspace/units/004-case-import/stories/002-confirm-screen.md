@@ -2,12 +2,12 @@
 id: 002-imc-project-search
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: must
 created: 2026-06-24T00:00:00Z
-updated: 2026-06-24T00:00:00Z
-assigned_bolt: null
-implemented: false
+updated: 2026-06-25T00:00:00Z
+assigned_bolt: "005"
+implemented: true
 ---
 
 # Story: 002-imc-project-search

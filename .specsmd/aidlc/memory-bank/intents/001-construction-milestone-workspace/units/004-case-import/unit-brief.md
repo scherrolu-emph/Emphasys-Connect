@@ -1,10 +1,10 @@
 ---
 unit: 004-case-import
 intent: 001-construction-milestone-workspace
-phase: inception
-status: draft
+phase: construction
+status: complete
 created: 2026-06-24T00:00:00Z
-updated: 2026-06-24T00:00:00Z
+updated: 2026-06-25T00:00:00Z
 unit_type: frontend
 default_bolt_type: simple-construction-bolt
 ---
