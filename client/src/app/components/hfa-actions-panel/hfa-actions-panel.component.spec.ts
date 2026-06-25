@@ -60,13 +60,13 @@ describe('HfaActionsPanelComponent', () => {
       expect(text).toContain('No milestones have been defined yet');
     });
 
-    it('shows "All milestones complete" state when all are completed', async () => {
+    it('shows all completed milestones in timeline when all are completed', async () => {
       const fixture = await create([
         makeMilestone('completed'),
         makeMilestone('completed', [], { id: 'm-2', orderIndex: 1 }),
       ]);
-      const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
-      expect(text).toContain('All milestones complete');
+      const sections = fixture.debugElement.queryAll(By.css('.milestone-section'));
+      expect(sections.length).toBe(2);
     });
 
     it('shows "No prerequisites defined" when active milestone has no prereqs', async () => {
@@ -76,7 +76,7 @@ describe('HfaActionsPanelComponent', () => {
     });
   });
 
-  describe('active milestone rendering', () => {
+  describe('milestone timeline rendering', () => {
     it('shows active milestone title', async () => {
       const fixture = await create([
         makeMilestone('active', [makePrereq()], { title: 'Draw Request' }),
@@ -85,14 +85,64 @@ describe('HfaActionsPanelComponent', () => {
       expect((header.nativeElement as HTMLElement).textContent?.trim()).toBe('Draw Request');
     });
 
-    it('does not show a status badge on the milestone header', async () => {
+    it('shows a status badge on every milestone header', async () => {
       const fixture = await create([makeMilestone('active', [makePrereq()])]);
       const header = fixture.debugElement.query(By.css('.milestone-header'));
       const badge = header.query(By.css('.badge'));
-      expect(badge).toBeNull();
+      expect(badge).toBeTruthy();
     });
 
-    it('renders one prereq row per prerequisite', async () => {
+    it('renders all milestones in the timeline', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [], { title: 'Phase 1' }),
+        makeMilestone('active', [makePrereq()], { title: 'Phase 2', id: 'm-active' }),
+        makeMilestone('open', [], { title: 'Phase 3', id: 'm-open' }),
+      ]);
+      const sections = fixture.debugElement.queryAll(By.css('.milestone-section'));
+      expect(sections.length).toBe(3);
+    });
+
+    it('shows prereq accordion only for active milestone', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+        makeMilestone('open', [makePrereq({ id: 'pr-o' })], { id: 'm-open' }),
+      ]);
+      const toggles = fixture.debugElement.queryAll(By.css('.prereq-toggle'));
+      expect(toggles.length).toBe(1);
+    });
+
+    it('shows flat prereq rows for completed and upcoming milestones after expanding them', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+        makeMilestone('open', [makePrereq({ id: 'pr-o' })], { id: 'm-open' }),
+      ]);
+      // Completed and open start collapsed — click their headers to expand
+      const headers = fixture.debugElement.queryAll(By.css('.milestone-header'));
+      (headers[0].nativeElement as HTMLElement).click(); // completed
+      (headers[2].nativeElement as HTMLElement).click(); // open
+      fixture.detectChanges();
+      const flatRows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(flatRows.length).toBe(2);
+    });
+
+    it('shows all prereqs across all milestones when all expanded', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c1' }), makePrereq({ id: 'pr-c2' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+      ]);
+      // Expand the completed milestone
+      const headers = fixture.debugElement.queryAll(By.css('.milestone-header'));
+      (headers[0].nativeElement as HTMLElement).click();
+      fixture.detectChanges();
+      const accordionRows = fixture.debugElement.queryAll(By.css('.prereq-item'));
+      const flatRows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(accordionRows.length).toBe(1);
+      expect(flatRows.length).toBe(2);
+    });
+
+    it('renders one prereq row per prerequisite on the active milestone', async () => {
       const prereqs = [
         makePrereq({ id: 'pr-1', title: 'Prereq 1' }),
         makePrereq({ id: 'pr-2', title: 'Prereq 2' }),
@@ -291,6 +341,54 @@ describe('HfaActionsPanelComponent', () => {
       fixture.detectChanges();
 
       expect(fixture.debugElement.query(By.css('.return-note-input'))).toBeNull();
+    });
+  });
+
+  describe('milestone accordion', () => {
+    it('expands the active milestone by default', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+      ]);
+      const accordionRows = fixture.debugElement.queryAll(By.css('.prereq-item'));
+      expect(accordionRows.length).toBe(1);
+    });
+
+    it('keeps completed and upcoming milestones collapsed by default', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+        makeMilestone('open', [makePrereq({ id: 'pr-o' })], { id: 'm-open' }),
+      ]);
+      const flatRows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(flatRows.length).toBe(0);
+    });
+
+    it('expands a collapsed milestone when its header is clicked', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq()], { id: 'm-active' }),
+      ]);
+      const headers = fixture.debugElement.queryAll(By.css('.milestone-header'));
+      (headers[0].nativeElement as HTMLElement).click();
+      fixture.detectChanges();
+      const flatRows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(flatRows.length).toBe(1);
+    });
+
+    it('collapses an expanded milestone when its header is clicked again', async () => {
+      const fixture = await create([makeMilestone('active', [makePrereq()])]);
+      const header = fixture.debugElement.query(By.css('.milestone-header'));
+      (header.nativeElement as HTMLElement).click();
+      fixture.detectChanges();
+      const rows = fixture.debugElement.queryAll(By.css('.prereq-item'));
+      expect(rows.length).toBe(0);
+    });
+
+    it('rotates the chevron when a milestone is expanded', async () => {
+      const fixture = await create([makeMilestone('active', [makePrereq()])]);
+      const chevron = fixture.debugElement.query(By.css('.milestone-chevron'));
+      expect((chevron.nativeElement as HTMLElement).classList).toContain('is-open');
     });
   });
 });

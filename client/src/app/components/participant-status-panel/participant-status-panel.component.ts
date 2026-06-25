@@ -1,12 +1,12 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { attachOutline, checkmarkOutline } from 'ionicons/icons';
+import { attachOutline, checkmarkOutline, chevronDownOutline } from 'ionicons/icons';
 import type { MilestoneDetail } from '../../core/cases/case.models';
 import { PrereqStatusBadgeComponent } from '../prereq-status-badge/prereq-status-badge.component';
 import { MilestoneStatusBadgeComponent } from '../milestone-status-badge/milestone-status-badge.component';
 
-addIcons({ attachOutline, checkmarkOutline });
+addIcons({ attachOutline, checkmarkOutline, chevronDownOutline });
 
 @Component({
   selector: 'app-participant-status-panel',
@@ -18,6 +18,26 @@ addIcons({ attachOutline, checkmarkOutline });
 export class ParticipantStatusPanelComponent {
   readonly milestones = input<MilestoneDetail[]>([]);
   readonly markReady = output<string>();
+
+  private readonly userToggledIds = signal<Map<string, boolean>>(new Map());
+
+  readonly expandedMilestoneIds = computed<Set<string>>(() => {
+    const toggles = this.userToggledIds();
+    const result = new Set<string>();
+    for (const m of this.milestones()) {
+      const explicit = toggles.get(m.id);
+      if (explicit !== undefined ? explicit : m.status === 'active') result.add(m.id);
+    }
+    return result;
+  });
+
+  toggleMilestone(id: string): void {
+    this.userToggledIds.update(map => {
+      const next = new Map(map);
+      next.set(id, !this.expandedMilestoneIds().has(id));
+      return next;
+    });
+  }
 
   onMarkReady(prereqId: string): void {
     this.markReady.emit(prereqId);

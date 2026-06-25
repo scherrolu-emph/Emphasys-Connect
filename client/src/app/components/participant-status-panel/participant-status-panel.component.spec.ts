@@ -190,4 +190,52 @@ describe('ParticipantStatusPanelComponent', () => {
       expect(text).not.toContain('Request document');
     });
   });
+
+  describe('milestone accordion', () => {
+    it('expands the active milestone by default', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+      ]);
+      const rows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(rows.length).toBe(1);
+    });
+
+    it('keeps completed and upcoming milestones collapsed by default', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+        makeMilestone('open', [makePrereq({ id: 'pr-o' })], { id: 'm-open' }),
+      ]);
+      const rows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(rows.length).toBe(1); // only active is expanded
+    });
+
+    it('expands a collapsed milestone when its header is clicked', async () => {
+      const fixture = await create([
+        makeMilestone('completed', [makePrereq({ id: 'pr-c' })]),
+        makeMilestone('active', [makePrereq({ id: 'pr-a' })], { id: 'm-active' }),
+      ]);
+      const headers = fixture.debugElement.queryAll(By.css('.milestone-header'));
+      (headers[0].nativeElement as HTMLElement).click();
+      fixture.detectChanges();
+      const rows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(rows.length).toBe(2);
+    });
+
+    it('collapses an expanded milestone when its header is clicked again', async () => {
+      const fixture = await create([makeMilestone('active', [makePrereq()])]);
+      const header = fixture.debugElement.query(By.css('.milestone-header'));
+      (header.nativeElement as HTMLElement).click();
+      fixture.detectChanges();
+      const rows = fixture.debugElement.queryAll(By.css('.prereq-row'));
+      expect(rows.length).toBe(0);
+    });
+
+    it('rotates the chevron when a milestone is expanded', async () => {
+      const fixture = await create([makeMilestone('active', [makePrereq()])]);
+      const chevron = fixture.debugElement.query(By.css('.milestone-chevron'));
+      expect((chevron.nativeElement as HTMLElement).classList).toContain('is-open');
+    });
+  });
 });

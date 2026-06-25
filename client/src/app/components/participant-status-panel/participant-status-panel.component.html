@@ -5,12 +5,17 @@
     <ul class="milestone-list">
       @for (m of milestones(); track m.id) {
         <li class="milestone-item">
-          <div class="milestone-header">
+          <button class="milestone-header" (click)="toggleMilestone(m.id)">
             <span class="milestone-title">{{ m.title }}</span>
             <app-milestone-status-badge [status]="m.status" />
-          </div>
+            <ion-icon
+              class="milestone-chevron"
+              name="chevron-down-outline"
+              [class.is-open]="expandedMilestoneIds().has(m.id)"
+            ></ion-icon>
+          </button>
 
-          @if (m.prerequisites.length > 0) {
+          @if (expandedMilestoneIds().has(m.id) && m.prerequisites.length > 0) {
             <ul class="prereq-list">
               @for (prereq of m.prerequisites; track prereq.id) {
                 <li class="prereq-row">
