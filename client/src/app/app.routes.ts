@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth/auth.guard';
+import { participantCasesGuard } from './core/auth/participant-cases.guard';
 
 export const routes: Routes = [
   {
@@ -22,6 +23,12 @@ export const routes: Routes = [
     path: 'my-cases',
     loadComponent: () =>
       import('./pages/my-cases/my-cases.page').then(m => m.MyCasesPage),
+    canActivate: [participantCasesGuard],
+  },
+  {
+    path: 'cases/:id',
+    loadComponent: () =>
+      import('./pages/case-detail/case-detail.page').then(m => m.CaseDetailPage),
     canActivate: [authGuard],
   },
   {
