@@ -41,9 +41,13 @@ describe('ConversationPanelComponent', () => {
 
   const mockMessageSvc = {
     sendMessage: jasmine.createSpy('sendMessage'),
+    dispatchMentionNotifications: jasmine.createSpy('dispatchMentionNotifications'),
   };
 
   beforeEach(async () => {
+    mockMessageSvc.sendMessage.calls.reset();
+    mockMessageSvc.dispatchMentionNotifications.calls.reset();
+
     await TestBed.configureTestingModule({
       imports: [ConversationPanelComponent],
       providers: [
@@ -130,5 +134,42 @@ describe('ConversationPanelComponent', () => {
     component.sendError.set(null);
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.send-error')).toBeNull();
+  });
+
+  // --- @-mention popup ---
+
+  it('mention popup is hidden when mentionQuery is null', () => {
+    component.mentionQuery.set(null);
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-mention-popup')).toBeNull();
+  });
+
+  it('mention popup is shown when mentionQuery is a non-null string', () => {
+    component.mentionQuery.set('ali');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-mention-popup')).not.toBeNull();
+  });
+
+  it('mention popup is shown with empty string query (bare @)', () => {
+    component.mentionQuery.set('');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('app-mention-popup')).not.toBeNull();
+  });
+
+  it('onMentionQuery sets mentionQuery signal', () => {
+    component.onMentionQuery('bob');
+    expect(component.mentionQuery()).toBe('bob');
+  });
+
+  it('onMentionQuery(null) sets mentionQuery to null', () => {
+    component.mentionQuery.set('alice');
+    component.onMentionQuery(null);
+    expect(component.mentionQuery()).toBeNull();
+  });
+
+  it('onMentionDismissed sets mentionQuery to null', () => {
+    component.mentionQuery.set('ali');
+    component.onMentionDismissed();
+    expect(component.mentionQuery()).toBeNull();
   });
 });

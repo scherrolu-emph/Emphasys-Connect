@@ -1,0 +1,15 @@
+<ul class="mention-popup">
+  @for (p of filtered(); track p.id) {
+    <li
+      (click)="select(p)"
+      (keydown.enter)="select(p)"
+      tabindex="0"
+    >
+      <span class="name">{{ p.displayName ?? p.email }}</span>
+      <span class="role">{{ p.role }}</span>
+    </li>
+  }
+  @if (filtered().length === 0) {
+    <li class="no-match">No participants match "@{{ query() }}"</li>
+  }
+</ul>
