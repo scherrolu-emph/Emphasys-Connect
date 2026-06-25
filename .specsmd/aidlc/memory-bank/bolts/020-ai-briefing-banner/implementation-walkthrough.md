@@ -1,6 +1,6 @@
 ---
 stage: implement
-bolt: "014"
+bolt: "020"
 created: 2026-06-25T00:00:00Z
 branch: feature/ai-briefing-banner
 commits: 08e6a2c..e827bb3

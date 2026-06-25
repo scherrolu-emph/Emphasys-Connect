@@ -133,5 +133,5 @@ A role-aware AI-powered catch-up banner that appears at the top of each persona'
 
 | Bolt | Stories | Objective |
 |------|---------|-----------|
-| bolt-014 | S1 | AI briefing banner — dummy data + typewriter streaming |
-| bolt-015 | S1 (extension) | Connect to Claude API via Supabase Edge Function — real data |
+| bolt-020 | S1 | AI briefing banner — dummy data + typewriter streaming |
+| bolt-021 | S1 (extension) | Connect to Claude API via Supabase Edge Function — real data |

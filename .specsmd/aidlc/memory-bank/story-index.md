@@ -74,4 +74,4 @@
 - **Completed**: 1
 
 #### 011-ai-briefing-banner
-- [x] **001-ai-briefing-banner-stream** — Role-aware streaming catch-up banner on home screen — Must — ✅ COMPLETE (Bolt 014)
+- [x] **001-ai-briefing-banner-stream** — Role-aware streaming catch-up banner on home screen — Must — ✅ COMPLETE (Bolt 020)

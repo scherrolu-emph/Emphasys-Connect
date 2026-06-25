@@ -14,8 +14,8 @@ last_updated: 2026-06-25T00:00:00Z
 
 | Bolt ID | Stories | Type |
 |---------|---------|------|
-| 014-ai-briefing-banner | 001-ai-briefing-banner-stream | simple-construction-bolt |
-| 015-ai-briefing-claude-api | 001-ai-briefing-banner-stream | simple-construction-bolt |
+| 020-ai-briefing-banner | 001-ai-briefing-banner-stream | simple-construction-bolt |
+| 021-ai-briefing-claude-api | 001-ai-briefing-banner-stream | simple-construction-bolt |
 
 ## Replanning History
 
@@ -26,18 +26,18 @@ last_updated: 2026-06-25T00:00:00Z
 
 | Bolt ID | Stories | Status | Changed |
 |---------|---------|--------|---------|
-| 014-ai-briefing-banner | 001-ai-briefing-banner-stream | ✅ complete | - |
-| 015-ai-briefing-claude-api | 001-ai-briefing-banner-stream | ⏳ planned | - |
+| 020-ai-briefing-banner | 001-ai-briefing-banner-stream | ✅ complete | - |
+| 021-ai-briefing-claude-api | 001-ai-briefing-banner-stream | ⏳ planned | - |
 
 ## Execution History
 
 | Date | Bolt | Event | Details |
 |------|------|-------|---------|
-| 2026-06-25 | 014-ai-briefing-banner | started | Brainstorm + design spec |
-| 2026-06-25 | 014-ai-briefing-banner | stage-complete | Design → Plan |
-| 2026-06-25 | 014-ai-briefing-banner | stage-complete | Plan → Implement (subagent-driven) |
-| 2026-06-25 | 014-ai-briefing-banner | stage-complete | Implement → Review (whole-branch) |
-| 2026-06-25 | 014-ai-briefing-banner | completed | 349/350 tests passing; ready to merge |
+| 2026-06-25 | 020-ai-briefing-banner | started | Brainstorm + design spec |
+| 2026-06-25 | 020-ai-briefing-banner | stage-complete | Design → Plan |
+| 2026-06-25 | 020-ai-briefing-banner | stage-complete | Plan → Implement (subagent-driven) |
+| 2026-06-25 | 020-ai-briefing-banner | stage-complete | Implement → Review (whole-branch) |
+| 2026-06-25 | 020-ai-briefing-banner | completed | 349/350 tests passing; ready to merge |
 
 ## Execution Summary
 

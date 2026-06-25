@@ -4,7 +4,7 @@ unit: 011-ai-briefing-banner
 intent: 001-construction-milestone-workspace
 priority: must
 status: complete
-bolt: '014'
+bolt: '020'
 ---
 
 # Story: AI Briefing Banner — Role-Aware Streaming Catch-Up
@@ -27,4 +27,4 @@ As an **HFA staff member or Developer** logging into Emphasys Connect, I want to
 ## Notes
 
 - Bolt 014: dummy pre-written strings — no API call
-- Bolt 015: replace dummy strings with real Claude API call via Supabase Edge Function
+- Bolt 021: replace dummy strings with real Claude API call via Supabase Edge Function

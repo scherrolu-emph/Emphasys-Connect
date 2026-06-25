@@ -1,5 +1,5 @@
 ---
-id: '014'
+id: '020'
 unit: 011-ai-briefing-banner
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
@@ -22,7 +22,7 @@ created: '2026-06-25T00:00:00Z'
 requires_bolts:
   - '013'
 enables_bolts:
-  - '015'
+  - '021'
 requires_units:
   - 003-hfa-dashboard
   - 008-participant-case-list
