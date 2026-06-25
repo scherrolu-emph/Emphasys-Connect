@@ -15,7 +15,6 @@
             <div class="participant-name">
               {{ displayLabel(p) }}
               @if (isSelf(p)) { <span class="badge-you">YOU</span> }
-              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
             </div>
             <div class="participant-meta">{{ p.role === 'hfa_staff' ? 'HFA Staff' : 'Developer' }} · {{ p.email }}</div>
           </ion-label>
@@ -54,7 +53,6 @@
             <div class="participant-name">
               {{ displayLabel(p) }}
               @if (isSelf(p)) { <span class="badge-you">YOU</span> }
-              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
             </div>
             <div class="participant-meta">Developer · {{ p.email }}</div>
           </ion-label>
@@ -93,7 +91,6 @@
             <div class="participant-name">
               {{ displayLabel(p) }}
               @if (isSelf(p)) { <span class="badge-you">YOU</span> }
-              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
             </div>
             <div class="participant-meta">{{ p.email }}</div>
           </ion-label>

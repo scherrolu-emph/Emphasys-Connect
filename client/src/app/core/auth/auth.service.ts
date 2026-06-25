@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import type { Session } from '@supabase/supabase-js';
 import { supabase } from '../supabase/supabase.client';
 import type { Database } from '../supabase/database.types';
+import { environment } from '../../../environments/environment';
 
 type ProfileRow = Database['public']['Tables']['profiles']['Row'];
 
@@ -17,10 +18,18 @@ export class AuthService {
   readonly hfaId = computed(() => this.profile()?.hfa_id ?? null);
 
   constructor() {
-    supabase.auth.onAuthStateChange((_event, session) => {
+    supabase.auth.onAuthStateChange((event, session) => {
       this.session.set(session);
       if (session?.user) {
         this.loadProfile(session.user.id);
+        if (event === 'SIGNED_IN') {
+          supabase
+            .from('case_participants')
+            .update({ invite_status: 'accepted', user_id: session.user.id })
+            .eq('email', session.user.email!)
+            .eq('invite_status', 'pending')
+            .then();
+        }
       } else {
         this.profile.set(null);
       }
@@ -50,16 +59,21 @@ export class AuthService {
   }
 
   async signInWithOtp(email: string): Promise<void> {
+    if (environment.mockOtp) return;
     const { error } = await supabase.auth.signInWithOtp({ email });
     if (error) throw error;
   }
 
   async verifyOtp(email: string, token: string): Promise<void> {
-    const { error } = await supabase.auth.verifyOtp({
-      email,
-      token,
-      type: 'email',
-    });
+    if (environment.mockOtp) {
+      if (token !== environment.mockOtpCode) throw new Error('Invalid code');
+      const { data, error: fnError } = await supabase.functions.invoke('dev-mock-sign-in', { body: { email } });
+      if (fnError) throw fnError;
+      const { error } = await supabase.auth.verifyOtp({ token_hash: data.hashed_token, type: 'email' });
+      if (error) throw error;
+      return;
+    }
+    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
     if (error) throw error;
   }
 
