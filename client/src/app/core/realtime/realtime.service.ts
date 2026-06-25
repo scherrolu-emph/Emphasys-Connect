@@ -51,4 +51,32 @@ export class RealtimeService {
     channel.unsubscribe();
     this.channels.delete(caseId);
   }
+
+  subscribeToPrereqChanges(caseIds: string[], callback: () => void): void {
+    for (const caseId of caseIds) {
+      const key = `tasks:${caseId}`;
+      if (this.channels.has(key)) continue;
+
+      const channel = supabase
+        .channel(`prereq-tasks:${caseId}`)
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'prerequisites', filter: `case_id=eq.${caseId}` },
+          () => callback(),
+        )
+        .subscribe();
+
+      this.channels.set(key, channel);
+    }
+  }
+
+  unsubscribePrereqChanges(caseIds: string[]): void {
+    for (const caseId of caseIds) {
+      const key = `tasks:${caseId}`;
+      const channel = this.channels.get(key);
+      if (!channel) continue;
+      channel.unsubscribe();
+      this.channels.delete(key);
+    }
+  }
 }

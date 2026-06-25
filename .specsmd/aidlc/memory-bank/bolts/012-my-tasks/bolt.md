@@ -1,19 +1,34 @@
 ---
-id: "012"
+id: '012'
 unit: 009-my-tasks
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-25T00:00:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T00:00:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T00:00:00Z'
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: '2026-06-25T16:11:01Z'
+    artifact: test-walkthrough.md
 stories:
   - 001-my-tasks-screen
-created: 2026-06-24T00:00:00Z
-requires_bolts: ["007", "008"]
+created: '2026-06-24T00:00:00Z'
+requires_bolts:
+  - '007'
+  - '008'
 enables_bolts: []
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
   reason: Cross-case join query, Realtime subscription across multiple case channels, badge count on tab icon
+completed: '2026-06-25T16:11:01Z'
 ---
 
 # Bolt 012 — My Tasks: Cross-Case Prerequisite Inbox

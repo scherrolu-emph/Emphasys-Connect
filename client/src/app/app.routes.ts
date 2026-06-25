@@ -15,24 +15,6 @@ export const routes: Routes = [
       import('./pages/login/otp/otp.page').then(m => m.OtpPage),
   },
   {
-    path: 'dashboard',
-    loadComponent: () =>
-      import('./pages/dashboard/dashboard.page').then(m => m.DashboardPage),
-    canActivate: [hfaGuard],
-  },
-  {
-    path: 'my-cases',
-    loadComponent: () =>
-      import('./pages/my-cases/my-cases.page').then(m => m.MyCasesPage),
-    canActivate: [participantCasesGuard],
-  },
-  {
-    path: 'cases/:id',
-    loadComponent: () =>
-      import('./pages/case-detail/case-detail.page').then(m => m.CaseDetailPage),
-    canActivate: [authGuard],
-  },
-  {
     path: 'cases/:id',
     loadComponent: () =>
       import('./pages/case-detail/case-detail.page').then(m => m.CaseDetailPage),
@@ -72,8 +54,34 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
+    loadComponent: () =>
+      import('./pages/tabs/tabs.page').then(m => m.TabsPage),
+    canActivate: [authGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./pages/dashboard/dashboard.page').then(m => m.DashboardPage),
+        canActivate: [hfaGuard],
+      },
+      {
+        path: 'my-cases',
+        loadComponent: () =>
+          import('./pages/my-cases/my-cases.page').then(m => m.MyCasesPage),
+        canActivate: [participantCasesGuard],
+      },
+      {
+        path: 'my-tasks',
+        loadComponent: () =>
+          import('./pages/my-tasks/my-tasks.page').then(m => m.MyTasksPage),
+        canActivate: [authGuard],
+      },
+      {
+        path: '',
+        redirectTo: 'my-tasks',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '**',
