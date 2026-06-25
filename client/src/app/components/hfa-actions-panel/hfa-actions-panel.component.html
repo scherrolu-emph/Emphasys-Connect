@@ -31,13 +31,46 @@
 
               @if (expandedPrereqId() === prereq.id) {
                 <div class="prereq-details">
-                  <div class="prereq-actions">
-                    <button class="action-btn action-accept" disabled>Accept</button>
-                    <button class="action-btn action-return" disabled>Return with note</button>
-                    @if (prereq.type === 'document_submission') {
-                      <button class="action-btn action-request" disabled>Request document</button>
-                    }
-                  </div>
+                  @if (returnNotePrereqId() === prereq.id) {
+                    <div class="return-note-form">
+                      <textarea
+                        class="return-note-input"
+                        placeholder="Note for Developer…"
+                        [value]="returnNoteText()"
+                        (input)="returnNoteText.set($any($event.target).value)"
+                      ></textarea>
+                      <div class="return-note-actions">
+                        <button
+                          class="action-btn action-return"
+                          [disabled]="!returnNoteText().trim()"
+                          (click)="confirmReturnNote(prereq.id, prereq.title)"
+                        >Confirm return</button>
+                        <button class="action-btn" (click)="cancelReturnNote()">Cancel</button>
+                      </div>
+                    </div>
+                  } @else {
+                    <div class="prereq-actions">
+                      @if (prereq.status === 'received_processing') {
+                        <button
+                          class="action-btn action-accept"
+                          (click)="acceptPrereq.emit({ prereqId: prereq.id, prereqTitle: prereq.title, milestoneId: m.id })"
+                        >Accept</button>
+                        <button
+                          class="action-btn action-return"
+                          (click)="openReturnNote(prereq.id)"
+                        >Return with note</button>
+                      }
+                      @if (prereq.type === 'document_submission' && prereq.status === 'pending_open' && !prereq.requested) {
+                        <button
+                          class="action-btn action-request"
+                          (click)="triggerRequest.emit({ prereqId: prereq.id, prereqTitle: prereq.title })"
+                        >Request document</button>
+                      }
+                      @if (prereq.status === 'accepted') {
+                        <span class="action-done">Accepted ✓</span>
+                      }
+                    </div>
+                  }
                 </div>
               }
             </li>

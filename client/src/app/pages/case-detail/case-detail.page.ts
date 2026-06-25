@@ -20,12 +20,14 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/auth/auth.service';
 import { CaseService } from '../../core/cases/case.service';
 import { RealtimeService } from '../../core/realtime/realtime.service';
+import { PrerequisiteService } from '../../core/cases/prerequisite.service';
 import { CaseDetailStore } from './case-detail.store';
 import { ParticipantsTabComponent } from '../../components/participants-tab/participants-tab.component';
 import { HfaActionsPanelComponent } from '../../components/hfa-actions-panel/hfa-actions-panel.component';
+import type { AcceptEvent, ReturnEvent, TriggerEvent } from '../../components/hfa-actions-panel/hfa-actions-panel.component';
 import { ParticipantStatusPanelComponent } from '../../components/participant-status-panel/participant-status-panel.component';
 import { CASE_TYPE_LABELS } from '../../core/cases/case.models';
-import type { CaseParticipant } from '../../core/cases/case.models';
+import type { CaseParticipant, MilestoneDetail, PrerequisiteSummary } from '../../core/cases/case.models';
 import type { AddParticipantRequest } from '../../components/participants-tab/participants-tab.component';
 
 type ActiveTab = 'actions' | 'conversation' | 'participants';
@@ -52,6 +54,7 @@ export class CaseDetailPage implements ViewWillEnter, ViewWillLeave, OnDestroy {
   private readonly auth = inject(AuthService);
   private readonly caseService = inject(CaseService);
   private readonly realtime = inject(RealtimeService);
+  private readonly prereqService = inject(PrerequisiteService);
   readonly store = inject(CaseDetailStore);
 
   private caseId = '';
@@ -108,6 +111,29 @@ export class CaseDetailPage implements ViewWillEnter, ViewWillLeave, OnDestroy {
       onParticipant: () => {
         this.store.refreshParticipants(this.caseId);
       },
+      onPrerequisite: payload => {
+        if (payload.eventType === 'UPDATE' && payload.new) {
+          const raw = payload.new as Record<string, unknown>;
+          this.store.applyPrereqUpdate(raw['id'] as string, {
+            status: raw['status'] as PrerequisiteSummary['status'],
+            uploadLink: (raw['upload_link'] as string | null) ?? null,
+            requested: raw['requested'] as boolean,
+            returned: raw['returned'] as boolean,
+            notes: (raw['notes'] as string | null) ?? null,
+            acceptedAt: (raw['accepted_at'] as string | null) ?? null,
+          });
+        }
+      },
+      onMilestone: payload => {
+        if (payload.eventType === 'UPDATE' && payload.new) {
+          const raw = payload.new as Record<string, unknown>;
+          this.store.applyMilestoneUpdate(raw['id'] as string, {
+            status: raw['status'] as MilestoneDetail['status'],
+            completedAt: (raw['completed_at'] as string | null) ?? null,
+            activatedAt: (raw['activated_at'] as string | null) ?? null,
+          });
+        }
+      },
     });
   }
 
@@ -158,7 +184,65 @@ export class CaseDetailPage implements ViewWillEnter, ViewWillLeave, OnDestroy {
     }
   }
 
-  onMarkReady(_prereqId: string): void {
-    // Mutation handler wired in Bolt 008
+  async onMarkReady(prereqId: string): Promise<void> {
+    const detail = this.store.caseDetail();
+    const found = this.findPrereq(prereqId);
+    if (!found || !detail) return;
+    const prev = found.prereq.status;
+    this.store.applyPrereqUpdate(prereqId, { status: 'received_processing' });
+    try {
+      await this.prereqService.markReady(prereqId, found.prereq.title, detail.id, detail.hfaId);
+    } catch (err) {
+      this.store.applyPrereqUpdate(prereqId, { status: prev });
+      console.error('markReady failed', err);
+    }
+  }
+
+  async onAcceptPrereq(event: AcceptEvent): Promise<void> {
+    const detail = this.store.caseDetail();
+    const found = this.findPrereq(event.prereqId);
+    if (!found || !detail) return;
+    const prev = found.prereq.status;
+    this.store.applyPrereqUpdate(event.prereqId, { status: 'accepted', acceptedAt: new Date().toISOString() });
+    try {
+      await this.prereqService.accept(event.prereqId, event.prereqTitle, event.milestoneId, detail.id, detail.hfaId);
+    } catch (err) {
+      this.store.applyPrereqUpdate(event.prereqId, { status: prev, acceptedAt: null });
+      console.error('accept failed', err);
+    }
+  }
+
+  async onReturnPrereq(event: ReturnEvent): Promise<void> {
+    const detail = this.store.caseDetail();
+    const found = this.findPrereq(event.prereqId);
+    if (!found || !detail) return;
+    const prev = found.prereq.status;
+    this.store.applyPrereqUpdate(event.prereqId, { status: 'pending_open', returned: true, notes: event.note });
+    try {
+      await this.prereqService.returnWithNote(event.prereqId, event.prereqTitle, event.note, detail.id, detail.hfaId);
+    } catch (err) {
+      this.store.applyPrereqUpdate(event.prereqId, { status: prev });
+      console.error('returnWithNote failed', err);
+    }
+  }
+
+  async onTriggerRequest(event: TriggerEvent): Promise<void> {
+    const detail = this.store.caseDetail();
+    if (!detail) return;
+    this.store.applyPrereqUpdate(event.prereqId, { requested: true });
+    try {
+      await this.prereqService.triggerDocumentRequest(event.prereqId, event.prereqTitle, detail.id, detail.hfaId);
+    } catch (err) {
+      this.store.applyPrereqUpdate(event.prereqId, { requested: false });
+      console.error('triggerDocumentRequest failed', err);
+    }
+  }
+
+  private findPrereq(prereqId: string): { prereq: PrerequisiteSummary; milestoneId: string } | null {
+    for (const m of this.store.milestones()) {
+      const prereq = m.prerequisites.find(p => p.id === prereqId);
+      if (prereq) return { prereq, milestoneId: m.id };
+    }
+    return null;
   }
 }
