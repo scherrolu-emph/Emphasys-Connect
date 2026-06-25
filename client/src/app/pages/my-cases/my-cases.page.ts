@@ -2,6 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IonBadge,
+  IonButtons,
   IonContent,
   IonHeader,
   IonItem,
@@ -13,6 +14,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../core/auth/auth.service';
 import { CaseService, ParticipantCaseSummary } from '../../core/case/case.service';
+import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
 
 @Component({
   selector: 'app-my-cases',
@@ -20,6 +22,9 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
     <ion-header>
       <ion-toolbar>
         <ion-title>My Cases</ion-title>
+        <ion-buttons slot="end">
+          <app-notification-bell />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
@@ -59,6 +64,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
   `,
   standalone: true,
   imports: [
+    IonButtons,
     IonContent,
     IonHeader,
     IonTitle,
@@ -68,6 +74,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
     IonLabel,
     IonBadge,
     IonSkeletonText,
+    NotificationBellComponent,
   ],
   styles: [
     ".participant-cases-container { width: 100%; margin: 0 auto; }",

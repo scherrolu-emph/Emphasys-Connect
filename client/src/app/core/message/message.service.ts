@@ -19,6 +19,7 @@ export class MessageService {
     hfaId: string,
     authorId: string,
     content: string,
+    mentions: string[] = [],
   ): Promise<ConversationMessage> {
     const { data, error } = await supabase
       .from('conversation_messages')
@@ -28,6 +29,7 @@ export class MessageService {
         author_id: authorId,
         type: 'message',
         content,
+        mentions,
       })
       .select('id, hfa_id, case_id, author_id, type, content, created_at')
       .single();
@@ -43,5 +45,18 @@ export class MessageService {
       content: raw.content,
       createdAt: raw.created_at,
     };
+  }
+
+  dispatchMentionNotifications(
+    caseId: string,
+    mentionedUserIds: string[],
+    messagePreview: string,
+  ): void {
+    if (!mentionedUserIds.length) return;
+    supabase.functions
+      .invoke('dispatch-mention-notification', {
+        body: { caseId, mentionedUserIds, messagePreview },
+      })
+      .catch(err => console.error('mention dispatch failed:', err));
   }
 }

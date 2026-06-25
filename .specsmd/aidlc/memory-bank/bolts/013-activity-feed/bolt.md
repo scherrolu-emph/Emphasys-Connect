@@ -1,19 +1,31 @@
 ---
-id: "013"
+id: '013'
 unit: 010-activity-feed
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-25T00:00:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T00:00:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T00:00:00Z'
+    artifact: implementation-walkthrough.md
 stories:
   - 001-activity-feed-screen
-created: 2026-06-24T00:00:00Z
-requires_bolts: ["009", "010"]
+created: '2026-06-24T00:00:00Z'
+requires_bolts:
+  - '009'
+  - '010'
 enables_bolts: []
 requires_units: []
 blocks: false
 complexity:
   estimate: low
   reason: Read-only join query; Realtime reuses existing case channel subscriptions already wired in Unit 007
+completed: '2026-06-25T16:47:22Z'
 ---
 
 # Bolt 013 — Activity Feed: Cross-Case Event Log

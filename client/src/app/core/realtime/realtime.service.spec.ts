@@ -85,4 +85,25 @@ describe('RealtimeService', () => {
       expect(mockChannel.unsubscribe).not.toHaveBeenCalled();
     });
   });
+
+  describe('activityMessage$', () => {
+    it('is exposed as an observable', () => {
+      expect(service.activityMessage$).toBeTruthy();
+      expect(typeof service.activityMessage$.subscribe).toBe('function');
+    });
+
+    it('invokes onMessage callback when a message event fires via subscribeToCase', () => {
+      const onMessageSpy = jasmine.createSpy('onMessage');
+      service.subscribeToCase('case-abc', { onMessage: onMessageSpy });
+
+      const onCalls = mockChannel.on.calls.allArgs() as [string, unknown, (p: unknown) => void][];
+      const msgListener = onCalls.find(
+        ([, opts]) => (opts as { table: string }).table === 'conversation_messages'
+      )?.[2];
+
+      expect(msgListener).toBeDefined();
+      msgListener?.({ eventType: 'INSERT', new: { id: 'm1', content: 'hello' } });
+      expect(onMessageSpy).toHaveBeenCalled();
+    });
+  });
 });
