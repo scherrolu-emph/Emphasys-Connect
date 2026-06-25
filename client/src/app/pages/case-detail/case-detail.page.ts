@@ -22,6 +22,8 @@ import { CaseService } from '../../core/cases/case.service';
 import { RealtimeService } from '../../core/realtime/realtime.service';
 import { CaseDetailStore } from './case-detail.store';
 import { ParticipantsTabComponent } from '../../components/participants-tab/participants-tab.component';
+import { HfaActionsPanelComponent } from '../../components/hfa-actions-panel/hfa-actions-panel.component';
+import { ParticipantStatusPanelComponent } from '../../components/participant-status-panel/participant-status-panel.component';
 import { CASE_TYPE_LABELS } from '../../core/cases/case.models';
 import type { CaseParticipant } from '../../core/cases/case.models';
 import type { AddParticipantRequest } from '../../components/participants-tab/participants-tab.component';
@@ -38,6 +40,8 @@ type ActiveRightTab = 'conversation' | 'participants';
     IonContent, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
     IonSegment, IonSegmentButton, IonLabel, IonBadge, IonSkeletonText, IonChip,
     ParticipantsTabComponent,
+    HfaActionsPanelComponent,
+    ParticipantStatusPanelComponent,
   ],
   templateUrl: './case-detail.page.html',
   styleUrls: ['./case-detail.page.scss'],
@@ -152,5 +156,9 @@ export class CaseDetailPage implements ViewWillEnter, ViewWillLeave, OnDestroy {
     } catch (err) {
       console.error('removeParticipant failed', err);
     }
+  }
+
+  onMarkReady(_prereqId: string): void {
+    // Mutation handler wired in Bolt 008
   }
 }

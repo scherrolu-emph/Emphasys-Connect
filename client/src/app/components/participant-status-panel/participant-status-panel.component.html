@@ -1,0 +1,51 @@
+<div class="participant-status-panel">
+  @if (milestones().length === 0) {
+    <div class="empty-state">No milestones have been defined yet.</div>
+  } @else {
+    <ul class="milestone-list">
+      @for (m of milestones(); track m.id) {
+        <li class="milestone-item">
+          <div class="milestone-header">
+            <span class="milestone-title">{{ m.title }}</span>
+            <app-milestone-status-badge [status]="m.status" />
+          </div>
+
+          @if (m.prerequisites.length > 0) {
+            <ul class="prereq-list">
+              @for (prereq of m.prerequisites; track prereq.id) {
+                <li class="prereq-row">
+                  <div class="prereq-info">
+                    <ion-icon
+                      class="type-icon"
+                      [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
+                    ></ion-icon>
+                    <span class="prereq-title">{{ prereq.title }}</span>
+                  </div>
+
+                  <div class="prereq-status">
+                    <app-prereq-status-badge [status]="prereq.status" />
+
+                    @if (prereq.status === 'pending_open' && prereq.type === 'document_submission' && prereq.uploadLink) {
+                      <a
+                        class="upload-link"
+                        [href]="prereq.uploadLink"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >Upload document</a>
+                    }
+
+                    @if (prereq.status === 'pending_open' && prereq.type === 'acceptance_comment') {
+                      <button class="mark-ready-btn" (click)="onMarkReady(prereq.id)">
+                        Mark as ready
+                      </button>
+                    }
+                  </div>
+                </li>
+              }
+            </ul>
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>

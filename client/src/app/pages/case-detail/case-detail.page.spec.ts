@@ -43,6 +43,7 @@ describe('CaseDetailPage', () => {
   beforeEach(async () => {
     storeSpy = jasmine.createSpyObj('CaseDetailStore', ['loadCase', 'reset', 'refreshParticipants', 'appendMessage'], {
       caseDetail: signal<CaseDetail | null>(null),
+      milestones: signal([]),
       participants: signal<CaseParticipant[]>([]),
       messages: signal([]),
       loading: signal(false),

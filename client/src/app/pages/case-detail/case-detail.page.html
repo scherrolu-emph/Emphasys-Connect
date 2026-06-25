@@ -55,8 +55,14 @@
 
     @if (activeTab() === 'actions') {
       <div class="panel-slot panel-actions">
-        <!-- Bolt 007: milestone/prereq flow will fill this slot -->
-        <div class="empty-slot">Actions panel — coming in Bolt 007</div>
+        @if (isHfa()) {
+          <app-hfa-actions-panel [milestones]="store.milestones()" />
+        } @else {
+          <app-participant-status-panel
+            [milestones]="store.milestones()"
+            (markReady)="onMarkReady($event)"
+          />
+        }
       </div>
     }
 
@@ -86,8 +92,14 @@
     <!-- Left panel: Actions -->
     <div class="panel-left">
       <div class="panel-slot panel-actions">
-        <!-- Bolt 007 fills this -->
-        <div class="empty-slot">Actions panel — coming in Bolt 007</div>
+        @if (isHfa()) {
+          <app-hfa-actions-panel [milestones]="store.milestones()" />
+        } @else {
+          <app-participant-status-panel
+            [milestones]="store.milestones()"
+            (markReady)="onMarkReady($event)"
+          />
+        }
       </div>
     </div>
 

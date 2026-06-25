@@ -12,6 +12,7 @@ export class CaseDetailStore {
   readonly loading = signal(false);
   readonly error = signal<string | null>(null);
 
+  readonly milestones = computed(() => this.caseDetail()?.milestones ?? []);
   readonly activeMilestone = computed(() => this.caseDetail()?.activeMilestone ?? null);
 
   async loadCase(caseId: string): Promise<void> {

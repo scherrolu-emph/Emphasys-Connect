@@ -1,0 +1,25 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+  line-height: 1.5;
+
+  &-neutral {
+    background: #F3F4F6;
+    color: #6B7280;
+  }
+
+  &-accent {
+    background: #DBEAFE;
+    color: #1D4ED8;
+  }
+
+  &-success {
+    background: #DCFCE7;
+    color: #15803D;
+  }
+}

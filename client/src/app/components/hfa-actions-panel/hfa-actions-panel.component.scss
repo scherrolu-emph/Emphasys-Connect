@@ -1,0 +1,145 @@
+.hfa-actions-panel {
+  padding: 0;
+}
+
+.empty-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: #6B7280;
+  font-size: 14px;
+}
+
+// ── Milestone section ─────────────────────────────────────────────────────────
+
+.milestone-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px 8px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.milestone-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1F2937;
+  flex: 1;
+}
+
+.prereq-empty {
+  padding: 16px;
+  color: #6B7280;
+  font-size: 13px;
+  margin: 0;
+}
+
+// ── Prereq list ───────────────────────────────────────────────────────────────
+
+.prereq-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prereq-item {
+  border-bottom: 1px solid #F3F4F6;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.prereq-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  color: #1F2937;
+  transition: background 0.1s;
+
+  &:hover {
+    background: #F9FAFB;
+  }
+
+  &.is-open {
+    background: #F3F4F6;
+
+    .chevron {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.type-icon {
+  flex-shrink: 0;
+  font-size: 16px;
+  color: #6B7280;
+}
+
+.prereq-title-text {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.chevron {
+  flex-shrink: 0;
+  font-size: 16px;
+  color: #9CA3AF;
+  transition: transform 0.2s ease;
+}
+
+// ── Expanded details ──────────────────────────────────────────────────────────
+
+.prereq-details {
+  background: #F9FAFB;
+  border-top: 1px solid #E5E7EB;
+}
+
+.prereq-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px;
+}
+
+.action-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #E5E7EB;
+  background: #FFFFFF;
+  color: #374151;
+  transition: background 0.1s;
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.action-accept:not(:disabled) {
+    background: #22C55E;
+    border-color: #22C55E;
+    color: #FFFFFF;
+  }
+
+  &.action-return:not(:disabled) {
+    background: #F59E0B;
+    border-color: #F59E0B;
+    color: #FFFFFF;
+  }
+
+  &.action-request:not(:disabled) {
+    background: #1593D8;
+    border-color: #1593D8;
+    color: #FFFFFF;
+  }
+}
