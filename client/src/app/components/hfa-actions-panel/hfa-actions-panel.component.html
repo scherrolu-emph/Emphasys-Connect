@@ -1,49 +1,76 @@
 <div class="hfa-actions-panel">
   @if (milestones().length === 0) {
     <div class="empty-state">No milestones have been defined yet.</div>
-  } @else if (allComplete()) {
-    <div class="empty-state">All milestones complete.</div>
-  } @else if (activeMilestone(); as m) {
-    <div class="milestone-section">
-      <div class="milestone-header">
-        <span class="milestone-title">{{ m.title }}</span>
-      </div>
+  } @else {
+    @for (m of milestones(); track m.id) {
+      <div class="milestone-section" [class.is-active]="m.status === 'active'" [class.is-completed]="m.status === 'completed'">
+        <button class="milestone-header" (click)="toggleMilestone(m.id)">
+          <span class="milestone-title">{{ m.title }}</span>
+          <app-milestone-status-badge [status]="m.status" />
+          <ion-icon
+            class="milestone-chevron"
+            name="chevron-down-outline"
+            [class.is-open]="expandedMilestoneIds().has(m.id)"
+          ></ion-icon>
+        </button>
 
-      @if (m.prerequisites.length === 0) {
-        <p class="prereq-empty">No prerequisites defined</p>
-      } @else {
-        <ul class="prereq-list">
-          @for (prereq of m.prerequisites; track prereq.id) {
-            <li class="prereq-item">
-              <button
-                class="prereq-toggle"
-                [class.is-open]="expandedPrereqId() === prereq.id"
-                (click)="togglePrereq(prereq.id)"
-              >
-                <ion-icon
-                  class="type-icon"
-                  [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
-                ></ion-icon>
-                <span class="prereq-title-text">{{ prereq.title }}</span>
-                <app-prereq-status-badge [status]="prereq.status" />
-                <ion-icon class="chevron" name="chevron-down-outline"></ion-icon>
-              </button>
+        @if (expandedMilestoneIds().has(m.id)) {
+          @if (m.status === 'active') {
+            @if (m.prerequisites.length === 0) {
+              <p class="prereq-empty">No prerequisites defined</p>
+            } @else {
+              <ul class="prereq-list">
+                @for (prereq of m.prerequisites; track prereq.id) {
+                  <li class="prereq-item">
+                    <button
+                      class="prereq-toggle"
+                      [class.is-open]="expandedPrereqId() === prereq.id"
+                      (click)="togglePrereq(prereq.id)"
+                    >
+                      <ion-icon
+                        class="type-icon"
+                        [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
+                      ></ion-icon>
+                      <span class="prereq-title-text">{{ prereq.title }}</span>
+                      <app-prereq-status-badge [status]="prereq.status" />
+                      <ion-icon class="chevron" name="chevron-down-outline"></ion-icon>
+                    </button>
 
-              @if (expandedPrereqId() === prereq.id) {
-                <div class="prereq-details">
-                  <div class="prereq-actions">
-                    <button class="action-btn action-accept" disabled>Accept</button>
-                    <button class="action-btn action-return" disabled>Return with note</button>
-                    @if (prereq.type === 'document_submission') {
-                      <button class="action-btn action-request" disabled>Request document</button>
+                    @if (expandedPrereqId() === prereq.id) {
+                      <div class="prereq-details">
+                        <div class="prereq-actions">
+                          <button class="action-btn action-accept" disabled>Accept</button>
+                          <button class="action-btn action-return" disabled>Return with note</button>
+                          @if (prereq.type === 'document_submission') {
+                            <button class="action-btn action-request" disabled>Request document</button>
+                          }
+                        </div>
+                      </div>
                     }
+                  </li>
+                }
+              </ul>
+            }
+          } @else if (m.prerequisites.length > 0) {
+            <ul class="prereq-list prereq-list--flat">
+              @for (prereq of m.prerequisites; track prereq.id) {
+                <li class="prereq-row">
+                  <div class="prereq-info">
+                    <ion-icon
+                      class="type-icon"
+                      [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
+                    ></ion-icon>
+                    <span class="prereq-title">{{ prereq.title }}</span>
                   </div>
-                </div>
+                  <div class="prereq-status">
+                    <app-prereq-status-badge [status]="prereq.status" />
+                  </div>
+                </li>
               }
-            </li>
+            </ul>
           }
-        </ul>
-      }
-    </div>
+        }
+      </div>
+    }
   }
 </div>
