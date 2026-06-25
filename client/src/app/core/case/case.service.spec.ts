@@ -15,7 +15,7 @@ describe('CaseService', () => {
   });
 
   it('getParticipantCases handles empty result', async () => {
-    spyOn(supabase.from('case_participants'), 'select').and.returnValue(Promise.resolve({ data: [], error: null } as any));
+    spyOn(supabase, 'from').and.returnValue({ select: () => ({ eq: () => Promise.resolve({ data: [], error: null }) }) } as any);
     const res = await service.getParticipantCases('nonexistent');
     expect(res).toEqual([]);
   });

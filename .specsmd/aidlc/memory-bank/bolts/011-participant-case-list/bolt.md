@@ -3,7 +3,7 @@ id: "011"
 unit: 008-participant-case-list
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-participant-case-list-screen
 created: 2026-06-24T00:00:00Z

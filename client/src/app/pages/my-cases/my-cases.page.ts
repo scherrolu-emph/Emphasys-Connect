@@ -36,7 +36,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
                 </ion-item>
               }
             </ion-list>
-          } else if (cases.length > 0) {
+          } @else if (cases.length > 0) {
             <ion-list>
               @for (c of cases; track c.id) {
                 <ion-item button detail (click)="onSelectCase(c.id)">
@@ -50,7 +50,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
                 </ion-item>
               }
             </ion-list>
-          } else {
+          } @else {
             <p>You’ll be added to cases by your HFA.</p>
           }
         }
