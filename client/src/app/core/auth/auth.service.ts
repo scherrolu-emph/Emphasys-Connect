@@ -18,18 +18,10 @@ export class AuthService {
   readonly hfaId = computed(() => this.profile()?.hfa_id ?? null);
 
   constructor() {
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((_event, session) => {
       this.session.set(session);
       if (session?.user) {
         this.loadProfile(session.user.id);
-        if (event === 'SIGNED_IN') {
-          supabase
-            .from('case_participants')
-            .update({ invite_status: 'accepted', user_id: session.user.id })
-            .eq('email', session.user.email!)
-            .eq('invite_status', 'pending')
-            .then();
-        }
       } else {
         this.profile.set(null);
       }
@@ -65,16 +57,31 @@ export class AuthService {
   }
 
   async verifyOtp(email: string, token: string): Promise<void> {
+    let userId: string | undefined;
+
     if (environment.mockOtp) {
       if (token !== environment.mockOtpCode) throw new Error('Invalid code');
-      const { data, error: fnError } = await supabase.functions.invoke('dev-mock-sign-in', { body: { email } });
+      const { data: fnData, error: fnError } = await supabase.functions.invoke('dev-mock-sign-in', { body: { email } });
       if (fnError) throw fnError;
-      const { error } = await supabase.auth.verifyOtp({ token_hash: data.hashed_token, type: 'email' });
+      const { data: otpData, error } = await supabase.auth.verifyOtp({ token_hash: fnData.hashed_token, type: 'email' });
       if (error) throw error;
-      return;
+      userId = otpData.user?.id;
+    } else {
+      const { data: otpData, error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
+      if (error) throw error;
+      userId = otpData.user?.id;
     }
-    const { error } = await supabase.auth.verifyOtp({ email, token, type: 'email' });
-    if (error) throw error;
+
+    if (userId) {
+      const { error: updateError } = await supabase
+        .from('case_participants')
+        .update({ invite_status: 'accepted', user_id: userId })
+        .eq('email', email)
+        .eq('invite_status', 'pending');
+      if (updateError) console.error('[invite-accept] update failed:', updateError);
+    } else {
+      console.warn('[invite-accept] no user id after verifyOtp — skipping update');
+    }
   }
 
   async signOut(): Promise<void> {

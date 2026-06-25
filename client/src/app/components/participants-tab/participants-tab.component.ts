@@ -7,6 +7,7 @@ import {
   IonLabel,
   IonButton,
   IonIcon,
+  IonBadge,
   IonSelect,
   IonSelectOption,
   IonInput,
@@ -30,7 +31,7 @@ export interface AddParticipantRequest {
   imports: [
     CommonModule,
     FormsModule,
-    IonList, IonItem, IonLabel, IonButton, IonIcon, IonSelect, IonSelectOption, IonInput,
+    IonList, IonItem, IonLabel, IonButton, IonIcon, IonBadge, IonSelect, IonSelectOption, IonInput,
     AvatarComponent,
   ],
   templateUrl: './participants-tab.component.html',
@@ -69,6 +70,10 @@ export class ParticipantsTabComponent {
 
   displayLabel(p: CaseParticipant): string {
     return p.displayName ?? p.email;
+  }
+
+  isPending(p: CaseParticipant): boolean {
+    return p.inviteStatus === 'pending';
   }
 
   confirmRemove(p: CaseParticipant): void {
