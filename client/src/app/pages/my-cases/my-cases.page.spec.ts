@@ -1,9 +1,12 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { ComponentFixture } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { signal } from '@angular/core';
 import { MyCasesPage } from './my-cases.page';
 import { AuthService } from '../../core/auth/auth.service';
 import { CaseService, ParticipantCaseSummary } from '../../core/case/case.service';
+import { AiBriefingService } from '../../core/ai-briefing/ai-briefing.service';
+import { NotificationService } from '../../core/notification/notification.service';
 
 const mockUser = { id: 'user-1' };
 
@@ -27,10 +30,27 @@ describe('MyCasesPage', () => {
   beforeEach(() => {
     authSpy = jasmine.createSpyObj('AuthService', [], {
       currentUser: jasmine.createSpy().and.returnValue(mockUser),
+      isHfa: signal(false),
     });
     caseSpy = jasmine.createSpyObj('CaseService', ['getParticipantCases']);
     routerSpy = jasmine.createSpyObj('Router', ['navigate']);
     caseSpy.getParticipantCases.and.resolveTo(mockCases);
+
+    const briefingServiceMock = {
+      visible: signal(false),
+      getBriefing: jasmine.createSpy().and.returnValue({ text: '', chips: [] }),
+      startStream: jasmine.createSpy().and.returnValue(() => {}),
+      dismiss: jasmine.createSpy(),
+      resetAndShow: jasmine.createSpy(),
+    };
+
+    const notificationServiceMock = {
+      unread: signal(0),
+      totalBadge: signal(0),
+      notifications: signal([]),
+      overdueItems: signal([]),
+      markAllRead: jasmine.createSpy().and.returnValue(Promise.resolve()),
+    };
 
     TestBed.configureTestingModule({
       imports: [MyCasesPage],
@@ -38,6 +58,8 @@ describe('MyCasesPage', () => {
         { provide: AuthService, useValue: authSpy },
         { provide: CaseService, useValue: caseSpy },
         { provide: Router, useValue: routerSpy },
+        { provide: AiBriefingService, useValue: briefingServiceMock },
+        { provide: NotificationService, useValue: notificationServiceMock },
       ],
     });
 
