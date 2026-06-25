@@ -13,6 +13,7 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../core/auth/auth.service';
 import { CaseService, ParticipantCaseSummary } from '../../core/case/case.service';
+import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
 
 @Component({
   selector: 'app-my-cases',
@@ -22,7 +23,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
         <ion-title>My Cases</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content class="ion-padding">
+    <ion-content class="ion-padding" style="--padding-bottom: 60px;">
       <div class="participant-cases-container">
         @if (auth.currentUser()) {
           @if (isLoading) {
@@ -56,6 +57,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
         }
       </div>
     </ion-content>
+    <app-bottom-nav [isHfa]="false" />
   `,
   standalone: true,
   imports: [
@@ -68,6 +70,7 @@ import { CaseService, ParticipantCaseSummary } from '../../core/case/case.servic
     IonLabel,
     IonBadge,
     IonSkeletonText,
+    BottomNavComponent,
   ],
   styles: [
     ".participant-cases-container { width: 100%; margin: 0 auto; }",

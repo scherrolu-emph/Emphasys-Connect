@@ -1,0 +1,61 @@
+.activity-content {
+  --padding-bottom: 60px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  gap: 12px;
+
+  .empty-icon {
+    font-size: 48px;
+    color: var(--ion-color-medium);
+  }
+
+  p {
+    margin: 0;
+    color: var(--ion-color-medium);
+    font-size: 14px;
+  }
+}
+
+.activity-item--system {
+  --background: var(--ion-color-light, #f4f5f8);
+}
+
+.activity-label {
+  padding: 10px 0;
+
+  .activity-author {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ion-color-dark, #222);
+    margin: 0 0 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .activity-body {
+    font-size: 14px;
+    color: var(--ion-text-color, #333);
+    margin: 0 0 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .activity-meta {
+    font-size: 11px;
+    color: var(--ion-color-medium, #92949c);
+    margin: 0;
+  }
+
+  .activity-case {
+    font-weight: 500;
+  }
+}

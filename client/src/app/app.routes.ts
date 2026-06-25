@@ -71,6 +71,12 @@ export const routes: Routes = [
     canActivate: [hfaGuard],
   },
   {
+    path: 'activity',
+    loadComponent: () =>
+      import('./pages/activity/activity.page').then(m => m.ActivityPage),
+    canActivate: [authGuard],
+  },
+  {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',

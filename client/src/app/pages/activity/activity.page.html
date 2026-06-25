@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Activity</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="activity-content">
+  @if (isLoading()) {
+    <ion-list>
+      @for (n of skeletonRows; track n) {
+        <ion-item lines="full">
+          <ion-label>
+            <ion-skeleton-text [animated]="true" style="width: 70%; height: 14px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 45%; height: 11px; margin-top: 6px;"></ion-skeleton-text>
+            <ion-skeleton-text [animated]="true" style="width: 30%; height: 10px; margin-top: 4px;"></ion-skeleton-text>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  @if (!isLoading() && activities().length === 0) {
+    <div class="empty-state">
+      <ion-icon name="flash-outline" class="empty-icon"></ion-icon>
+      <p>No activity yet</p>
+    </div>
+  }
+
+  @if (!isLoading() && activities().length > 0) {
+    <ion-list lines="full">
+      @for (item of activities(); track item.messageId) {
+        <ion-item
+          button
+          detail="false"
+          [class.activity-item--system]="item.messageType === 'system'"
+          (click)="navigateToCase(item.caseId)"
+        >
+          <ion-label class="activity-label ion-text-wrap">
+            @if (item.messageType === 'manual' && item.authorName) {
+              <p class="activity-author">{{ item.authorName }}</p>
+            }
+            <p class="activity-body">{{ item.body }}</p>
+            <p class="activity-meta">
+              <span class="activity-case">{{ item.caseName }}</span>
+              <span class="activity-dot"> · </span>
+              <span class="activity-time">{{ timeAgo(item.createdAt) }}</span>
+            </p>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+</ion-content>
+
+<app-bottom-nav [isHfa]="isHfa()" />

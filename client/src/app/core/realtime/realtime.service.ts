@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { supabase } from '../supabase/supabase.client';
 
@@ -9,9 +10,16 @@ export interface CaseRealtimeCallbacks {
   onMilestone?: (payload: RealtimePostgresChangesPayload<Record<string, unknown>>) => void;
 }
 
+export interface ActivityMessageEvent {
+  caseId: string;
+  raw: Record<string, unknown>;
+}
+
 @Injectable({ providedIn: 'root' })
 export class RealtimeService {
   private channels = new Map<string, RealtimeChannel>();
+  private readonly _activityMessage = new Subject<ActivityMessageEvent>();
+  readonly activityMessage$ = this._activityMessage.asObservable();
 
   subscribeToCase(caseId: string, callbacks: CaseRealtimeCallbacks = {}): RealtimeChannel {
     const existing = this.channels.get(caseId);
@@ -22,7 +30,12 @@ export class RealtimeService {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'conversation_messages', filter: `case_id=eq.${caseId}` },
-        payload => callbacks.onMessage?.(payload),
+        payload => {
+          callbacks.onMessage?.(payload);
+          if (payload.eventType === 'INSERT') {
+            this._activityMessage.next({ caseId, raw: payload.new as Record<string, unknown> });
+          }
+        },
       )
       .on(
         'postgres_changes',
