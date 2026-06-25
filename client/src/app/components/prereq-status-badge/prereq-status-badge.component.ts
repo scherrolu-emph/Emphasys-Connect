@@ -1,5 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-import type { PrerequisiteSummary } from '../../core/cases/case.models';
+import type { DisplayPrereqStatus } from '../../core/cases/prereq-display-status.util';
 
 @Component({
   selector: 'app-prereq-status-badge',
@@ -8,23 +8,25 @@ import type { PrerequisiteSummary } from '../../core/cases/case.models';
   styleUrls: ['./prereq-status-badge.component.scss'],
 })
 export class PrereqStatusBadgeComponent {
-  readonly status = input.required<PrerequisiteSummary['status']>();
+  readonly displayStatus = input.required<DisplayPrereqStatus>();
 
   readonly label = computed(() => {
-    switch (this.status()) {
-      case 'pending_open': return 'Pending';
-      case 'received_processing': return 'Received — Under Review';
-      case 'accepted': return 'Accepted';
-      default: return 'Pending';
+    switch (this.displayStatus()) {
+      case 'not_ready':              return 'Not Ready';
+      case 'pending':                return 'Pending';
+      case 'deficiency':             return 'Deficiency';
+      case 'submitted_under_review': return 'Submitted - Under Review';
+      case 'accepted':               return 'Accepted';
     }
   });
 
   readonly cssClass = computed(() => {
-    switch (this.status()) {
-      case 'pending_open': return 'badge badge-neutral';
-      case 'received_processing': return 'badge badge-caution';
-      case 'accepted': return 'badge badge-success';
-      default: return 'badge badge-neutral';
+    switch (this.displayStatus()) {
+      case 'not_ready':              return 'badge badge-muted';
+      case 'pending':                return 'badge badge-neutral';
+      case 'deficiency':             return 'badge badge-danger';
+      case 'submitted_under_review': return 'badge badge-caution';
+      case 'accepted':               return 'badge badge-success';
     }
   });
 }

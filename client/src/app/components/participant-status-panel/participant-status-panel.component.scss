@@ -119,6 +119,10 @@
   }
 }
 
+.prereq-row.is-not-ready {
+  opacity: 0.55;
+}
+
 .mark-ready-btn {
   padding: 4px 10px;
   border-radius: 6px;

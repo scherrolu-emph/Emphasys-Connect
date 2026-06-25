@@ -18,7 +18,7 @@
           @if (expandedMilestoneIds().has(m.id) && m.prerequisites.length > 0) {
             <ul class="prereq-list">
               @for (prereq of m.prerequisites; track prereq.id) {
-                <li class="prereq-row">
+                <li class="prereq-row" [class.is-not-ready]="prereqDisplayStatus(prereq, m.status) === 'not_ready'">
                   <div class="prereq-info">
                     <ion-icon
                       class="type-icon"
@@ -28,9 +28,9 @@
                   </div>
 
                   <div class="prereq-status">
-                    <app-prereq-status-badge [status]="prereq.status" />
+                    <app-prereq-status-badge [displayStatus]="prereqDisplayStatus(prereq, m.status)" />
 
-                    @if (prereq.status === 'pending_open' && prereq.type === 'document_submission' && prereq.uploadLink) {
+                    @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'document_submission' && prereq.uploadLink) {
                       <a
                         class="upload-link"
                         [href]="prereq.uploadLink"
@@ -39,7 +39,7 @@
                       >Upload document</a>
                     }
 
-                    @if (prereq.status === 'pending_open' && prereq.type === 'acceptance_comment') {
+                    @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'acceptance_comment') {
                       <button class="mark-ready-btn" (click)="onMarkReady(prereq.id)">
                         Mark as ready
                       </button>

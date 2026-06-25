@@ -2,7 +2,8 @@ import { Component, computed, input, output, signal } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { attachOutline, checkmarkOutline, chevronDownOutline } from 'ionicons/icons';
-import type { MilestoneDetail } from '../../core/cases/case.models';
+import type { MilestoneDetail, PrerequisiteSummary } from '../../core/cases/case.models';
+import { getDisplayStatus, type DisplayPrereqStatus } from '../../core/cases/prereq-display-status.util';
 import { PrereqStatusBadgeComponent } from '../prereq-status-badge/prereq-status-badge.component';
 import { MilestoneStatusBadgeComponent } from '../milestone-status-badge/milestone-status-badge.component';
 
@@ -74,5 +75,9 @@ export class HfaActionsPanelComponent {
     this.returnPrereq.emit({ prereqId, prereqTitle, note });
     this.returnNotePrereqId.set(null);
     this.returnNoteText.set('');
+  }
+
+  prereqDisplayStatus(prereq: PrerequisiteSummary, milestoneStatus: MilestoneDetail['status']): DisplayPrereqStatus {
+    return getDisplayStatus(prereq, milestoneStatus);
   }
 }

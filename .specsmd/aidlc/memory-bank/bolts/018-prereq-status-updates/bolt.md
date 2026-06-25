@@ -1,23 +1,28 @@
 ---
-id: "018"
+id: '018'
 unit: 006-milestone-prereq-flow
 intent: 001-construction-milestone-workspace
-status: planned
+status: complete
 type: simple-construction-bolt
 stories:
   - 006-prerequisite-not-ready-state
   - 007-document-status-labels
-created: 2026-06-25T12:00:00Z
-started: null
-completed: null
+created: '2026-06-25T12:00:00Z'
+started: '2026-06-25T22:00:00Z'
+completed: '2026-06-25T21:51:58Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ["015"]
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T22:00:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T22:30:00Z'
+    artifact: implementation-walkthrough.md
+requires_bolts:
+  - '015'
 enables_bolts: []
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 2
   avg_uncertainty: 2
