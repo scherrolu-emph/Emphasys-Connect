@@ -1,21 +1,25 @@
 ---
-id: "001"
+id: '001'
 unit: 001-workspace-foundation
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-supabase-schema-and-rls
   - 002-typescript-types-and-client
   - 003-seed-data
-created: 2026-06-24T00:00:00Z
+created: '2026-06-24T00:00:00Z'
 requires_bolts: []
-enables_bolts: ["002"]
+enables_bolts:
+  - '002'
 requires_units: []
 blocks: false
 complexity:
   estimate: large
   reason: Supabase project setup, schema DDL with RLS policies for all 7 tables, type generation, and seed SQL with auth user creation
+completed: '2026-06-25T01:38:58Z'
+current_stage: null
+stages_completed: []
 ---
 
 # Bolt 001 — Workspace Foundation: Schema, Types, Seed
