@@ -15,44 +15,6 @@ export const routes: Routes = [
       import('./pages/login/otp/otp.page').then(m => m.OtpPage),
   },
   {
-    path: 'cases/:id',
-    loadComponent: () =>
-      import('./pages/case-detail/case-detail.page').then(m => m.CaseDetailPage),
-    canActivate: [authGuard],
-  },
-  {
-    path: 'create-case/type',
-    loadComponent: () =>
-      import('./pages/create-case/type/case-type-selection.page').then(
-        m => m.CaseTypeSelectionPage,
-      ),
-    canActivate: [hfaGuard],
-  },
-  {
-    path: 'create-case/search',
-    loadComponent: () =>
-      import('./pages/create-case/search/imc-project-search.page').then(
-        m => m.ImcProjectSearchPage,
-      ),
-    canActivate: [hfaGuard],
-  },
-  {
-    path: 'create-case/confirm',
-    loadComponent: () =>
-      import('./pages/create-case/confirm/create-case-confirm.page').then(
-        m => m.CreateCaseConfirmPage,
-      ),
-    canActivate: [hfaGuard],
-  },
-  {
-    path: 'create-case/create',
-    loadComponent: () =>
-      import('./pages/create-case/create/create-case-action.page').then(
-        m => m.CreateCaseActionPage,
-      ),
-    canActivate: [hfaGuard],
-  },
-  {
     path: '',
     loadComponent: () =>
       import('./pages/tabs/tabs.page').then(m => m.TabsPage),
@@ -81,6 +43,44 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./pages/activity/activity.page').then(m => m.ActivityPage),
         canActivate: [authGuard],
+      },
+      {
+        path: 'cases/:id',
+        loadComponent: () =>
+          import('./pages/case-detail/case-detail.page').then(m => m.CaseDetailPage),
+        canActivate: [authGuard],
+      },
+      {
+        path: 'create-case/type',
+        loadComponent: () =>
+          import('./pages/create-case/type/case-type-selection.page').then(
+            m => m.CaseTypeSelectionPage,
+          ),
+        canActivate: [hfaGuard],
+      },
+      {
+        path: 'create-case/search',
+        loadComponent: () =>
+          import('./pages/create-case/search/imc-project-search.page').then(
+            m => m.ImcProjectSearchPage,
+          ),
+        canActivate: [hfaGuard],
+      },
+      {
+        path: 'create-case/confirm',
+        loadComponent: () =>
+          import('./pages/create-case/confirm/create-case-confirm.page').then(
+            m => m.CreateCaseConfirmPage,
+          ),
+        canActivate: [hfaGuard],
+      },
+      {
+        path: 'create-case/create',
+        loadComponent: () =>
+          import('./pages/create-case/create/create-case-action.page').then(
+            m => m.CreateCaseActionPage,
+          ),
+        canActivate: [hfaGuard],
       },
       {
         path: '',
