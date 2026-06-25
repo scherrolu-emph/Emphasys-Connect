@@ -216,44 +216,131 @@ describe('HfaActionsPanelComponent', () => {
     });
   });
 
-  describe('action buttons in expanded state', () => {
-    it('shows Accept and Return buttons for any expanded prereq', async () => {
-      const fixture = await create([makeMilestone('active', [makePrereq()])]);
-      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
-      fixture.detectChanges();
-      const accept = fixture.debugElement.query(By.css('.action-accept'));
-      const ret = fixture.debugElement.query(By.css('.action-return'));
-      expect(accept).toBeTruthy();
-      expect(ret).toBeTruthy();
-    });
-
-    it('shows Request document button for document_submission prereqs', async () => {
+  describe('action buttons — conditional visibility', () => {
+    it('shows Accept and Return buttons only for received_processing prereqs', async () => {
       const fixture = await create([
-        makeMilestone('active', [makePrereq({ type: 'document_submission' })]),
+        makeMilestone('active', [makePrereq({ status: 'received_processing' })]),
       ]);
       fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
       fixture.detectChanges();
-      const request = fixture.debugElement.query(By.css('.action-request'));
-      expect(request).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('.action-accept'))).toBeTruthy();
+      expect(fixture.debugElement.query(By.css('.action-return'))).toBeTruthy();
+    });
+
+    it('hides Accept and Return buttons for pending_open prereqs', async () => {
+      const fixture = await create([makeMilestone('active', [makePrereq({ status: 'pending_open' })])]);
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.action-accept'))).toBeNull();
+      expect(fixture.debugElement.query(By.css('.action-return'))).toBeNull();
+    });
+
+    it('shows Request document button for document_submission prereqs in pending_open when not yet requested', async () => {
+      const fixture = await create([
+        makeMilestone('active', [makePrereq({ type: 'document_submission', status: 'pending_open', requested: false })]),
+      ]);
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.action-request'))).toBeTruthy();
+    });
+
+    it('hides Request document button once requested', async () => {
+      const fixture = await create([
+        makeMilestone('active', [makePrereq({ type: 'document_submission', status: 'pending_open', requested: true })]),
+      ]);
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.action-request'))).toBeNull();
     });
 
     it('hides Request document button for acceptance_comment prereqs', async () => {
       const fixture = await create([
-        makeMilestone('active', [makePrereq({ type: 'acceptance_comment' })]),
+        makeMilestone('active', [makePrereq({ type: 'acceptance_comment', status: 'pending_open' })]),
       ]);
       fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
       fixture.detectChanges();
-      const request = fixture.debugElement.query(By.css('.action-request'));
-      expect(request).toBeNull();
+      expect(fixture.debugElement.query(By.css('.action-request'))).toBeNull();
     });
 
-    it('renders action buttons as disabled placeholders', async () => {
-      const fixture = await create([makeMilestone('active', [makePrereq()])]);
+    it('shows accepted state label for accepted prereqs', async () => {
+      const fixture = await create([
+        makeMilestone('active', [makePrereq({ status: 'accepted' })]),
+      ]);
       fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
       fixture.detectChanges();
-      const buttons = fixture.debugElement.queryAll(By.css('.prereq-actions button'));
-      const allDisabled = buttons.every(b => (b.nativeElement as HTMLButtonElement).disabled);
-      expect(allDisabled).toBeTrue();
+      const done = fixture.debugElement.query(By.css('.action-done'));
+      expect(done).toBeTruthy();
+    });
+  });
+
+  describe('output events', () => {
+    it('acceptPrereq emits with prereqId, prereqTitle and milestoneId when Accept clicked', async () => {
+      const prereq = makePrereq({ id: 'pr-1', title: 'My Prereq', status: 'received_processing' });
+      const fixture = await create([makeMilestone('active', [prereq], { id: 'm-1' })]);
+      const comp = fixture.componentInstance;
+      let emitted: unknown;
+      comp.acceptPrereq.subscribe((v: unknown) => (emitted = v));
+
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('.action-accept')).nativeElement.click();
+
+      expect(emitted).toEqual({ prereqId: 'pr-1', prereqTitle: 'My Prereq', milestoneId: 'm-1' });
+    });
+
+    it('triggerRequest emits with prereqId and prereqTitle when Request document clicked', async () => {
+      const prereq = makePrereq({ id: 'pr-2', title: 'Doc Prereq', type: 'document_submission', status: 'pending_open', requested: false });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+      const comp = fixture.componentInstance;
+      let emitted: unknown;
+      comp.triggerRequest.subscribe((v: unknown) => (emitted = v));
+
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('.action-request')).nativeElement.click();
+
+      expect(emitted).toEqual({ prereqId: 'pr-2', prereqTitle: 'Doc Prereq' });
+    });
+  });
+
+  describe('return-with-note form', () => {
+    it('shows note textarea after clicking Return with note', async () => {
+      const prereq = makePrereq({ status: 'received_processing' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('.action-return')).nativeElement.click();
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css('.return-note-input'))).toBeTruthy();
+    });
+
+    it('Confirm return button is disabled when note is empty', async () => {
+      const prereq = makePrereq({ status: 'received_processing' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('.action-return')).nativeElement.click();
+      fixture.detectChanges();
+
+      const confirmBtn = fixture.debugElement.queryAll(By.css('.return-note-actions .action-return'))[0];
+      expect((confirmBtn.nativeElement as HTMLButtonElement).disabled).toBeTrue();
+    });
+
+    it('Cancel hides the note form', async () => {
+      const prereq = makePrereq({ status: 'received_processing' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.debugElement.query(By.css('.prereq-toggle')).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('.action-return')).nativeElement.click();
+      fixture.detectChanges();
+      fixture.debugElement.query(By.css('.return-note-actions button:last-child')).nativeElement.click();
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css('.return-note-input'))).toBeNull();
     });
   });
 

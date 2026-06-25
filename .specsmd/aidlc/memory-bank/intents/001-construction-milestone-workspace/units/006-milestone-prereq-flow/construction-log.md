@@ -27,7 +27,7 @@ last_updated: 2026-06-25T23:59:00Z
 | Bolt ID | Stories | Status | Changed |
 |---------|---------|--------|---------|
 | 007 | S1 (hfa-actions-panel), S4 (participant-status-panel) | ✅ complete | - |
-| 008 | S2 (accept-and-return), S3 (trigger-document-request), S5 (milestone-auto-advance) | [ ] planned | - |
+| 008 | S2 (accept-and-return), S3 (trigger-document-request), S5 (milestone-auto-advance) | ✅ complete | - |
 
 ## Execution History
 
@@ -37,6 +37,10 @@ last_updated: 2026-06-25T23:59:00Z
 | 2026-06-25T00:00:00Z | 007 | stage-complete | Plan → Implement |
 | 2026-06-25T00:00:00Z | 007 | stage-complete | Implement → Test |
 | 2026-06-25T00:00:00Z | 007 | completed | All 3 stages done |
+| 2026-06-25T14:30:00Z | 008 | started | Stage 1: Plan |
+| 2026-06-25T14:35:00Z | 008 | stage-complete | Plan → Implement |
+| 2026-06-25T14:45:00Z | 008 | stage-complete | Implement → Test |
+| 2026-06-25T15:00:00Z | 008 | completed | All 3 stages done |
 | 2026-06-25T23:59:00Z | 007 | post-bolt fixes | Gap analysis + UX improvements applied after completion (see Notes) |
 
 ## Execution Summary
@@ -45,9 +49,9 @@ last_updated: 2026-06-25T23:59:00Z
 |--------|-------|
 | Original bolts planned | 2 |
 | Current bolt count | 2 |
-| Bolts completed | 1 |
+| Bolts completed | 2 |
 | Bolts in progress | 0 |
-| Bolts remaining | 1 |
+| Bolts remaining | 0 |
 | Replanning events | 0 |
 
 ## Notes

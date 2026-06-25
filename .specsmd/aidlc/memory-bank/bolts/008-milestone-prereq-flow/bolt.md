@@ -1,21 +1,33 @@
 ---
-id: "008"
+id: '008'
 unit: 006-milestone-prereq-flow
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-25T14:30:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T14:35:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T14:45:00Z'
+    artifact: implementation-walkthrough.md
 stories:
   - 002-accept-and-return-actions
   - 003-trigger-document-request
   - 005-milestone-auto-advance
-created: 2026-06-24T00:00:00Z
-requires_bolts: ["007"]
-enables_bolts: ["009"]
+created: '2026-06-24T00:00:00Z'
+requires_bolts:
+  - '007'
+enables_bolts:
+  - '009'
 requires_units: []
 blocks: false
 complexity:
   estimate: large
   reason: Prerequisite mutations with atomic system message writes, eDocs upload URL generation, milestone auto-advance logic — all must broadcast via Realtime
+completed: '2026-06-25T14:47:55Z'
 ---
 
 # Bolt 008 — Milestone/Prereq Flow: Mutations + Auto-Advance

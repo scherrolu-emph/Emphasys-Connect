@@ -56,7 +56,12 @@
     @if (activeTab() === 'actions') {
       <div class="panel-slot panel-actions">
         @if (isHfa()) {
-          <app-hfa-actions-panel [milestones]="store.milestones()" />
+          <app-hfa-actions-panel
+            [milestones]="store.milestones()"
+            (acceptPrereq)="onAcceptPrereq($event)"
+            (returnPrereq)="onReturnPrereq($event)"
+            (triggerRequest)="onTriggerRequest($event)"
+          />
         } @else {
           <app-participant-status-panel
             [milestones]="store.milestones()"
@@ -92,7 +97,12 @@
     <div class="panel-left">
       <div class="panel-slot panel-actions">
         @if (isHfa()) {
-          <app-hfa-actions-panel [milestones]="store.milestones()" />
+          <app-hfa-actions-panel
+            [milestones]="store.milestones()"
+            (acceptPrereq)="onAcceptPrereq($event)"
+            (returnPrereq)="onReturnPrereq($event)"
+            (triggerRequest)="onTriggerRequest($event)"
+          />
         } @else {
           <app-participant-status-panel
             [milestones]="store.milestones()"

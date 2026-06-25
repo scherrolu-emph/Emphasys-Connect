@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CaseService } from '../../core/cases/case.service';
-import type { CaseDetail, CaseParticipant, ConversationMessage } from '../../core/cases/case.models';
+import type { CaseDetail, CaseParticipant, ConversationMessage, MilestoneDetail, PrerequisiteSummary } from '../../core/cases/case.models';
 
 @Injectable()
 export class CaseDetailStore {
@@ -52,6 +52,31 @@ export class CaseDetailStore {
 
   refreshParticipants(caseId: string): void {
     void this.caseService.getParticipants(caseId).then(list => this.participants.set(list));
+  }
+
+  applyPrereqUpdate(prereqId: string, changes: Partial<PrerequisiteSummary>): void {
+    const detail = this.caseDetail();
+    if (!detail) return;
+    const milestones = detail.milestones.map(m => ({
+      ...m,
+      prerequisites: m.prerequisites.map(p => p.id === prereqId ? { ...p, ...changes } : p),
+    }));
+    this.caseDetail.set({
+      ...detail,
+      milestones,
+      activeMilestone: milestones.find(m => m.status === 'active') ?? null,
+    });
+  }
+
+  applyMilestoneUpdate(milestoneId: string, changes: Partial<MilestoneDetail>): void {
+    const detail = this.caseDetail();
+    if (!detail) return;
+    const milestones = detail.milestones.map(m => m.id === milestoneId ? { ...m, ...changes } : m);
+    this.caseDetail.set({
+      ...detail,
+      milestones,
+      activeMilestone: milestones.find(m => m.status === 'active') ?? null,
+    });
   }
 
   reset(): void {
