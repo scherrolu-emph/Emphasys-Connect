@@ -24,7 +24,7 @@
           } @else if (isHfa()) {
             @if (removingId() === p.id) {
               <div slot="end" class="confirm-remove">
-                <span class="confirm-text">Remove?</span>
+                <span class="confirm-text">Remove {{ displayLabel(p) }}?</span>
                 <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
                   <ion-icon name="checkmark-outline" />
                 </ion-button>
@@ -63,7 +63,7 @@
           } @else if (isHfa()) {
             @if (removingId() === p.id) {
               <div slot="end" class="confirm-remove">
-                <span class="confirm-text">Remove?</span>
+                <span class="confirm-text">Remove {{ displayLabel(p) }}?</span>
                 <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
                   <ion-icon name="checkmark-outline" />
                 </ion-button>
@@ -102,7 +102,7 @@
           } @else if (isHfa()) {
             @if (removingId() === p.id) {
               <div slot="end" class="confirm-remove">
-                <span class="confirm-text">Remove?</span>
+                <span class="confirm-text">Remove {{ displayLabel(p) }}?</span>
                 <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
                   <ion-icon name="checkmark-outline" />
                 </ion-button>
@@ -157,6 +157,7 @@
           <ion-icon name="add-outline" slot="start" />
           Add participant
         </ion-button>
+        <p class="add-cta-disclaimer">Added participants get an email invitation and can view the case &amp; respond to items assigned to them.</p>
       </div>
     }
   }
