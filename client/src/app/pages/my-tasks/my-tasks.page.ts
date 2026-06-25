@@ -49,7 +49,7 @@ import type { MyTask } from '../../core/tasks/task.models';
       } @else if (tasks().length === 0) {
         <div class="empty-state">
           <ion-icon name="checkmark-circle-outline" class="empty-icon"></ion-icon>
-          <p>You have no outstanding tasks</p>
+          <p>No active tasks — check back when your next milestone opens</p>
         </div>
       } @else {
         <ion-list>

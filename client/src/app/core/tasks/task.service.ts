@@ -19,12 +19,21 @@ export class TaskService {
 
     if (caseIds.length === 0) return [];
 
+    const { data: activeMilestones, error: mErr } = await supabase
+      .from('milestones')
+      .select('id')
+      .in('case_id', caseIds)
+      .eq('status', 'active');
+    if (mErr) throw mErr;
+    const activeMilestoneIds = (activeMilestones ?? []).map(m => m.id);
+    if (activeMilestoneIds.length === 0) return [];
+
     const statusFilter = isHfa ? 'received_processing' : 'pending_open';
 
     const { data: prereqs, error: pErr } = await supabase
       .from('prerequisites')
       .select('id, title, type, status, case_id, milestone_id')
-      .in('case_id', caseIds)
+      .in('milestone_id', activeMilestoneIds)
       .eq('status', statusFilter);
 
     if (pErr) throw pErr;

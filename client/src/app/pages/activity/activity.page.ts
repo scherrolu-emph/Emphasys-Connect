@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   IonButtons,
@@ -8,6 +8,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonListHeader,
   IonSkeletonText,
   IonTitle,
   IonToolbar,
@@ -21,12 +22,19 @@ import { NotificationBellComponent } from '../../components/notification-bell/no
 import type { ActivityItem } from '../../core/activity/activity.model';
 import { timeAgo } from '../../core/activity/activity.model';
 
+interface ActivityGroup {
+  caseId: string;
+  caseName: string;
+  latestAt: string;
+  events: ActivityItem[];
+}
+
 @Component({
   selector: 'app-activity',
   standalone: true,
   imports: [
     IonButtons, IonContent, IonHeader, IonTitle, IonToolbar,
-    IonList, IonItem, IonLabel, IonSkeletonText, IonIcon,
+    IonList, IonListHeader, IonItem, IonLabel, IonSkeletonText, IonIcon,
     NotificationBellComponent,
   ],
   templateUrl: './activity.page.html',
@@ -41,6 +49,24 @@ export class ActivityPage implements OnInit, OnDestroy {
   readonly activities = signal<ActivityItem[]>([]);
   readonly isLoading = signal(true);
   readonly skeletonRows = [1, 2, 3, 4, 5];
+
+  readonly activityGroups = computed<ActivityGroup[]>(() => {
+    const groupMap = new Map<string, ActivityGroup>();
+    for (const item of this.activities()) {
+      const grp = groupMap.get(item.caseId);
+      if (grp) {
+        grp.events.push(item);
+      } else {
+        groupMap.set(item.caseId, {
+          caseId: item.caseId,
+          caseName: item.caseName,
+          latestAt: item.createdAt,
+          events: [item],
+        });
+      }
+    }
+    return [...groupMap.values()].sort((a, b) => b.latestAt.localeCompare(a.latestAt));
+  });
 
   private subscribedCaseIds: string[] = [];
 

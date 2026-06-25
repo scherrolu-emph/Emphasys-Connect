@@ -119,7 +119,7 @@ describe('MyTasksPage', () => {
       tick();
       fixture.detectChanges();
       const text: string = fixture.nativeElement.textContent;
-      expect(text).toContain('no outstanding tasks');
+      expect(text).toContain('No active tasks');
     }));
 
     it('sets badge count to 0 when task list is empty', fakeAsync(() => {
