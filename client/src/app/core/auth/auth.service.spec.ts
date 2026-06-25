@@ -74,34 +74,57 @@ describe('AuthService', () => {
   });
 
   describe('signInWithOtp', () => {
-    it('throws when supabase returns an error', async () => {
-      spyOn(supabase.auth, 'signInWithOtp').and.returnValue(
-        Promise.resolve({ data: {} as any, error: new Error('Rate limited') as any })
-      );
-      await expectAsync(service.signInWithOtp('test@example.com')).toBeRejected();
-    });
-
-    it('resolves without error on success', async () => {
-      spyOn(supabase.auth, 'signInWithOtp').and.returnValue(
-        Promise.resolve({ data: {} as any, error: null })
-      );
+    it('resolves immediately without calling supabase when mockOtp is enabled', async () => {
+      const spy = spyOn(supabase.auth, 'signInWithOtp');
       await expectAsync(service.signInWithOtp('test@example.com')).toBeResolved();
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
   describe('verifyOtp', () => {
-    it('throws when supabase returns an error', async () => {
-      spyOn(supabase.auth, 'verifyOtp').and.returnValue(
-        Promise.resolve({ data: {} as any, error: new Error('Invalid token') as any })
-      );
-      await expectAsync(service.verifyOtp('test@example.com', '123456')).toBeRejected();
+    it('throws when token does not match mockOtpCode', async () => {
+      await expectAsync(service.verifyOtp('test@example.com', 'wrong-code'))
+        .toBeRejectedWithError('Invalid code');
     });
 
-    it('resolves without error on success', async () => {
-      spyOn(supabase.auth, 'verifyOtp').and.returnValue(
-        Promise.resolve({ data: {} as any, error: null })
+    it('calls dev-mock-sign-in, verifies token_hash, and accepts pending invites', async () => {
+      const invokeSpy = jasmine.createSpy('invoke').and.returnValue(
+        Promise.resolve({ data: { hashed_token: 'mock-hash' }, error: null })
       );
+      // supabase.functions getter returns a new FunctionsClient on every access —
+      // spy on the getter itself so the service receives our mock object
+      spyOnProperty(supabase, 'functions', 'get').and.returnValue({ invoke: invokeSpy } as any);
+
+      const verifyOtpSpy = spyOn(supabase.auth, 'verifyOtp').and.returnValue(
+        Promise.resolve({ data: { user: { id: 'user-1' }, session: null }, error: null } as any)
+      );
+      const eq2Spy = jasmine.createSpyObj('eq2', ['eq']);
+      eq2Spy.eq.and.returnValue(Promise.resolve({ error: null }));
+      const updateSpy = jasmine.createSpyObj('update', ['eq']);
+      updateSpy.eq.and.returnValue(eq2Spy);
+      const fromChainSpy = jasmine.createSpyObj('from', ['update']);
+      fromChainSpy.update.and.returnValue(updateSpy);
+      const fromSpy = spyOn(supabase, 'from').and.returnValue(fromChainSpy as any);
+
       await expectAsync(service.verifyOtp('test@example.com', '123456')).toBeResolved();
+      expect(invokeSpy).toHaveBeenCalledWith('dev-mock-sign-in', jasmine.objectContaining({ body: { email: 'test@example.com' } }));
+      expect(verifyOtpSpy).toHaveBeenCalledWith({ token_hash: 'mock-hash', type: 'email' });
+      expect(fromSpy).toHaveBeenCalledWith('case_participants');
+      expect(fromChainSpy.update).toHaveBeenCalledWith({ invite_status: 'accepted', user_id: 'user-1' });
+    });
+
+    it('skips case_participants update when verifyOtp returns no user', async () => {
+      const invokeSpy = jasmine.createSpy('invoke').and.returnValue(
+        Promise.resolve({ data: { hashed_token: 'mock-hash' }, error: null })
+      );
+      spyOnProperty(supabase, 'functions', 'get').and.returnValue({ invoke: invokeSpy } as any);
+      spyOn(supabase.auth, 'verifyOtp').and.returnValue(
+        Promise.resolve({ data: { user: null, session: null }, error: null } as any)
+      );
+      const fromSpy = spyOn(supabase, 'from');
+
+      await expectAsync(service.verifyOtp('test@example.com', '123456')).toBeResolved();
+      expect(fromSpy).not.toHaveBeenCalled();
     });
   });
 
