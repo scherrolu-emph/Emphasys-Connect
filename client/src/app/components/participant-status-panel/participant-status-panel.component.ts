@@ -1,13 +1,13 @@
 import { Component, computed, input, output, signal } from '@angular/core';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { attachOutline, checkmarkOutline, chevronDownOutline } from 'ionicons/icons';
+import { chevronDownOutline } from 'ionicons/icons';
 import type { MilestoneDetail, PrerequisiteSummary } from '../../core/cases/case.models';
 import { getDisplayStatus, type DisplayPrereqStatus } from '../../core/cases/prereq-display-status.util';
 import { PrereqStatusBadgeComponent } from '../prereq-status-badge/prereq-status-badge.component';
 import { MilestoneStatusBadgeComponent } from '../milestone-status-badge/milestone-status-badge.component';
 
-addIcons({ attachOutline, checkmarkOutline, chevronDownOutline });
+addIcons({ chevronDownOutline });
 
 @Component({
   selector: 'app-participant-status-panel',

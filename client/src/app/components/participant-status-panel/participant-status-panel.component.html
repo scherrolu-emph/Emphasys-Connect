@@ -3,9 +3,10 @@
     <div class="empty-state">No milestones have been defined yet.</div>
   } @else {
     <ul class="milestone-list">
-      @for (m of milestones(); track m.id) {
+      @for (m of milestones(); track m.id; let i = $index) {
         <li class="milestone-item">
           <button class="milestone-header" (click)="toggleMilestone(m.id)">
+            <span class="milestone-num">{{ i + 1 }}</span>
             <span class="milestone-title">{{ m.title }}</span>
             <app-milestone-status-badge [status]="m.status" />
             <ion-icon
@@ -20,10 +21,6 @@
               @for (prereq of m.prerequisites; track prereq.id) {
                 <li class="prereq-row" [class.is-not-ready]="prereqDisplayStatus(prereq, m.status) === 'not_ready'">
                   <div class="prereq-info">
-                    <ion-icon
-                      class="type-icon"
-                      [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
-                    ></ion-icon>
                     <span class="prereq-title">{{ prereq.title }}</span>
                   </div>
 

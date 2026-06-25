@@ -28,10 +28,6 @@
                       [class.is-open]="expandedPrereqId() === prereq.id"
                       (click)="togglePrereq(prereq.id)"
                     >
-                      <ion-icon
-                        class="type-icon"
-                        [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
-                      ></ion-icon>
                       <span class="prereq-title-text">{{ prereq.title }}</span>
                       <app-prereq-status-badge [displayStatus]="prereqDisplayStatus(prereq, m.status)" />
                       <ion-icon class="chevron" name="chevron-down-outline"></ion-icon>
@@ -90,10 +86,6 @@
               @for (prereq of m.prerequisites; track prereq.id) {
                 <li class="prereq-row">
                   <div class="prereq-info">
-                    <ion-icon
-                      class="type-icon"
-                      [name]="prereq.type === 'document_submission' ? 'attach-outline' : 'checkmark-outline'"
-                    ></ion-icon>
                     <span class="prereq-title">{{ prereq.title }}</span>
                   </div>
                   <div class="prereq-status">
