@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/dashboard"></ion-back-button>
+    </ion-buttons>
+    @if (store.caseDetail(); as c) {
+      <ion-title>
+        <span class="case-title">{{ c.title }}</span>
+        @if (c.referenceNumber) {
+          <span class="case-ref">#{{ c.referenceNumber }}</span>
+        }
+      </ion-title>
+    } @else if (store.loading()) {
+      <ion-title>
+        <ion-skeleton-text [animated]="true" style="width: 160px; height: 16px;"></ion-skeleton-text>
+      </ion-title>
+    }
+  </ion-toolbar>
+
+  <!-- Case sub-header: type badge + active milestone -->
+  @if (store.caseDetail(); as c) {
+    <div class="case-subheader">
+      <ion-chip class="type-chip" [color]="'primary'" outline="true">{{ caseTypeLabel() }}</ion-chip>
+      @if (store.activeMilestone(); as m) {
+        <span class="active-milestone">{{ m.title }}</span>
+      }
+    </div>
+  }
+</ion-header>
+
+<ion-content>
+
+  <!-- ── MOBILE LAYOUT: three-tab segment ── -->
+  <div class="layout-mobile">
+    <ion-segment
+      class="tab-segment"
+      [value]="activeTab()"
+      (ionChange)="setTab($any($event).detail.value)"
+    >
+      <ion-segment-button value="actions">
+        <ion-label>Actions</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="conversation">
+        <ion-label>
+          Conversation
+          @if (unreadCount() > 0) {
+            <ion-badge color="danger">{{ unreadCount() }}</ion-badge>
+          }
+        </ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="participants">
+        <ion-label>Participants</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    @if (activeTab() === 'actions') {
+      <div class="panel-slot panel-actions">
+        <!-- Bolt 007: milestone/prereq flow will fill this slot -->
+        <div class="empty-slot">Actions panel — coming in Bolt 007</div>
+      </div>
+    }
+
+    @if (activeTab() === 'conversation') {
+      <div class="panel-slot panel-conversation">
+        <!-- Bolt 009: conversation thread will fill this slot -->
+        <div class="empty-slot">Conversation panel — coming in Bolt 009</div>
+      </div>
+    }
+
+    @if (activeTab() === 'participants') {
+      <div class="panel-slot panel-participants">
+        <app-participants-tab
+          [participants]="store.participants()"
+          [currentUserId]="currentUserId()"
+          [currentUserHfaId]="currentUserHfaId()"
+          [isHfa]="isHfa()"
+          (addParticipant)="onAddParticipant($event)"
+          (removeParticipant)="onRemoveParticipant($event)"
+        />
+      </div>
+    }
+  </div>
+
+  <!-- ── TABLET/DESKTOP LAYOUT: two-panel grid ── -->
+  <div class="layout-desktop">
+    <!-- Left panel: Actions -->
+    <div class="panel-left">
+      <div class="panel-slot panel-actions">
+        <!-- Bolt 007 fills this -->
+        <div class="empty-slot">Actions panel — coming in Bolt 007</div>
+      </div>
+    </div>
+
+    <!-- Right panel: sub-tabs (Conversation | Participants) -->
+    <div class="panel-right">
+      <ion-segment
+        class="right-tab-segment"
+        [value]="activeRightTab()"
+        (ionChange)="setRightTab($any($event).detail.value)"
+      >
+        <ion-segment-button value="conversation">
+          <ion-label>
+            Conversation
+            @if (unreadCount() > 0) {
+              <ion-badge color="danger">{{ unreadCount() }}</ion-badge>
+            }
+          </ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="participants">
+          <ion-label>Participants</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      @if (activeRightTab() === 'conversation') {
+        <div class="panel-slot panel-conversation">
+          <!-- Bolt 009 fills this -->
+          <div class="empty-slot">Conversation panel — coming in Bolt 009</div>
+        </div>
+      }
+
+      @if (activeRightTab() === 'participants') {
+        <div class="panel-slot panel-participants">
+          <app-participants-tab
+            [participants]="store.participants()"
+            [currentUserId]="currentUserId()"
+            [currentUserHfaId]="currentUserHfaId()"
+            [isHfa]="isHfa()"
+            (addParticipant)="onAddParticipant($event)"
+            (removeParticipant)="onRemoveParticipant($event)"
+          />
+        </div>
+      }
+    </div>
+  </div>
+
+</ion-content>

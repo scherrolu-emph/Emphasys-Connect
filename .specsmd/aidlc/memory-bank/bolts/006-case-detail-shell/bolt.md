@@ -1,24 +1,41 @@
 ---
-id: "006"
+id: '006'
 unit: 005-case-detail-shell
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-25T09:00:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T09:15:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T09:30:00Z'
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: '2026-06-25T09:45:00Z'
+    artifact: test-walkthrough.md
 stories:
   - 001-two-panel-layout
   - 002-hfa-panel-slots
   - 003-developer-panel-slots
   - 004-data-loading-and-realtime
   - 005-participants-tab
-created: 2026-06-24T00:00:00Z
-updated: 2026-06-24T00:00:00Z
-requires_bolts: ["002", "005"]
-enables_bolts: ["007", "009"]
+created: '2026-06-24T00:00:00Z'
+updated: '2026-06-25T09:00:00Z'
+requires_bolts:
+  - '002'
+  - '005'
+enables_bolts:
+  - '007'
+  - '009'
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
   reason: Three-tab layout (Actions/Conversation/Participants), right-panel sub-tabs on tablet/desktop, CaseDetailStore, Participants tab with grouped list + add/remove mutations
+completed: '2026-06-25T13:49:15Z'
 ---
 
 # Bolt 006 — Case Detail Shell: Layout + CaseDetailStore + Participants Tab

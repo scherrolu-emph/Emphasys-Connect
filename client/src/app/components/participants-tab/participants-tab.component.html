@@ -1,0 +1,164 @@
+<div class="participants-tab">
+
+  @if (addError()) {
+    <div class="error-bar">{{ addError() }}</div>
+  }
+
+  <!-- YOUR AGENCY -->
+  @if (agencyParticipants().length > 0) {
+    <div class="section-header">YOUR AGENCY <span class="count">{{ agencyParticipants().length }}</span></div>
+    <ion-list lines="none" class="participant-list">
+      @for (p of agencyParticipants(); track p.id) {
+        <ion-item class="participant-row">
+          <app-avatar [name]="displayLabel(p)" [size]="36" slot="start" />
+          <ion-label>
+            <div class="participant-name">
+              {{ displayLabel(p) }}
+              @if (isSelf(p)) { <span class="badge-you">YOU</span> }
+              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
+            </div>
+            <div class="participant-meta">{{ p.role === 'hfa_staff' ? 'HFA Staff' : 'Developer' }} · {{ p.email }}</div>
+          </ion-label>
+          @if (isSelf(p)) {
+            <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
+          } @else if (isHfa()) {
+            @if (removingId() === p.id) {
+              <div slot="end" class="confirm-remove">
+                <span class="confirm-text">Remove?</span>
+                <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
+                  <ion-icon name="checkmark-outline" />
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="cancelRemove()">
+                  <ion-icon name="close-outline" />
+                </ion-button>
+              </div>
+            } @else {
+              <ion-button fill="clear" slot="end" class="btn-remove" (click)="confirmRemove(p)">
+                <ion-icon name="trash-outline" />
+              </ion-button>
+            }
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- DEVELOPER -->
+  @if (developerParticipants().length > 0) {
+    <div class="section-header">DEVELOPER <span class="count">{{ developerParticipants().length }}</span></div>
+    <ion-list lines="none" class="participant-list">
+      @for (p of developerParticipants(); track p.id) {
+        <ion-item class="participant-row">
+          <app-avatar [name]="displayLabel(p)" [size]="36" slot="start" />
+          <ion-label>
+            <div class="participant-name">
+              {{ displayLabel(p) }}
+              @if (isSelf(p)) { <span class="badge-you">YOU</span> }
+              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
+            </div>
+            <div class="participant-meta">Developer · {{ p.email }}</div>
+          </ion-label>
+          @if (isSelf(p)) {
+            <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
+          } @else if (isHfa()) {
+            @if (removingId() === p.id) {
+              <div slot="end" class="confirm-remove">
+                <span class="confirm-text">Remove?</span>
+                <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
+                  <ion-icon name="checkmark-outline" />
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="cancelRemove()">
+                  <ion-icon name="close-outline" />
+                </ion-button>
+              </div>
+            } @else {
+              <ion-button fill="clear" slot="end" class="btn-remove" (click)="confirmRemove(p)">
+                <ion-icon name="trash-outline" />
+              </ion-button>
+            }
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- OTHER PARTICIPANTS -->
+  @if (otherParticipants().length > 0) {
+    <div class="section-header">OTHER PARTICIPANTS <span class="count">{{ otherParticipants().length }}</span></div>
+    <ion-list lines="none" class="participant-list">
+      @for (p of otherParticipants(); track p.id) {
+        <ion-item class="participant-row">
+          <app-avatar [name]="displayLabel(p)" [size]="36" slot="start" />
+          <ion-label>
+            <div class="participant-name">
+              {{ displayLabel(p) }}
+              @if (isSelf(p)) { <span class="badge-you">YOU</span> }
+              @if (isPending(p)) { <ion-badge color="medium">Pending</ion-badge> }
+            </div>
+            <div class="participant-meta">{{ p.email }}</div>
+          </ion-label>
+          @if (isSelf(p)) {
+            <ion-icon name="lock-closed-outline" slot="end" class="icon-lock" />
+          } @else if (isHfa()) {
+            @if (removingId() === p.id) {
+              <div slot="end" class="confirm-remove">
+                <span class="confirm-text">Remove?</span>
+                <ion-button fill="clear" color="danger" size="small" (click)="doRemove(p)">
+                  <ion-icon name="checkmark-outline" />
+                </ion-button>
+                <ion-button fill="clear" size="small" (click)="cancelRemove()">
+                  <ion-icon name="close-outline" />
+                </ion-button>
+              </div>
+            } @else {
+              <ion-button fill="clear" slot="end" class="btn-remove" (click)="confirmRemove(p)">
+                <ion-icon name="trash-outline" />
+              </ion-button>
+            }
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+  <!-- ADD PARTICIPANT FORM (HFA only) -->
+  @if (isHfa()) {
+    @if (addFormOpen()) {
+      <div class="add-form">
+        <ion-item>
+          <ion-input
+            label="Email address"
+            labelPlacement="floating"
+            type="email"
+            [value]="addEmail()"
+            (ionInput)="addEmail.set($any($event).detail.value ?? '')"
+            placeholder="participant@example.com"
+          />
+        </ion-item>
+        <ion-item>
+          <ion-select
+            label="Role"
+            labelPlacement="floating"
+            [value]="addRole()"
+            (ionChange)="addRole.set($any($event).detail.value)"
+          >
+            <ion-select-option value="developer">Developer</ion-select-option>
+            <ion-select-option value="hfa_staff">HFA Staff</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div class="add-form-actions">
+          <ion-button expand="block" (click)="submitAdd()">Send invite</ion-button>
+          <ion-button expand="block" fill="clear" (click)="cancelAdd()">Cancel</ion-button>
+        </div>
+      </div>
+    } @else {
+      <div class="add-cta">
+        <ion-button expand="block" fill="outline" (click)="openAddForm()">
+          <ion-icon name="add-outline" slot="start" />
+          Add participant
+        </ion-button>
+      </div>
+    }
+  }
+
+</div>

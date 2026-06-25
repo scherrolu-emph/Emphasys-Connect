@@ -26,6 +26,12 @@ export const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'cases/:id',
+    loadComponent: () =>
+      import('./pages/case-detail/case-detail.page').then(m => m.CaseDetailPage),
+    canActivate: [authGuard],
+  },
+  {
     path: 'create-case/type',
     loadComponent: () =>
       import('./pages/create-case/type/case-type-selection.page').then(

@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { supabase } from '../supabase/supabase.client';
-import type { CaseType, MilestoneStatus, PrerequisiteStatus } from '../supabase/database.types';
-import type { CaseSummary, MilestoneSummary } from './case.models';
+import type { CaseType, MilestoneStatus, ParticipantRole, PrerequisiteStatus } from '../supabase/database.types';
+import type {
+  CaseDetail,
+  CaseParticipant,
+  CaseSummary,
+  ConversationMessage,
+  MilestoneDetail,
+  MilestoneSummary,
+  PrerequisiteSummary,
+} from './case.models';
 import type { CreateCasePayload } from './import.models';
 
 interface RawPrereq {
@@ -23,6 +31,130 @@ interface RawCase {
   title: string;
   case_type: CaseType;
   milestones: RawMilestone[];
+}
+
+interface RawPrereqDetail {
+  id: string;
+  title: string;
+  type: 'document_submission' | 'acceptance_comment';
+  status: PrerequisiteStatus;
+  requested: boolean;
+  returned: boolean;
+  owner_id: string | null;
+  upload_link: string | null;
+  doc_name: string | null;
+  notes: string | null;
+  submitted_at: string | null;
+  accepted_at: string | null;
+}
+
+interface RawMilestoneDetail {
+  id: string;
+  title: string;
+  status: MilestoneStatus;
+  order_index: number;
+  target_days: number | null;
+  activated_at: string | null;
+  completed_at: string | null;
+  prerequisites: RawPrereqDetail[];
+}
+
+interface RawCaseDetail {
+  id: string;
+  hfa_id: string;
+  title: string;
+  reference_number: string | null;
+  case_type: CaseType;
+  milestones: RawMilestoneDetail[];
+}
+
+interface RawParticipant {
+  id: string;
+  hfa_id: string;
+  case_id: string;
+  user_id: string | null;
+  email: string;
+  role: ParticipantRole;
+  invite_status: 'pending' | 'accepted';
+  profiles: { display_name: string } | null;
+}
+
+interface RawMessage {
+  id: string;
+  hfa_id: string;
+  case_id: string;
+  author_id: string | null;
+  type: 'system' | 'message';
+  content: string;
+  created_at: string;
+}
+
+function mapPrereqDetail(raw: RawPrereqDetail): PrerequisiteSummary {
+  return {
+    id: raw.id,
+    title: raw.title,
+    type: raw.type,
+    status: raw.status,
+    requested: raw.requested,
+    returned: raw.returned,
+    ownerId: raw.owner_id,
+    uploadLink: raw.upload_link,
+    docName: raw.doc_name,
+    notes: raw.notes,
+    submittedAt: raw.submitted_at,
+    acceptedAt: raw.accepted_at,
+  };
+}
+
+function mapMilestoneDetail(raw: RawMilestoneDetail): MilestoneDetail {
+  return {
+    id: raw.id,
+    title: raw.title,
+    status: raw.status,
+    orderIndex: raw.order_index,
+    targetDays: raw.target_days,
+    activatedAt: raw.activated_at,
+    completedAt: raw.completed_at,
+    prerequisites: raw.prerequisites.map(mapPrereqDetail),
+  };
+}
+
+function mapCaseDetail(raw: RawCaseDetail): CaseDetail {
+  const milestones = raw.milestones.map(mapMilestoneDetail);
+  return {
+    id: raw.id,
+    hfaId: raw.hfa_id,
+    title: raw.title,
+    referenceNumber: raw.reference_number,
+    caseType: raw.case_type,
+    milestones,
+    activeMilestone: milestones.find(m => m.status === 'active') ?? null,
+  };
+}
+
+function mapParticipant(raw: RawParticipant): CaseParticipant {
+  return {
+    id: raw.id,
+    hfaId: raw.hfa_id,
+    caseId: raw.case_id,
+    userId: raw.user_id,
+    email: raw.email,
+    displayName: raw.profiles?.display_name ?? null,
+    role: raw.role,
+    inviteStatus: raw.invite_status,
+  };
+}
+
+function mapMessage(raw: RawMessage): ConversationMessage {
+  return {
+    id: raw.id,
+    hfaId: raw.hfa_id,
+    caseId: raw.case_id,
+    authorId: raw.author_id,
+    type: raw.type,
+    content: raw.content,
+    createdAt: raw.created_at,
+  };
 }
 
 function mapMilestone(raw: RawMilestone): MilestoneSummary {
@@ -95,6 +227,93 @@ export class CaseService {
 
     if (error) throw error;
     return (data as unknown as RawCase[]).map(mapToSummary);
+  }
+
+  async getCaseDetail(caseId: string): Promise<CaseDetail> {
+    const { data, error } = await supabase
+      .from('cases')
+      .select(`
+        id, hfa_id, title, reference_number, case_type,
+        milestones (
+          id, title, status, order_index, target_days, activated_at, completed_at,
+          prerequisites (
+            id, title, type, status, requested, returned,
+            owner_id, upload_link, doc_name, notes, submitted_at, accepted_at
+          )
+        )
+      `)
+      .eq('id', caseId)
+      .order('order_index', { referencedTable: 'milestones', ascending: true })
+      .single();
+
+    if (error) throw error;
+    return mapCaseDetail(data as unknown as RawCaseDetail);
+  }
+
+  async getParticipants(caseId: string): Promise<CaseParticipant[]> {
+    const { data, error } = await supabase
+      .from('case_participants')
+      .select('id, hfa_id, case_id, user_id, email, role, invite_status, profiles ( display_name )')
+      .eq('case_id', caseId)
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    return (data as unknown as RawParticipant[]).map(mapParticipant);
+  }
+
+  async getMessages(caseId: string, limit = 50): Promise<ConversationMessage[]> {
+    const { data, error } = await supabase
+      .from('conversation_messages')
+      .select('id, hfa_id, case_id, author_id, type, content, created_at')
+      .eq('case_id', caseId)
+      .order('created_at', { ascending: true })
+      .limit(limit);
+
+    if (error) throw error;
+    return (data as unknown as RawMessage[]).map(mapMessage);
+  }
+
+  async addParticipant(caseId: string, hfaId: string, email: string, role: ParticipantRole, authorId: string): Promise<CaseParticipant> {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('email', email)
+      .maybeSingle();
+
+    const { data: participant, error } = await supabase
+      .from('case_participants')
+      .insert({ hfa_id: hfaId, case_id: caseId, user_id: profile?.id ?? null, email, role, source: 'manual' })
+      .select('id, hfa_id, case_id, user_id, email, role, invite_status, profiles ( display_name )')
+      .single();
+
+    if (error) throw error;
+
+    await supabase.from('conversation_messages').insert({
+      hfa_id: hfaId,
+      case_id: caseId,
+      author_id: authorId,
+      type: 'system',
+      content: `${email} was added as ${role === 'developer' ? 'Developer' : 'HFA Staff'}.`,
+    });
+
+    return mapParticipant(participant as unknown as RawParticipant);
+  }
+
+  async removeParticipant(caseId: string, hfaId: string, participantId: string, email: string, authorId: string): Promise<void> {
+    const { error } = await supabase
+      .from('case_participants')
+      .delete()
+      .eq('id', participantId);
+
+    if (error) throw error;
+
+    await supabase.from('conversation_messages').insert({
+      hfa_id: hfaId,
+      case_id: caseId,
+      author_id: authorId,
+      type: 'system',
+      content: `${email} was removed from this case.`,
+    });
   }
 
   async createCase(payload: CreateCasePayload, hfaId: string, createdBy: string): Promise<string> {

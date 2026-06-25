@@ -1,0 +1,122 @@
+// ── Header ──────────────────────────────────────────────────────────────────
+
+.case-title {
+  font-size: 16px;
+  font-weight: 600;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.case-ref {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ion-color-medium);
+  display: block;
+}
+
+.case-subheader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 8px;
+  border-bottom: 1px solid var(--ion-color-light-shade);
+  overflow: hidden;
+}
+
+.type-chip {
+  font-size: 11px;
+  height: 22px;
+  flex-shrink: 0;
+  --padding-start: 8px;
+  --padding-end: 8px;
+}
+
+.active-milestone {
+  font-size: 13px;
+  color: var(--ion-color-medium-shade);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────────
+
+.tab-segment,
+.right-tab-segment {
+  --background: var(--ion-color-light);
+  padding: 4px 0;
+
+  ion-badge {
+    margin-left: 4px;
+    font-size: 10px;
+  }
+}
+
+// ── Mobile layout (default) ──────────────────────────────────────────────────
+
+.layout-mobile {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.layout-desktop {
+  display: none;
+}
+
+// ── Desktop layout (≥768px) ──────────────────────────────────────────────────
+
+@media (min-width: 768px) {
+  .layout-mobile {
+    display: none;
+  }
+
+  .layout-desktop {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .panel-left {
+    border-right: 1px solid var(--ion-color-light-shade);
+    overflow-y: auto;
+  }
+
+  .panel-right {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .right-tab-segment {
+      flex-shrink: 0;
+    }
+
+    .panel-slot {
+      flex: 1;
+      overflow-y: auto;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .layout-desktop {
+    grid-template-columns: 2fr 3fr;
+  }
+}
+
+// ── Panels ───────────────────────────────────────────────────────────────────
+
+.panel-slot {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.empty-slot {
+  padding: 32px 16px;
+  color: var(--ion-color-medium);
+  font-size: 14px;
+  text-align: center;
+}

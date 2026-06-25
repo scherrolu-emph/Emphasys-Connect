@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
-import type { RealtimeChannel } from '@supabase/supabase-js';
+import type { RealtimeChannel, RealtimePostgresChangesPayload } from '@supabase/supabase-js';
 import { supabase } from '../supabase/supabase.client';
+
+export interface CaseRealtimeCallbacks {
+  onMessage?: (payload: RealtimePostgresChangesPayload<Record<string, unknown>>) => void;
+  onParticipant?: (payload: RealtimePostgresChangesPayload<Record<string, unknown>>) => void;
+  onPrerequisite?: (payload: RealtimePostgresChangesPayload<Record<string, unknown>>) => void;
+  onMilestone?: (payload: RealtimePostgresChangesPayload<Record<string, unknown>>) => void;
+}
 
 @Injectable({ providedIn: 'root' })
 export class RealtimeService {
   private channels = new Map<string, RealtimeChannel>();
 
-  subscribeToCase(caseId: string): RealtimeChannel {
+  subscribeToCase(caseId: string, callbacks: CaseRealtimeCallbacks = {}): RealtimeChannel {
     const existing = this.channels.get(caseId);
     if (existing) return existing;
 
@@ -15,17 +22,22 @@ export class RealtimeService {
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'conversation_messages', filter: `case_id=eq.${caseId}` },
-        () => {}
+        payload => callbacks.onMessage?.(payload),
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'case_participants', filter: `case_id=eq.${caseId}` },
+        payload => callbacks.onParticipant?.(payload),
       )
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'prerequisites', filter: `case_id=eq.${caseId}` },
-        () => {}
+        payload => callbacks.onPrerequisite?.(payload),
       )
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'milestones', filter: `case_id=eq.${caseId}` },
-        () => {}
+        payload => callbacks.onMilestone?.(payload),
       )
       .subscribe();
 

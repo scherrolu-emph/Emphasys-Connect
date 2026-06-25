@@ -2,11 +2,11 @@
 id: 003-developer-panel-slots
 unit: 005-case-detail-shell
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: must
-created: 2026-06-24T00:00:00Z
+created: '2026-06-24T00:00:00Z'
 assigned_bolt: null
-implemented: false
+implemented: true
 ---
 
 # Story: 003-developer-panel-slots
