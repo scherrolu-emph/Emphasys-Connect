@@ -8,13 +8,16 @@
     <div class="card-header">
       <span class="case-title">{{ caseItem().title }}</span>
       @if (overdue()) {
-        <ion-badge color="danger">Overdue</ion-badge>
+        <span class="ec-pill ec-pill--danger">Overdue</span>
       }
     </div>
     <div class="card-meta">
       <span class="type-badge type-badge--{{ caseItem().caseType }}">{{ typeLabel() }}</span>
       <span class="milestone-name">{{ milestoneName() }}</span>
       <span class="prereq-progress">{{ caseItem().prereqAccepted }}/{{ caseItem().prereqTotal }} accepted</span>
+    </div>
+    <div class="ec-progress card-progress">
+      <div class="ec-progress__fill" [style.width.%]="progressPercent()"></div>
     </div>
   </ion-label>
 

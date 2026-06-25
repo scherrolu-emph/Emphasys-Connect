@@ -51,7 +51,7 @@
     }
 
     @if (!store.isLoading() && store.filteredCases().length > 0) {
-      <ion-list>
+      <ion-list class="ec-list cases-list" lines="none">
         @for (c of store.filteredCases(); track c.id) {
           <app-case-card [caseItem]="c" (selected)="navigateToCase($event)" />
         }
