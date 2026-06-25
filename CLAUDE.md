@@ -11,7 +11,7 @@ June 24 change request: [docs/design-v2/Emphasys_Connect_Change_Request-June24.m
 
 ## Stack
 
-- **Frontend**: Ionic 7 + Angular 17+ (web application, mobile-first responsive; no native app / no Capacitor)
+- **Frontend**: Ionic 8 + Angular 20 (web application, mobile-first responsive; no native app / no Capacitor)
 - **Backend**: Supabase — PostgreSQL database, Auth (passwordless OTP), Realtime, Edge Functions
 - **Auth**: Supabase passwordless — user enters email → receives 6-digit OTP → enters code. HFA accounts carry an `is_hfa` flag set by Emphasys IT in Supabase.
 - **Real-time**: Supabase Realtime (channel subscriptions per case)

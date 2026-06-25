@@ -20,6 +20,7 @@ implemented: false
 ## Acceptance Criteria
 - [ ] **Given** the confirm screen opens with an IMC project, **When** it renders, **Then** the project name, address, and case type are displayed at the top; each milestone is listed with a count of prerequisites (e.g. "3 prerequisites"); tapping a milestone row expands to show prerequisite names
 - [ ] **Given** the confirm screen opens for a "Start blank" case, **When** it renders, **Then** a case title text field is shown (required); no milestone structure is displayed (it will be set up later)
+- [ ] **Given** the confirm screen opens for "Loan Underwriting" or "Bond Issuance", **When** it renders, **Then** the screen behaves identically to "Start blank" (title field required, no milestone structure); a placeholder note is displayed: "Milestone data will be imported from [case type system] in a future release"
 - [ ] **Given** an IMC-backed case, **When** the screen renders, **Then** the Developer contact from the IMC project is pre-populated in the Participants section with role "Developer" and cannot be removed
 - [ ] **Given** the Participants section, **When** rendered, **Then** the creating HFA user is shown as a pre-populated participant with role "HFA Staff" (read-only, cannot be removed)
 - [ ] **Given** the Participants section, **When** the HFA clicks "Add participant", **Then** an inline form appears with: email address field + role selector (Developer, HFA Staff); entering a valid email and role and clicking "Add" appends the participant to the list

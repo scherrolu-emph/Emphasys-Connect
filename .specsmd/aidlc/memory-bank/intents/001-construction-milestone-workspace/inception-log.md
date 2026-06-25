@@ -88,6 +88,7 @@ See change request: [docs/design-v2/Emphasys_Connect_Change_Request-June24.md](.
 | 2026-06-24 | Bottom nav tab structure confirmed | HFA: Cases \| My Tasks \| Activity; Participant: My Cases \| My Tasks \| Activity | Yes |
 | 2026-06-24 | Notification bell rewritten: global, four trigger types | Bell in top-right header next to profile icon, visible all pages; triggers: @mention, tagged-in-case, assigned-to-prereq, overdue (client-side); `notifications` table required; inline panel (no modal) | Yes |
 | 2026-06-24 | Overdue notifications are client-side only (hackathon) | Computed from milestone signals; not written to `notifications` table; server-side cron deferred post-hackathon | Yes |
+| 2026-06-24 | IMC search applies to Development Construction only | Loan Underwriting and Bond Issuance will connect to different back-office systems long-term; for hackathon they behave like blank cases (title + case type, no imported structure); placeholder note shown on confirm screen | Yes |
 
 ## Scope Changes from v1
 

@@ -18,7 +18,7 @@ implemented: false
 **So that** I can quickly find and link the correct funded project without scrolling through a full list
 
 ## Acceptance Criteria
-- [ ] **Given** the IMC project search screen opens (for an IMC-backed case type), **When** it renders, **Then** a single text input is shown with placeholder "Enter project # or name"
+- [ ] **Given** the IMC project search screen opens (Development Construction only), **When** it renders, **Then** a single text input is shown with placeholder "Enter project # or name"
 - [ ] **Given** the user types at least 2 characters, **When** the input value changes, **Then** `ImportService.searchImcProjects(query)` is called and matching results are displayed below the input as a list (project name + project number + address)
 - [ ] **Given** matching results are shown, **When** the user taps a result, **Then** the app navigates to the confirm screen (`/create-case/confirm`) passing the selected `ImcProject` and `caseType` as route state
 - [ ] **Given** the query returns no results, **When** the list renders, **Then** an empty state message is shown: "No projects found — check the project number or name"
@@ -26,12 +26,12 @@ implemented: false
 - [ ] **Given** the route state carries `caseType`, **When** the screen renders, **Then** the screen header displays the selected case type (e.g. "New Development Construction Case")
 
 ## Technical Notes
-- Route: `/create-case/search`
+- Route: `/create-case/search` — only reachable when `caseType === 'development_construction'`; all other case types skip this screen
 - `ImportService.searchImcProjects(query: string): Promise<ImcProject[]>` — filters stub data by `project.name.includes(query)` or `project.projectNumber.includes(query)` (case-insensitive)
 - `ImcProject` interface: `{ id: string; projectNumber: string; name: string; address: string; developerEmail: string; milestones: ImcMilestone[] }`
 - Debounce input by 300 ms before triggering search
 - Use a `searchQuery = signal('')` and `results = signal<ImcProject[]>([])`
-- Route state validated on init: if `caseType` is missing, navigate back to `/create-case/type`
+- Route state validated on init: if `caseType !== 'development_construction'`, navigate back to `/create-case/type`
 
 ## Dependencies
 ### Requires

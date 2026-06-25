@@ -24,9 +24,14 @@ implemented: false
   - **Development Construction**
   - **Loan Underwriting**
   - **Bond Issuance**
-- [ ] **Given** the user selects "Start blank", **When** the tap event fires, **Then** the app navigates to a case title entry screen (`/create-case/blank`) carrying `caseType: 'blank'` as route state
-- [ ] **Given** the user selects an IMC-backed type (Development Construction, Loan Underwriting, or Bond Issuance), **When** the tap event fires, **Then** the app navigates to the IMC project search screen (`/create-case/search`) carrying the selected `caseType` as route state
-- [ ] **Given** the "Choose a starting point" screen, **When** rendered, **Then** each option shows a label and a short description (e.g. "No IMC project — set up milestones later" for blank; "Link to an existing IMC construction project" for Development Construction)
+- [ ] **Given** the user selects "Start blank", **When** the tap event fires, **Then** the app navigates to the confirm screen (`/create-case/confirm`) carrying `caseType: 'blank'` as route state
+- [ ] **Given** the user selects "Development Construction", **When** the tap event fires, **Then** the app navigates to the IMC project search screen (`/create-case/search`) carrying `caseType: 'development_construction'` as route state
+- [ ] **Given** the user selects "Loan Underwriting" or "Bond Issuance", **When** the tap event fires, **Then** the app navigates to the confirm screen (`/create-case/confirm`) carrying the selected `caseType` as route state (placeholder flow — no back-office integration for hackathon)
+- [ ] **Given** the "Choose a starting point" screen, **When** rendered, **Then** each option shows a label and a short description:
+  - Start blank: "No back-office project — set up milestones manually"
+  - Development Construction: "Link to an IMC construction project"
+  - Loan Underwriting: "Loan underwriting case — back-office integration coming soon"
+  - Bond Issuance: "Bond issuance case — back-office integration coming soon"
 
 ## Technical Notes
 - Route: `/create-case/type`

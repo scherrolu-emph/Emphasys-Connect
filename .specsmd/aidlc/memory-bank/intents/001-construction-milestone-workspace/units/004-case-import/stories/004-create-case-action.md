@@ -17,8 +17,8 @@ implemented: false
 **So that** the case is fully ready for work the moment I land on its detail page
 
 ## Acceptance Criteria
-- [ ] **Given** the user taps "Create case" on the confirm screen, **When** the action runs for an IMC-backed type, **Then** the following rows are created atomically: one `cases` row (with `case_type`), all `milestones` rows (Milestone 1 `active`, remainder `open`), all `prerequisites` rows (`pending_open`), and `case_participants` rows for every participant in the confirm screen list
-- [ ] **Given** the user taps "Create case" for a "Start blank" type, **When** the action runs, **Then** a `cases` row is created with `case_type: 'blank'` and the entered title; `case_participants` rows are created; no milestones or prerequisites are created
+- [ ] **Given** the user taps "Create case" on the confirm screen for **Development Construction**, **When** the action runs, **Then** the following rows are created atomically: one `cases` row (with `case_type: 'development_construction'`), all `milestones` rows from the IMC project (Milestone 1 `active`, remainder `open`), all `prerequisites` rows (`pending_open`), and `case_participants` rows including the developer from IMC and any manually-added participants
+- [ ] **Given** the user taps "Create case" for **Start blank, Loan Underwriting, or Bond Issuance**, **When** the action runs, **Then** a `cases` row is created with the appropriate `case_type` and the entered title; `case_participants` rows are created; no milestones or prerequisites are created (placeholder path for hackathon)
 - [ ] **Given** the case is created successfully, **When** all writes are confirmed, **Then** a system `conversation_messages` row is written: "Case created: {title}" for blank, "Case imported from IMC: {title}" for IMC-backed
 - [ ] **Given** the create succeeds, **When** navigation runs, **Then** the app navigates to the new case detail at `/cases/{newCaseId}` with `replaceUrl: true` (create-case screens removed from back-stack)
 - [ ] **Given** the create is in progress, **When** writes are in flight, **Then** a full-screen loading overlay is shown; back navigation is disabled
