@@ -2,11 +2,11 @@
 id: 002-message-composer
 unit: 007-conversation-thread
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: must
-created: 2026-06-24T00:00:00Z
+created: '2026-06-24T00:00:00Z'
 assigned_bolt: null
-implemented: false
+implemented: true
 ---
 
 # Story: 002-message-composer

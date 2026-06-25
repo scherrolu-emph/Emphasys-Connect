@@ -1,20 +1,32 @@
 ---
-id: "009"
+id: '009'
 unit: 007-conversation-thread
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-25T00:00:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T00:00:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T01:00:00Z'
+    artifact: implementation-walkthrough.md
 stories:
   - 001-thread-rendering
   - 002-message-composer
-created: 2026-06-24T00:00:00Z
-requires_bolts: ["006"]
-enables_bolts: ["010"]
+created: '2026-06-24T00:00:00Z'
+requires_bolts:
+  - '006'
+enables_bolts:
+  - '010'
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
   reason: Chronological thread rendering with system/manual message differentiation, composer with optimistic send, auto-scroll
+completed: '2026-06-25T15:13:37Z'
 ---
 
 # Bolt 009 — Conversation Thread: Rendering + Composer

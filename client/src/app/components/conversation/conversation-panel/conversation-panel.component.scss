@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.thread-wrapper {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.thread {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  justify-content: flex-end;
+  padding-bottom: 4px;
+}
+
+.composer-wrapper {
+  flex-shrink: 0;
+  border-top: 1px solid #E5E7EB;
+  padding: 10px 12px;
+  background: #fff;
+}
+
+.send-error {
+  font-size: 0.75rem;
+  color: #EF4444;
+  margin: 0 0 6px;
+}
