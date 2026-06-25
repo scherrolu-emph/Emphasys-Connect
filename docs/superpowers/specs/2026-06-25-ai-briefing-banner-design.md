@@ -39,12 +39,12 @@ A smart, dismissible AI briefing banner that appears at the top of the user's ho
 ## Behaviour
 
 ### Show Condition
-Banner is shown when: `Date.now() - lastSeenTimestamp > 2 * 60 * 60 * 1000` (2 hours).  
-`lastSeenTimestamp` is read from `localStorage` key `ec-last-seen`.
+Banner is shown on every app load (page refresh). No time-based gating.  
+Dismiss hides it for the current session only (in-memory flag, no localStorage write).
 
-On banner **dismiss** (× button): write current timestamp to `ec-last-seen`. Banner hidden for the session.
+On banner **dismiss** (× button): set `visible` signal to false. Reloading the page resets this.
 
-On **"Catch me up"** re-trigger: reset the show condition and replay the stream.
+On **"Catch me up"** re-trigger: set `visible` back to true and replay the stream.
 
 ### Streaming
 Pre-written string is emitted character-by-character via `setInterval` (12ms per character — fast enough to feel live, slow enough to read). Uses an Angular Signal (`streamedText = signal('')`) updated in the interval callback.
@@ -122,8 +122,7 @@ Since Thursday, HFA accepted your foundation inspection on Sunrise Commons — P
 
 **ProvidedIn:** `'root'`  
 **Responsibilities:**
-- `shouldShow(): boolean` — checks `ec-last-seen` in localStorage
-- `dismiss(): void` — writes timestamp, updates `visible` signal
+- `dismiss(): void` — sets `visible` to false (in-memory only, resets on page reload)
 - `getBriefing(isHfa: boolean): { text: string; chips: Chip[] }` — returns dummy data
 - `startStream(text: string, target: WritableSignal<string>): void` — typewriter via setInterval, returns cleanup fn
 - `resetAndShow(): void` — clears `ec-last-seen`, sets `visible` to true, restarts the stream (used by "Catch me up" re-trigger)
