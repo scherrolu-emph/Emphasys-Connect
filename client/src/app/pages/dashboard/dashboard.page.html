@@ -2,9 +2,6 @@
   <ion-toolbar>
     <ion-title>Cases</ion-title>
     <ion-buttons slot="end">
-      <ion-button fill="solid" color="primary" (click)="createCase()">
-        Create a case
-      </ion-button>
       <ion-button fill="clear" size="small" (click)="briefingService.resetAndShow()" aria-label="Catch me up">
         ✨
       </ion-button>
@@ -70,6 +67,12 @@
         }
       </ion-list>
     }
+
+    <div class="create-case-wrap">
+      <button class="ec-btn ec-btn--primary create-case-btn" (click)="createCase()">
+        Create a case
+      </button>
+    </div>
 
   </div>
 </ion-content>

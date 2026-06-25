@@ -172,6 +172,8 @@ function mapToSummary(raw: RawCase): CaseSummary {
   const active = raw.milestones.find(m => m.status === 'active') ?? null;
   const prereqTotal = active?.prerequisites.length ?? 0;
   const prereqAccepted = active?.prerequisites.filter(p => p.status === 'accepted').length ?? 0;
+  const milestoneTotal = raw.milestones.length;
+  const milestoneCompleted = raw.milestones.filter(m => m.status === 'completed').length;
 
   return {
     id: raw.id,
@@ -180,6 +182,8 @@ function mapToSummary(raw: RawCase): CaseSummary {
     activeMilestone: active ? mapMilestone(active) : null,
     prereqAccepted,
     prereqTotal,
+    milestoneCompleted,
+    milestoneTotal,
   };
 }
 

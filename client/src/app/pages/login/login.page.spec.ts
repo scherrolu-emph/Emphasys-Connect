@@ -35,6 +35,21 @@ describe('LoginPage', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('branding', () => {
+    it('renders the Emphasys logo image', () => {
+      const img: HTMLImageElement = fixture.nativeElement.querySelector('img.login-logo');
+      expect(img).toBeTruthy();
+      expect(img.getAttribute('src')).toBe('assets/emphasys-logo.png');
+      expect(img.getAttribute('alt')).toBe('Emphasys');
+    });
+
+    it('renders the Powered by Emphasys caption', () => {
+      const el: HTMLElement = fixture.nativeElement.querySelector('.login-powered');
+      expect(el).toBeTruthy();
+      expect(el.textContent?.trim()).toBe('Powered by Emphasys');
+    });
+  });
+
   describe('sendCode', () => {
     it('shows validation error for empty email', async () => {
       component.email.set('');

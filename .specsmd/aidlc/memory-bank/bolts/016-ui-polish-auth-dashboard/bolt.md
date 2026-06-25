@@ -1,24 +1,29 @@
 ---
-id: "016"
+id: '016'
 unit: 003-hfa-dashboard
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 005-login-page-branding
   - 004-milestone-count-display
   - 005-create-case-button-position
-created: 2026-06-25T12:00:00Z
-started: null
-completed: null
+created: '2026-06-25T12:00:00Z'
+started: '2026-06-25T13:00:00Z'
+completed: '2026-06-25T22:17:47Z'
 current_stage: null
-stages_completed: []
-
-requires_bolts: ["015"]
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T13:00:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T13:30:00Z'
+    artifact: implementation-walkthrough.md
+requires_bolts:
+  - '015'
 enables_bolts: []
 requires_units: []
 blocks: false
-
 complexity:
   avg_complexity: 1
   avg_uncertainty: 1

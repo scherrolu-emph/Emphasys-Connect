@@ -2,11 +2,11 @@
 id: 004-milestone-count-display
 unit: 003-hfa-dashboard
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: must
-created: 2026-06-25T12:00:00Z
+created: '2026-06-25T12:00:00Z'
 assigned_bolt: null
-implemented: false
+implemented: true
 ---
 
 # Story: 004-milestone-count-display

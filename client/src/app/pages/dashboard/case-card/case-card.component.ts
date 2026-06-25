@@ -28,8 +28,8 @@ export class CaseCardComponent {
     () => this.caseItem().activeMilestone?.title ?? 'Completed'
   );
   readonly progressPercent = computed(() => {
-    const { prereqAccepted, prereqTotal } = this.caseItem();
-    return prereqTotal > 0 ? Math.round((prereqAccepted / prereqTotal) * 100) : 0;
+    const { milestoneCompleted, milestoneTotal } = this.caseItem();
+    return milestoneTotal > 0 ? Math.round((milestoneCompleted / milestoneTotal) * 100) : 0;
   });
 
   constructor() {

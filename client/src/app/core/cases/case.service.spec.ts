@@ -63,6 +63,8 @@ describe('CaseService', () => {
     expect(c.caseType).toBe('development_construction');
     expect(c.prereqAccepted).toBe(2);
     expect(c.prereqTotal).toBe(4);
+    expect(c.milestoneCompleted).toBe(0);
+    expect(c.milestoneTotal).toBe(2);
     expect(c.activeMilestone?.title).toBe('Pre-Construction');
   });
 
@@ -90,6 +92,8 @@ describe('CaseService', () => {
     expect(cases[0].activeMilestone).toBeNull();
     expect(cases[0].prereqAccepted).toBe(0);
     expect(cases[0].prereqTotal).toBe(0);
+    expect(cases[0].milestoneCompleted).toBe(1);
+    expect(cases[0].milestoneTotal).toBe(1);
   });
 
   it('throws when Supabase returns an error', async () => {

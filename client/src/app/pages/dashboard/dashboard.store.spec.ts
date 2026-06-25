@@ -10,6 +10,8 @@ const makeCase = (id: string, caseType: CaseSummary['caseType'] = 'development_c
   activeMilestone: null,
   prereqAccepted: 0,
   prereqTotal: 0,
+  milestoneCompleted: 0,
+  milestoneTotal: 0,
 });
 
 describe('DashboardStore', () => {

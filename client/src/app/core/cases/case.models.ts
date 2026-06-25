@@ -15,6 +15,8 @@ export interface CaseSummary {
   activeMilestone: MilestoneSummary | null;
   prereqAccepted: number;
   prereqTotal: number;
+  milestoneCompleted: number;
+  milestoneTotal: number;
 }
 
 export interface PrerequisiteSummary {

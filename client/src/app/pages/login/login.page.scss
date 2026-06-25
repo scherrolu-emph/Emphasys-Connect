@@ -43,6 +43,19 @@
   margin-top: var(--ec-space-5);
 }
 
+.login-logo {
+  width: 220px;
+  height: auto;
+  display: block;
+}
+
+.login-powered {
+  font-size: var(--ec-fs-caption);
+  color: var(--ec-text-faint);
+  text-align: center;
+  margin: 0;
+}
+
 .login-demo {
   width: 100%;
   max-width: 480px;

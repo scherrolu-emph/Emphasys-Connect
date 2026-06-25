@@ -35,6 +35,14 @@
   padding: 0;
 }
 
+.create-case-wrap {
+  padding: var(--ec-space-5) 0 var(--ec-space-3);
+}
+
+.create-case-btn {
+  width: 100%;
+}
+
 .empty-state {
   display: flex;
   justify-content: center;

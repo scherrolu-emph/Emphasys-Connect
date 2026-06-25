@@ -14,7 +14,7 @@
     <div class="card-meta">
       <span class="type-badge type-badge--{{ caseItem().caseType }}">{{ typeLabel() }}</span>
       <span class="milestone-name">{{ milestoneName() }}</span>
-      <span class="prereq-progress">{{ caseItem().prereqAccepted }}/{{ caseItem().prereqTotal }} accepted</span>
+      <span class="milestone-progress">{{ caseItem().milestoneCompleted }} of {{ caseItem().milestoneTotal }} milestones completed</span>
     </div>
     <div class="ec-progress card-progress">
       <div class="ec-progress__fill" [style.width.%]="progressPercent()"></div>

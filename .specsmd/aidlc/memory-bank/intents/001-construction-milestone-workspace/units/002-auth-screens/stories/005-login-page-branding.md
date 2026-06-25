@@ -2,11 +2,11 @@
 id: 005-login-page-branding
 unit: 002-auth-screens
 intent: 001-construction-milestone-workspace
-status: draft
+status: complete
 priority: should
 created: 2026-06-25T12:00:00Z
-assigned_bolt: null
-implemented: false
+assigned_bolt: "016"
+implemented: true
 ---
 
 # Story: 005-login-page-branding
