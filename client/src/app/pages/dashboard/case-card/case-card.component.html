@@ -1,0 +1,22 @@
+<ion-item
+  button
+  detail="false"
+  [class.case-row--overdue]="overdue()"
+  (click)="selected.emit(caseItem().id)">
+
+  <ion-label>
+    <div class="card-header">
+      <span class="case-title">{{ caseItem().title }}</span>
+      @if (overdue()) {
+        <ion-badge color="danger">Overdue</ion-badge>
+      }
+    </div>
+    <div class="card-meta">
+      <span class="type-badge type-badge--{{ caseItem().caseType }}">{{ typeLabel() }}</span>
+      <span class="milestone-name">{{ milestoneName() }}</span>
+      <span class="prereq-progress">{{ caseItem().prereqAccepted }}/{{ caseItem().prereqTotal }} accepted</span>
+    </div>
+  </ion-label>
+
+  <ion-icon slot="end" name="chevron-forward-outline" class="chevron"></ion-icon>
+</ion-item>

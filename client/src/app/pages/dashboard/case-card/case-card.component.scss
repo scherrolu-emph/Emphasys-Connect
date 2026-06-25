@@ -1,0 +1,79 @@
+:host {
+  display: block;
+}
+
+ion-item.case-row--overdue {
+  --border-color: var(--ion-color-danger);
+  border-left: 3px solid var(--ion-color-danger);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.case-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  flex: 1;
+  white-space: normal;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}
+
+.type-badge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+
+  &--development_construction { background: #e8f4fd; color: #1565c0; }
+  &--loan_underwriting        { background: #e8f5e9; color: #2e7d32; }
+  &--bond_issuance            { background: #fce4ec; color: #c62828; }
+  &--blank                    { background: #f3f4f6; color: #4b5563; }
+}
+
+.milestone-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prereq-progress {
+  white-space: nowrap;
+}
+
+.chevron {
+  color: var(--ion-color-medium);
+  font-size: 1rem;
+}
+
+// Desktop: table-style columns at ≥1280px
+@media (min-width: 1280px) {
+  ion-label {
+    display: grid;
+    grid-template-columns: 1fr 120px 200px 120px;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .card-header {
+    margin-bottom: 0;
+  }
+
+  .card-meta {
+    display: contents;
+    font-size: 0.85rem;
+  }
+}

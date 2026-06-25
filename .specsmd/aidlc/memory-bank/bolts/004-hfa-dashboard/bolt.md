@@ -3,7 +3,7 @@ id: "004"
 unit: 003-hfa-dashboard
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 001-case-list-screen
   - 002-overdue-visual-state
