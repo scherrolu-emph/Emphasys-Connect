@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  IonButtons,
   IonContent,
   IonHeader,
   IonTitle,
@@ -15,6 +16,7 @@ import {
 import { addIcons } from 'ionicons';
 import { checkmarkCircleOutline } from 'ionicons/icons';
 import { AuthService } from '../../core/auth/auth.service';
+import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
 import { RealtimeService } from '../../core/realtime/realtime.service';
 import { TaskService } from '../../core/tasks/task.service';
 import { TaskBadgeService } from '../../core/tasks/task-badge.service';
@@ -26,6 +28,9 @@ import type { MyTask } from '../../core/tasks/task.models';
     <ion-header>
       <ion-toolbar>
         <ion-title>My Tasks</ion-title>
+        <ion-buttons slot="end">
+          <app-notification-bell />
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
     <ion-content class="ion-padding">
@@ -66,8 +71,9 @@ import type { MyTask } from '../../core/tasks/task.models';
   `,
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonTitle, IonToolbar,
+    IonButtons, IonContent, IonHeader, IonTitle, IonToolbar,
     IonList, IonItem, IonLabel, IonBadge, IonIcon, IonSkeletonText,
+    NotificationBellComponent,
   ],
   styles: [`
     .empty-state {

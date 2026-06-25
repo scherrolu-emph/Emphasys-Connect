@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import {
+  IonButtons,
   IonContent,
   IonHeader,
   IonIcon,
@@ -16,7 +17,7 @@ import { flashOutline } from 'ionicons/icons';
 import { AuthService } from '../../core/auth/auth.service';
 import { ActivityService } from '../../core/activity/activity.service';
 import { RealtimeService } from '../../core/realtime/realtime.service';
-import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
+import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
 import type { ActivityItem } from '../../core/activity/activity.model';
 import { timeAgo } from '../../core/activity/activity.model';
 
@@ -24,9 +25,9 @@ import { timeAgo } from '../../core/activity/activity.model';
   selector: 'app-activity',
   standalone: true,
   imports: [
-    IonContent, IonHeader, IonTitle, IonToolbar,
+    IonButtons, IonContent, IonHeader, IonTitle, IonToolbar,
     IonList, IonItem, IonLabel, IonSkeletonText, IonIcon,
-    BottomNavComponent,
+    NotificationBellComponent,
   ],
   templateUrl: './activity.page.html',
   styleUrls: ['./activity.page.scss'],
@@ -37,7 +38,6 @@ export class ActivityPage implements OnInit, OnDestroy {
   private readonly realtimeSvc = inject(RealtimeService);
   private readonly router = inject(Router);
 
-  readonly isHfa = this.auth.isHfa;
   readonly activities = signal<ActivityItem[]>([]);
   readonly isLoading = signal(true);
   readonly skeletonRows = [1, 2, 3, 4, 5];

@@ -53,12 +53,6 @@ export const routes: Routes = [
     canActivate: [hfaGuard],
   },
   {
-    path: 'activity',
-    loadComponent: () =>
-      import('./pages/activity/activity.page').then(m => m.ActivityPage),
-    canActivate: [authGuard],
-  },
-  {
     path: '',
     loadComponent: () =>
       import('./pages/tabs/tabs.page').then(m => m.TabsPage),
@@ -80,6 +74,12 @@ export const routes: Routes = [
         path: 'my-tasks',
         loadComponent: () =>
           import('./pages/my-tasks/my-tasks.page').then(m => m.MyTasksPage),
+        canActivate: [authGuard],
+      },
+      {
+        path: 'activity',
+        loadComponent: () =>
+          import('./pages/activity/activity.page').then(m => m.ActivityPage),
         canActivate: [authGuard],
       },
       {

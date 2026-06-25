@@ -6,6 +6,7 @@ import {
   IonIcon,
   IonLabel,
   IonBadge,
+  IonRouterOutlet,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { briefcaseOutline, listOutline, checkboxOutline, pulseOutline } from 'ionicons/icons';
@@ -16,6 +17,7 @@ import { TaskBadgeService } from '../../core/tasks/task-badge.service';
   selector: 'app-tabs',
   template: `
     <ion-tabs>
+      <ion-router-outlet></ion-router-outlet>
       <ion-tab-bar slot="bottom">
         @if (isHfa()) {
           <ion-tab-button tab="dashboard">
@@ -35,7 +37,7 @@ import { TaskBadgeService } from '../../core/tasks/task-badge.service';
             <ion-badge color="danger">{{ taskBadge.count() }}</ion-badge>
           }
         </ion-tab-button>
-        <ion-tab-button disabled>
+        <ion-tab-button tab="activity">
           <ion-icon name="pulse-outline"></ion-icon>
           <ion-label>Activity</ion-label>
         </ion-tab-button>
@@ -43,7 +45,7 @@ import { TaskBadgeService } from '../../core/tasks/task-badge.service';
     </ion-tabs>
   `,
   standalone: true,
-  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge],
+  imports: [IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonBadge, IonRouterOutlet],
 })
 export class TabsPage {
   private readonly auth = inject(AuthService);

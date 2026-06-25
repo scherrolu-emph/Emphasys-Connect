@@ -1,6 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>Activity</ion-title>
+    <ion-buttons slot="end">
+      <app-notification-bell />
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -51,5 +54,3 @@
     </ion-list>
   }
 </ion-content>
-
-<app-bottom-nav [isHfa]="isHfa()" />

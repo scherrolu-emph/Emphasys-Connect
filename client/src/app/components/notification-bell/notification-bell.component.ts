@@ -2,7 +2,8 @@ import { Component, ElementRef, HostListener, inject, signal } from '@angular/co
 import { Router } from '@angular/router';
 import { IonIcon } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { notificationsOutline, warningOutline, chatbubbleOutline, personAddOutline, documentTextOutline } from 'ionicons/icons';
+import { notificationsOutline, warningOutline, chatbubbleOutline, personAddOutline, documentTextOutline, logOutOutline } from 'ionicons/icons';
+import { AuthService } from '../../core/auth/auth.service';
 import { NotificationService } from '../../core/notification/notification.service';
 import type { NotificationType } from '../../core/supabase/database.types';
 
@@ -14,6 +15,7 @@ import type { NotificationType } from '../../core/supabase/database.types';
   styleUrls: ['./notification-bell.component.scss'],
 })
 export class NotificationBellComponent {
+  private readonly auth = inject(AuthService);
   private readonly notifSvc = inject(NotificationService);
   private readonly router = inject(Router);
   private readonly elementRef = inject(ElementRef);
@@ -24,7 +26,7 @@ export class NotificationBellComponent {
   readonly panelOpen = signal(false);
 
   constructor() {
-    addIcons({ notificationsOutline, warningOutline, chatbubbleOutline, personAddOutline, documentTextOutline });
+    addIcons({ notificationsOutline, warningOutline, chatbubbleOutline, personAddOutline, documentTextOutline, logOutOutline });
   }
 
   @HostListener('document:click', ['$event'])
@@ -46,6 +48,11 @@ export class NotificationBellComponent {
     if (opening) {
       void this.notifSvc.markAllRead();
     }
+  }
+
+  async signOut(): Promise<void> {
+    this.panelOpen.set(false);
+    await this.auth.signOut();
   }
 
   navigateTo(caseId: string | null): void {

@@ -18,7 +18,7 @@ import {
 import { AuthService } from '../../core/auth/auth.service';
 import { DashboardStore } from './dashboard.store';
 import { CaseCardComponent } from './case-card/case-card.component';
-import { BottomNavComponent } from '../../components/bottom-nav/bottom-nav.component';
+import { NotificationBellComponent } from '../../components/notification-bell/notification-bell.component';
 import { FILTER_CHIPS, CASE_TYPE_LABELS } from '../../core/cases/case.models';
 import type { FilterType } from '../../core/cases/case.models';
 
@@ -32,8 +32,7 @@ import type { FilterType } from '../../core/cases/case.models';
     IonButtons, IonButton,
     IonList, IonItem, IonLabel, IonSkeletonText,
     IonChip, IonRefresher, IonRefresherContent,
-    CaseCardComponent,
-    BottomNavComponent,
+    CaseCardComponent, NotificationBellComponent,
   ],
 })
 export class DashboardPage {
