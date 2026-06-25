@@ -1,20 +1,34 @@
 ---
-id: "002"
+id: '002'
 unit: 001-workspace-foundation
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-24T00:00:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-24T00:00:00Z'
+  - name: implement
+    completed: '2026-06-24T00:00:00Z'
+    artifact: implementation-walkthrough.md
+    notes: Angular shell (story 004) and RealtimeService (story 005) both complete.
 stories:
   - 004-angular-app-shell
   - 005-realtime-service
-created: 2026-06-24T00:00:00Z
-requires_bolts: ["001"]
-enables_bolts: ["003", "004", "006"]
+created: '2026-06-24T00:00:00Z'
+requires_bolts:
+  - '001'
+enables_bolts:
+  - '003'
+  - '004'
+  - '006'
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
   reason: Angular project bootstrap with Ionic shell, auth guard, and RealtimeService channel management
+completed: '2026-06-25T02:09:33Z'
 ---
 
 # Bolt 002 — Workspace Foundation: Angular Shell + RealtimeService
