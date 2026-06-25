@@ -30,27 +30,31 @@
   }
 
   @if (!isLoading() && activities().length > 0) {
-    <ion-list lines="full">
-      @for (item of activities(); track item.messageId) {
-        <ion-item
-          button
-          detail="false"
-          [class.activity-item--system]="item.messageType === 'system'"
-          (click)="navigateToCase(item.caseId)"
-        >
-          <ion-label class="activity-label ion-text-wrap">
-            @if (item.messageType === 'manual' && item.authorName) {
-              <p class="activity-author">{{ item.authorName }}</p>
-            }
-            <p class="activity-body">{{ item.body }}</p>
-            <p class="activity-meta">
-              <span class="activity-case">{{ item.caseName }}</span>
-              <span class="activity-dot"> · </span>
-              <span class="activity-time">{{ timeAgo(item.createdAt) }}</span>
-            </p>
-          </ion-label>
-        </ion-item>
-      }
-    </ion-list>
+    @for (group of activityGroups(); track group.caseId) {
+      <ion-list lines="full">
+        <ion-list-header class="case-group-header">
+          <ion-label>{{ group.caseName }}</ion-label>
+          <span class="group-latest">{{ timeAgo(group.latestAt) }}</span>
+        </ion-list-header>
+        @for (item of group.events; track item.messageId) {
+          <ion-item
+            button
+            detail="false"
+            [class.activity-item--system]="item.messageType === 'system'"
+            (click)="navigateToCase(item.caseId)"
+          >
+            <ion-label class="activity-label ion-text-wrap">
+              @if (item.messageType === 'manual' && item.authorName) {
+                <p class="activity-author">{{ item.authorName }}</p>
+              }
+              <p class="activity-body">{{ item.body }}</p>
+              <p class="activity-meta">
+                <span class="activity-time">{{ timeAgo(item.createdAt) }}</span>
+              </p>
+            </ion-label>
+          </ion-item>
+        }
+      </ion-list>
+    }
   }
 </ion-content>

@@ -18,6 +18,26 @@
   }
 }
 
+.case-group-header {
+  --background: var(--ion-color-light, #f4f5f8);
+  --color: var(--ion-color-dark, #222);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px;
+  border-top: 1px solid var(--ion-color-light-shade, #d7d8da);
+
+  .group-latest {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ion-color-medium, #92949c);
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+}
+
 .activity-item--system {
   --background: var(--ion-color-light, #f4f5f8);
 }
@@ -51,7 +71,4 @@
     margin: 0;
   }
 
-  .activity-case {
-    font-weight: 500;
-  }
 }

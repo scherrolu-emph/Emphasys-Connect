@@ -3,15 +3,24 @@ id: "019"
 unit: 009-my-tasks
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
 stories:
   - 002-active-milestone-tasks-filter
   - 002-activity-grouped-by-case
 created: 2026-06-25T12:00:00Z
-started: null
-completed: null
+started: 2026-06-25T23:30:00Z
+completed: 2026-06-25T23:58:00Z
 current_stage: null
-stages_completed: []
+stages_completed:
+  - name: plan
+    completed: 2026-06-25T23:35:00Z
+    artifact: implementation-plan.md
+  - name: implement
+    completed: 2026-06-25T23:50:00Z
+    artifact: implementation-walkthrough.md
+  - name: test
+    completed: 2026-06-25T23:58:00Z
+    artifact: test-walkthrough.md
 
 requires_bolts: ["015"]
 enables_bolts: []
