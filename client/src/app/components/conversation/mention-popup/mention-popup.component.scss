@@ -1,0 +1,53 @@
+:host {
+  display: block;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  margin-bottom: 4px;
+}
+
+.mention-popup {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: var(--ion-background-color, #fff);
+  border: 1px solid var(--ion-color-medium-tint, #e0e0e0);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  max-height: 180px;
+  overflow-y: auto;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      background: var(--ion-color-light, #f4f5f8);
+      outline: none;
+    }
+
+    &.no-match {
+      color: var(--ion-color-medium, #92949c);
+      font-size: 0.85rem;
+      cursor: default;
+    }
+  }
+}
+
+.name {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ion-text-color, #222);
+}
+
+.role {
+  font-size: 0.78rem;
+  color: var(--ion-color-medium, #92949c);
+  text-transform: capitalize;
+}

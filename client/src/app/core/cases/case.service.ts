@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { supabase } from '../supabase/supabase.client';
 import type { CaseType, MilestoneStatus, ParticipantRole, PrerequisiteStatus } from '../supabase/database.types';
+import { NotificationService } from '../notification/notification.service';
 import type {
   CaseDetail,
   CaseParticipant,
@@ -184,6 +185,7 @@ function mapToSummary(raw: RawCase): CaseSummary {
 
 @Injectable({ providedIn: 'root' })
 export class CaseService {
+  private readonly notifSvc = inject(NotificationService);
   async getHfaCases(hfaId: string): Promise<CaseSummary[]> {
     const { data, error } = await supabase
       .from('cases')
@@ -288,6 +290,8 @@ export class CaseService {
 
     if (error) throw error;
 
+    const mapped = mapParticipant(participant as unknown as RawParticipant);
+
     await supabase.from('conversation_messages').insert({
       hfa_id: hfaId,
       case_id: caseId,
@@ -296,7 +300,23 @@ export class CaseService {
       content: `${email} was added as ${role === 'developer' ? 'Developer' : 'HFA Staff'}.`,
     });
 
-    return mapParticipant(participant as unknown as RawParticipant);
+    if (mapped.userId) {
+      const { data: caseRow } = await supabase
+        .from('cases')
+        .select('title')
+        .eq('id', caseId)
+        .single();
+      void this.notifSvc.writeNotification(
+        hfaId,
+        mapped.userId,
+        caseId,
+        'tagged',
+        `You were added to ${caseRow?.title ?? 'a case'}`,
+        `You have been invited as ${role === 'developer' ? 'Developer' : 'HFA Staff'}.`,
+      );
+    }
+
+    return mapped;
   }
 
   async removeParticipant(caseId: string, hfaId: string, participantId: string, email: string, authorId: string): Promise<void> {

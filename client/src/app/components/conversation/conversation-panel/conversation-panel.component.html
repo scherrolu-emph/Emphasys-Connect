@@ -19,5 +19,18 @@
   @if (sendError()) {
     <p class="send-error">{{ sendError() }}</p>
   }
-  <app-message-composer (send)="onSend($event)" />
+  <div class="composer-container">
+    @if (mentionQuery() !== null) {
+      <app-mention-popup
+        [participants]="participants()"
+        [query]="mentionQuery()!"
+        (participantSelected)="onMentionSelected($event)"
+        (dismissed)="onMentionDismissed()"
+      />
+    }
+    <app-message-composer
+      (send)="onSend($event)"
+      (mentionQuery)="onMentionQuery($event)"
+    />
+  </div>
 </div>

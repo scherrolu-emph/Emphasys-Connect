@@ -1,21 +1,32 @@
 ---
-id: "010"
+id: '010'
 unit: 007-conversation-thread
 intent: 001-construction-milestone-workspace
 type: simple-construction-bolt
-status: planned
+status: complete
+started: '2026-06-25T16:00:00Z'
+current_stage: null
+stages_completed:
+  - name: plan
+    completed: '2026-06-25T16:00:00Z'
+    artifact: implementation-plan.md
+  - name: implement
+    completed: '2026-06-25T17:00:00Z'
+    artifact: implementation-walkthrough.md
 stories:
   - 003-mention-autocomplete-and-notification
   - 004-notification-bell
-created: 2026-06-24T00:00:00Z
-updated: 2026-06-24T00:00:00Z
-requires_bolts: ["009"]
+created: '2026-06-24T00:00:00Z'
+updated: '2026-06-25T16:00:00Z'
+requires_bolts:
+  - '009'
 enables_bolts: []
 requires_units: []
 blocks: false
 complexity:
   estimate: medium
   reason: Global notification bell across all pages; four trigger types (mention, tagged, assigned, overdue); notifications table + Realtime subscription; @-mention popup in composer
+completed: '2026-06-25T15:59:19Z'
 ---
 
 # Bolt 010 — Conversation Thread: @-Mention Popup + Global Notification Bell
