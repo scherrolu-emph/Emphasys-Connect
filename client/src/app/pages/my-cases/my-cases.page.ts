@@ -60,7 +60,7 @@ import { AiBriefingService } from '../../core/ai-briefing/ai-briefing.service';
                       <p>{{ c.activeMilestoneName }}</p>
                     }
                   </ion-label>
-                  <ion-badge slot="end" color="primary">{{ c.prereqAccepted }}/{{ c.prereqTotal }}</ion-badge>
+                  <ion-badge slot="end" color="primary">{{ c.milestoneCompleted }}/{{ c.milestoneTotal }} milestones</ion-badge>
                 </ion-item>
               }
             </ion-list>

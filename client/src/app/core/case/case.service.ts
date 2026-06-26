@@ -3,15 +3,14 @@ import { supabase } from '../supabase/supabase.client';
 import type { Database } from '../supabase/database.types';
 
 type ParticipantRow = { case_id: string; cases: { id: string; title: string } | null };
-type MilestoneRow = Pick<Database['public']['Tables']['milestones']['Row'], 'id' | 'case_id' | 'title'>;
-type PrereqRow = Pick<Database['public']['Tables']['prerequisites']['Row'], 'id' | 'milestone_id' | 'status'>;
+type MilestoneRow = Pick<Database['public']['Tables']['milestones']['Row'], 'id' | 'case_id' | 'title' | 'status'>;
 
 export type ParticipantCaseSummary = {
   id: string;
   title: string;
   activeMilestoneName: string | null;
-  prereqAccepted: number;
-  prereqTotal: number;
+  milestoneCompleted: number;
+  milestoneTotal: number;
 };
 
 @Injectable({ providedIn: 'root' })
@@ -32,43 +31,21 @@ export class CaseService {
 
       const caseIds = Array.from(new Set(participants.map(p => p.case_id)));
 
-      // Fetch active milestones for these cases
+      // Fetch all milestones for these cases to compute completed/total counts
       const { data: milestoneData, error: mErr } = await supabase
         .from('milestones')
-        .select('id, case_id, title')
-        .in('case_id', caseIds)
-        .eq('status', 'active');
+        .select('id, case_id, title, status')
+        .in('case_id', caseIds);
 
       if (mErr) throw mErr;
-      const milestones = milestoneData as MilestoneRow[] | null;
+      const milestones = (milestoneData ?? []) as MilestoneRow[];
 
-      const milestoneByCase = new Map<string, { id: string; title: string }>();
-      if (milestones) {
-        for (const m of milestones) milestoneByCase.set(m.case_id, { id: m.id, title: m.title });
-      }
-
-      // For any active milestone ids, fetch prerequisites to compute counts
-      const milestoneIds = Array.from(new Set(Array.from(milestoneByCase.values()).map((m) => m.id)));
-
-      const prereqCounts = new Map<string, { accepted: number; total: number }>();
-      if (milestoneIds.length > 0) {
-        const { data: prereqData, error: prErr } = await supabase
-          .from('prerequisites')
-          .select('id, milestone_id, status')
-          .in('milestone_id', milestoneIds);
-
-        if (prErr) throw prErr;
-        const prereqs = prereqData as PrereqRow[] | null;
-
-        if (prereqs) {
-          for (const p of prereqs) {
-            const mid = p.milestone_id;
-            const entry = prereqCounts.get(mid) ?? { accepted: 0, total: 0 };
-            entry.total += 1;
-            if (p.status === 'accepted') entry.accepted += 1;
-            prereqCounts.set(mid, entry);
-          }
-        }
+      // Group milestones by case
+      const milestonesByCase = new Map<string, MilestoneRow[]>();
+      for (const m of milestones) {
+        const list = milestonesByCase.get(m.case_id) ?? [];
+        list.push(m);
+        milestonesByCase.set(m.case_id, list);
       }
 
       // Build result per unique case
@@ -79,16 +56,15 @@ export class CaseService {
         const cid = part.case_id;
         if (caseById.has(cid)) continue;
 
-        const caseTitle = c?.title ?? 'Untitled Case';
-        const active = milestoneByCase.get(cid) ?? null;
-        const counts = active ? prereqCounts.get(active.id) ?? { accepted: 0, total: 0 } : { accepted: 0, total: 0 };
+        const caseMilestones = milestonesByCase.get(cid) ?? [];
+        const active = caseMilestones.find(m => m.status === 'active') ?? null;
 
         const entry: ParticipantCaseSummary = {
           id: cid,
-          title: caseTitle,
-          activeMilestoneName: active ? active.title : null,
-          prereqAccepted: counts.accepted,
-          prereqTotal: counts.total,
+          title: c?.title ?? 'Untitled Case',
+          activeMilestoneName: active?.title ?? null,
+          milestoneCompleted: caseMilestones.filter(m => m.status === 'completed').length,
+          milestoneTotal: caseMilestones.length,
         };
 
         caseById.set(cid, entry);

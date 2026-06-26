@@ -15,8 +15,8 @@ const mockCases: ParticipantCaseSummary[] = [
     id: 'case-1',
     title: 'Park Ave Apts',
     activeMilestoneName: 'Pre-Construction',
-    prereqAccepted: 1,
-    prereqTotal: 3,
+    milestoneCompleted: 2,
+    milestoneTotal: 5,
   },
 ];
 
@@ -99,6 +99,14 @@ describe('MyCasesPage', () => {
       fixture.detectChanges();
       const text: string = fixture.nativeElement.textContent;
       expect(text).toContain('Park Ave Apts');
+    }));
+
+    it('displays milestone progress badge as X/Y milestones', fakeAsync(() => {
+      fixture.detectChanges();
+      tick();
+      fixture.detectChanges();
+      const text: string = fixture.nativeElement.textContent;
+      expect(text).toContain('2/5 milestones');
     }));
   });
 
