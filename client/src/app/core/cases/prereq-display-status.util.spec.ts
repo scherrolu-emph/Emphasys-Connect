@@ -26,8 +26,16 @@ describe('getDisplayStatus', () => {
     expect(getDisplayStatus(prereq({ status: 'accepted' }), 'open')).toBe('not_ready');
   });
 
-  it('returns not_ready for completed milestone', () => {
-    expect(getDisplayStatus(prereq({ status: 'pending_open' }), 'completed')).toBe('not_ready');
+  it('passes through actual prereq status for completed milestone', () => {
+    expect(getDisplayStatus(prereq({ status: 'pending_open' }), 'completed')).toBe('pending');
+  });
+
+  it('returns accepted for accepted prereq on completed milestone', () => {
+    expect(getDisplayStatus(prereq({ status: 'accepted' }), 'completed')).toBe('accepted');
+  });
+
+  it('returns submitted_under_review for received_processing prereq on completed milestone', () => {
+    expect(getDisplayStatus(prereq({ status: 'received_processing' }), 'completed')).toBe('submitted_under_review');
   });
 
   it('returns submitted_under_review for received_processing in active milestone', () => {
