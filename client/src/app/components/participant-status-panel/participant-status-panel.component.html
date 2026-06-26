@@ -25,12 +25,14 @@
                   </div>
 
                   <div class="prereq-status">
-                    <app-prereq-status-badge [displayStatus]="prereqDisplayStatus(prereq, m.status)" />
+                    @if (!(prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'document_submission')) {
+                      <app-prereq-status-badge [displayStatus]="prereqDisplayStatus(prereq, m.status)" />
+                    }
 
-                    @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'document_submission' && prereq.uploadLink) {
+                    @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'document_submission') {
                       <a
                         class="upload-link"
-                        [href]="prereq.uploadLink"
+                        [href]="prereq.uploadLink || '#'"
                         target="_blank"
                         rel="noopener noreferrer"
                       >Upload document</a>
