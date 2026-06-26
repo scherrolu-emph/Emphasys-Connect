@@ -20,7 +20,7 @@ describe('AiBriefingService', () => {
 
   it('getBriefing returns HFA data for isHfa=true', () => {
     const b = service.getBriefing(true);
-    expect(b.text).toContain('Sunrise Commons');
+    expect(b.text).toContain('Riverside Commons');
     expect(b.chips.length).toBe(3);
     expect(b.chips[0].route).toBe('/my-tasks');
   });

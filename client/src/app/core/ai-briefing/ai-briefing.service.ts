@@ -19,19 +19,19 @@ export class AiBriefingService {
   getBriefing(isHfa: boolean): Briefing {
     if (isHfa) {
       return {
-        text: 'Since Thursday, 3 things need your attention. Developer on Sunrise Commons submitted 2 documents — one is awaiting your review. Riverdale Phase 2 has 3 overdue prerequisites. A developer on Lakeside Commons sent a message 2 days ago with no reply yet.',
+        text: 'Since Thursday, 3 things need your attention. Developer on Riverside Commons submitted 2 documents — one is awaiting your review. Oakview Senior Living has 3 overdue prerequisites. A developer on Riverside Commons sent a message 2 days ago with no reply yet.',
         chips: [
           { label: 'View My Tasks', route: '/my-tasks' },
-          { label: 'Open Sunrise Commons', route: '/cases/demo-case-1' },
-          { label: 'Open Lakeside Commons', route: '/cases/demo-case-2' },
+          { label: 'Open Riverside Commons', route: '/cases/00000000-0000-0000-0000-000000000010' },
+          { label: 'Open Oakview Senior Living', route: '/cases/00000000-0000-0000-0000-000000000020' },
         ],
       };
     }
     return {
-      text: 'Since Thursday, HFA accepted your foundation inspection on Sunrise Commons — Phase 2 is now active. You have 2 new prerequisites ready to action. One document upload is overdue by 3 days.',
+      text: 'Since Thursday, HFA accepted your foundation inspection on Riverside Commons — Phase 2 is now active. You have 2 new prerequisites ready to action. One document upload is overdue by 3 days.',
       chips: [
         { label: 'View My Tasks', route: '/my-tasks' },
-        { label: 'Open Sunrise Commons', route: '/cases/demo-case-1' },
+        { label: 'Open Riverside Commons', route: '/cases/00000000-0000-0000-0000-000000000010' },
       ],
     };
   }
