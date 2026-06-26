@@ -233,6 +233,25 @@ export class CaseDetailPage implements ViewWillEnter, ViewWillLeave, OnDestroy {
     }
   }
 
+  async onSubmitDocument(event: { prereqId: string; prereqTitle: string; docName: string }): Promise<void> {
+    const detail = this.store.caseDetail();
+    const found = this.findPrereq(event.prereqId);
+    if (!found || !detail) return;
+    const prev = found.prereq.status;
+    this.store.applyPrereqUpdate(event.prereqId, { status: 'received_processing' });
+    const me = this.store.participants().find(p => p.userId === this.currentUserId());
+    try {
+      await this.prereqService.submitDocument(
+        event.prereqId, event.prereqTitle, event.docName,
+        detail.id, detail.hfaId,
+        me?.displayName ?? null, me?.email,
+      );
+    } catch (err) {
+      this.store.applyPrereqUpdate(event.prereqId, { status: prev });
+      console.error('submitDocument failed', err);
+    }
+  }
+
   private findPrereq(prereqId: string): { prereq: PrerequisiteSummary; milestoneId: string } | null {
     for (const m of this.store.milestones()) {
       const prereq = m.prerequisites.find(p => p.id === prereqId);

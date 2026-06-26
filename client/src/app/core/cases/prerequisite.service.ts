@@ -2,11 +2,13 @@ import { Injectable, inject } from '@angular/core';
 import { supabase } from '../supabase/supabase.client';
 import { EdocsService } from './edocs.service';
 import { MilestoneService } from './milestone.service';
+import { NotificationService } from '../notification/notification.service';
 
 @Injectable({ providedIn: 'root' })
 export class PrerequisiteService {
   private readonly edocsService = inject(EdocsService);
   private readonly milestoneService = inject(MilestoneService);
+  private readonly notifSvc = inject(NotificationService);
 
   async markReady(prereqId: string, prereqTitle: string, caseId: string, hfaId: string): Promise<void> {
     const { error } = await supabase
@@ -68,6 +70,47 @@ export class PrerequisiteService {
       type: 'system',
       content: `HFA returned "${prereqTitle}": ${note}`,
     });
+  }
+
+  async submitDocument(
+    prereqId: string,
+    prereqTitle: string,
+    docName: string,
+    caseId: string,
+    hfaId: string,
+    displayName: string | null,
+    email?: string,
+  ): Promise<void> {
+    const { error } = await supabase
+      .from('prerequisites')
+      .update({ status: 'received_processing', doc_name: docName, submitted_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+      .eq('id', prereqId);
+    if (error) throw error;
+
+    const submitter = displayName ?? email ?? 'Participant';
+    await supabase.from('conversation_messages').insert({
+      hfa_id: hfaId,
+      case_id: caseId,
+      author_id: null,
+      type: 'system',
+      content: `${submitter} submitted "${docName}" for "${prereqTitle}".`,
+    });
+
+    const { data: hfaParticipants } = await supabase
+      .from('case_participants')
+      .select('user_id')
+      .eq('case_id', caseId)
+      .eq('role', 'hfa_staff')
+      .not('user_id', 'is', null);
+
+    for (const p of hfaParticipants ?? []) {
+      void this.notifSvc.writeNotification(
+        hfaId, p.user_id, caseId, 'assigned',
+        'Document submitted for review',
+        `${submitter} submitted "${docName}" for "${prereqTitle}".`,
+        prereqId,
+      );
+    }
   }
 
   async triggerDocumentRequest(

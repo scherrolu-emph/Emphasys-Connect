@@ -30,12 +30,10 @@
                     }
 
                     @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'document_submission') {
-                      <a
-                        class="upload-link"
-                        [href]="prereq.uploadLink || '#'"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >Upload document</a>
+                      <button class="upload-toggle-btn" (click)="toggleUpload(prereq.id)">
+                        <ion-icon name="attach-outline"></ion-icon>
+                        {{ expandedUploadIds().has(prereq.id) ? 'Cancel' : 'Upload' }}
+                      </button>
                     }
 
                     @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'acceptance_comment') {
@@ -44,6 +42,35 @@
                       </button>
                     }
                   </div>
+
+                  @if (prereq.status === 'pending_open' && m.status === 'active' && prereq.type === 'document_submission' && expandedUploadIds().has(prereq.id)) {
+                    <div class="upload-widget">
+                      <label class="upload-choose-btn" [for]="'file-' + prereq.id">
+                        <ion-icon name="attach-outline"></ion-icon>
+                        Choose file
+                      </label>
+                      <input
+                        [id]="'file-' + prereq.id"
+                        class="upload-file-input"
+                        type="file"
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv,.png,.jpg,.jpeg,.gif,.zip"
+                        (change)="onFileSelected(prereq.id, $event)"
+                      />
+                      @if (fileErrors().get(prereq.id)) {
+                        <span class="upload-error">{{ fileErrors().get(prereq.id) }}</span>
+                      }
+                      @if (selectedFiles().get(prereq.id)) {
+                        <span class="upload-filename">{{ selectedFiles().get(prereq.id) }}</span>
+                        <button
+                          class="upload-submit-btn"
+                          [disabled]="uploadingId() === prereq.id"
+                          (click)="onSubmitDocument(prereq.id, prereq.title)"
+                        >
+                          @if (uploadingId() === prereq.id) { Uploading… } @else { Submit }
+                        </button>
+                      }
+                    </div>
+                  }
                 </li>
               }
             </ul>

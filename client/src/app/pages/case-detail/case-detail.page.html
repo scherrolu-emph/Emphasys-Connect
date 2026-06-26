@@ -57,6 +57,7 @@
           <app-participant-status-panel
             [milestones]="store.milestones()"
             (markReady)="onMarkReady($event)"
+            (submitDocument)="onSubmitDocument($event)"
           />
         }
       </div>
@@ -98,6 +99,7 @@
           <app-participant-status-panel
             [milestones]="store.milestones()"
             (markReady)="onMarkReady($event)"
+            (submitDocument)="onSubmitDocument($event)"
           />
         }
       </div>

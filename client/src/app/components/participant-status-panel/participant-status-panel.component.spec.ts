@@ -85,50 +85,121 @@ describe('ParticipantStatusPanelComponent', () => {
     });
   });
 
-  describe('upload link', () => {
-    it('shows upload link for document_submission prereq in pending_open with uploadLink', async () => {
-      const prereq = makePrereq({
-        type: 'document_submission',
-        status: 'pending_open',
-        uploadLink: 'https://edocs.example.com/upload/123',
-      });
+  describe('upload widget', () => {
+    it('shows Upload toggle button for document_submission prereq in pending_open', async () => {
+      const prereq = makePrereq({ type: 'document_submission', status: 'pending_open' });
       const fixture = await create([makeMilestone('active', [prereq])]);
-      const link = fixture.debugElement.query(By.css('a.upload-link'));
-      expect(link).toBeTruthy();
-      expect((link.nativeElement as HTMLAnchorElement).href).toContain('edocs.example.com');
+      expect(fixture.debugElement.query(By.css('.upload-toggle-btn'))).toBeTruthy();
     });
 
-    it('hides upload link when prerequisite status is received_processing', async () => {
-      const prereq = makePrereq({
-        type: 'document_submission',
-        status: 'received_processing',
-        uploadLink: 'https://edocs.example.com/upload/123',
-      });
+    it('hides Upload toggle button when status is received_processing', async () => {
+      const prereq = makePrereq({ type: 'document_submission', status: 'received_processing' });
       const fixture = await create([makeMilestone('active', [prereq])]);
-      const link = fixture.debugElement.query(By.css('a.upload-link'));
-      expect(link).toBeNull();
+      expect(fixture.debugElement.query(By.css('.upload-toggle-btn'))).toBeNull();
     });
 
-    it('hides upload link when uploadLink is null even if status is pending_open', async () => {
-      const prereq = makePrereq({
-        type: 'document_submission',
-        status: 'pending_open',
-        uploadLink: null,
-      });
-      const fixture = await create([makeMilestone('active', [prereq])]);
-      const link = fixture.debugElement.query(By.css('a.upload-link'));
-      expect(link).toBeNull();
+    it('hides Upload toggle button when milestone is not active', async () => {
+      const prereq = makePrereq({ type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('open', [prereq])]);
+      expect(fixture.debugElement.query(By.css('.upload-toggle-btn'))).toBeNull();
     });
 
-    it('upload link opens in a new tab', async () => {
-      const prereq = makePrereq({
-        type: 'document_submission',
-        status: 'pending_open',
-        uploadLink: 'https://edocs.example.com/upload/123',
-      });
+    it('upload panel is hidden until toggle button is clicked', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
       const fixture = await create([makeMilestone('active', [prereq])]);
-      const link = fixture.debugElement.query(By.css('a.upload-link'));
-      expect((link.nativeElement as HTMLAnchorElement).target).toBe('_blank');
+
+      expect(fixture.debugElement.query(By.css('.upload-widget'))).toBeNull();
+
+      (fixture.debugElement.query(By.css('.upload-toggle-btn')).nativeElement as HTMLElement).click();
+      fixture.detectChanges();
+
+      expect(fixture.debugElement.query(By.css('.upload-widget'))).toBeTruthy();
+    });
+
+    it('shows filename after a file is selected', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.componentInstance.toggleUpload('pr-1');
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'report.pdf' }] } } as unknown as Event);
+      fixture.detectChanges();
+
+      expect((fixture.nativeElement as HTMLElement).textContent).toContain('report.pdf');
+    });
+
+    it('shows submit button only after a file is selected', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.componentInstance.toggleUpload('pr-1');
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.upload-submit-btn'))).toBeNull();
+
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'doc.pdf' }] } } as unknown as Event);
+      fixture.detectChanges();
+      expect(fixture.debugElement.query(By.css('.upload-submit-btn'))).toBeTruthy();
+    });
+
+    it('emits submitDocument with prereqId, prereqTitle and docName on submit', async () => {
+      const prereq = makePrereq({ id: 'pr-t', title: 'Site Survey', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      const emitted: { prereqId: string; prereqTitle: string; docName: string }[] = [];
+      fixture.componentInstance.submitDocument.subscribe((e: typeof emitted[0]) => emitted.push(e));
+
+      fixture.componentInstance.toggleUpload('pr-t');
+      fixture.componentInstance.onFileSelected('pr-t', { target: { files: [{ name: 'survey.pdf' }] } } as unknown as Event);
+      fixture.detectChanges();
+
+      (fixture.debugElement.query(By.css('.upload-submit-btn')).nativeElement as HTMLElement).click();
+
+      expect(emitted).toEqual([{ prereqId: 'pr-t', prereqTitle: 'Site Survey', docName: 'survey.pdf' }]);
+    });
+
+    it('clears file selection when Cancel is clicked', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.componentInstance.toggleUpload('pr-1');
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'report.pdf' }] } } as unknown as Event);
+      expect(fixture.componentInstance.selectedFiles().get('pr-1')).toBe('report.pdf');
+
+      fixture.componentInstance.toggleUpload('pr-1'); // Cancel
+
+      expect(fixture.componentInstance.selectedFiles().get('pr-1')).toBeUndefined();
+    });
+
+    it('shows an error message for a disallowed file type', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.componentInstance.toggleUpload('pr-1');
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'script.exe' }], value: '' } } as unknown as Event);
+
+      expect(fixture.componentInstance.fileErrors().get('pr-1')).toBeTruthy();
+    });
+
+    it('does not add an invalid file to selectedFiles', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.componentInstance.toggleUpload('pr-1');
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'virus.exe' }], value: '' } } as unknown as Event);
+
+      expect(fixture.componentInstance.selectedFiles().get('pr-1')).toBeUndefined();
+    });
+
+    it('clears the error when a valid file is selected after an invalid one', async () => {
+      const prereq = makePrereq({ id: 'pr-1', type: 'document_submission', status: 'pending_open' });
+      const fixture = await create([makeMilestone('active', [prereq])]);
+
+      fixture.componentInstance.toggleUpload('pr-1');
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'bad.exe' }], value: '' } } as unknown as Event);
+      expect(fixture.componentInstance.fileErrors().get('pr-1')).toBeTruthy();
+
+      fixture.componentInstance.onFileSelected('pr-1', { target: { files: [{ name: 'good.pdf' }] } } as unknown as Event);
+
+      expect(fixture.componentInstance.fileErrors().get('pr-1')).toBeUndefined();
     });
   });
 

@@ -90,6 +90,7 @@
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 12px;
   padding: 8px 16px 8px 10px;
   border-top: 1px solid #F3F4F6;
@@ -126,15 +127,96 @@
   flex-shrink: 0;
 }
 
-.upload-link {
+.upload-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #1593D8;
+  background: #FFFFFF;
   color: #1593D8;
-  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.1s, color 0.1s;
+
+  ion-icon { font-size: 13px; }
 
   &:hover {
-    text-decoration: underline;
+    background: #1593D8;
+    color: #FFFFFF;
   }
+}
+
+.upload-widget {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #F9FAFB;
+  border-radius: 8px;
+  border: 1px dashed #D1D5DB;
+  flex-wrap: wrap;
+}
+
+.upload-choose-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  border: 1px solid #6B7280;
+  background: #FFFFFF;
+  color: #374151;
+  white-space: nowrap;
+  transition: background 0.1s;
+
+  ion-icon { font-size: 13px; }
+
+  &:hover { background: #F3F4F6; }
+}
+
+.upload-file-input {
+  display: none;
+}
+
+.upload-filename {
+  font-size: 12px;
+  color: #374151;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upload-error {
+  width: 100%;
+  font-size: 12px;
+  color: #DC2626;
+  margin-top: 2px;
+}
+
+.upload-submit-btn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  background: #1593D8;
+  color: #FFFFFF;
+  white-space: nowrap;
+  transition: background 0.1s;
+
+  &:hover:not(:disabled) { background: #1279b8; }
+  &:disabled { opacity: 0.6; cursor: not-allowed; }
 }
 
 .prereq-row.is-not-ready {
